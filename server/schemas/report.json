@@ -1,0 +1,41 @@
+{
+  "type": "object",
+  "required": ["title", "executiveSummary", "whatChanged", "strengths", "weaknesses", "misconceptionPatterns", "sectionBreakdown", "skillBreakdown", "errorTaxonomy", "pacingAndDecisions", "confidenceCalibration", "transferAndRetention", "studyPriorities", "sevenDayPlan", "recommendedMix", "limitations", "learnerModel"],
+  "properties": {
+    "title": { "type": "string" },
+    "executiveSummary": { "type": "string" },
+    "whatChanged": { "type": "array", "items": { "type": "object", "required": ["claim", "evidenceIds", "confidence"], "properties": { "claim": { "type": "string" }, "evidenceIds": { "type": "array", "items": { "type": "string" } }, "confidence": { "type": "string", "enum": ["tentative", "moderate", "strong"] } } }, "maxItems": 8 },
+    "strengths": { "type": "array", "items": { "type": "object", "required": ["claim", "evidenceIds", "confidence"], "properties": { "claim": { "type": "string" }, "evidenceIds": { "type": "array", "items": { "type": "string" } }, "confidence": { "type": "string", "enum": ["tentative", "moderate", "strong"] } } }, "maxItems": 8 },
+    "weaknesses": { "type": "array", "items": { "type": "object", "required": ["claim", "evidenceIds", "confidence"], "properties": { "claim": { "type": "string" }, "evidenceIds": { "type": "array", "items": { "type": "string" } }, "confidence": { "type": "string", "enum": ["tentative", "moderate", "strong"] } } }, "maxItems": 8 },
+    "misconceptionPatterns": { "type": "array", "items": { "type": "object", "required": ["claim", "evidenceIds", "confidence"], "properties": { "claim": { "type": "string" }, "evidenceIds": { "type": "array", "items": { "type": "string" } }, "confidence": { "type": "string", "enum": ["tentative", "moderate", "strong"] } } }, "maxItems": 8 },
+    "sectionBreakdown": {
+      "type": "array", "minItems": 1, "maxItems": 2,
+      "items": { "type": "object", "required": ["section", "accuracySummary", "pacingSummary", "findings", "recommendedFocus"], "properties": {
+        "section": { "type": "string", "enum": ["Reading and Writing", "Math"] },
+        "accuracySummary": { "type": "string" },
+        "pacingSummary": { "type": "string" },
+        "findings": { "type": "array", "items": { "type": "object", "required": ["claim", "evidenceIds", "confidence"], "properties": { "claim": { "type": "string" }, "evidenceIds": { "type": "array", "items": { "type": "string" } }, "confidence": { "type": "string", "enum": ["tentative", "moderate", "strong"] } } }, "maxItems": 8 },
+        "recommendedFocus": { "type": "string" }
+      } }
+    },
+    "skillBreakdown": { "type": "array", "maxItems": 14, "items": { "type": "object", "required": ["skillId", "correct", "total", "averageSeconds", "diagnosis", "nextDifficulty", "action", "evidenceIds", "confidence"], "properties": {
+      "skillId": { "type": "string" }, "correct": { "type": "integer", "minimum": 0 }, "total": { "type": "integer", "minimum": 1 }, "averageSeconds": { "type": "integer", "minimum": 0 }, "diagnosis": { "type": "string" }, "nextDifficulty": { "type": "integer", "minimum": 1, "maximum": 5 }, "action": { "type": "string" }, "evidenceIds": { "type": "array", "items": { "type": "string" } }, "confidence": { "type": "string", "enum": ["tentative", "moderate", "strong"] }
+    } } },
+    "errorTaxonomy": { "type": "array", "maxItems": 7, "items": { "type": "object", "required": ["label", "count", "mechanism", "evidenceIds"], "properties": { "label": { "type": "string" }, "count": { "type": "integer", "minimum": 0 }, "mechanism": { "type": "string" }, "evidenceIds": { "type": "array", "items": { "type": "string" } } } } },
+    "pacingAndDecisions": { "type": "array", "items": { "type": "object", "required": ["claim", "evidenceIds", "confidence"], "properties": { "claim": { "type": "string" }, "evidenceIds": { "type": "array", "items": { "type": "string" } }, "confidence": { "type": "string", "enum": ["tentative", "moderate", "strong"] } } }, "maxItems": 8 },
+    "confidenceCalibration": { "type": "array", "items": { "type": "object", "required": ["claim", "evidenceIds", "confidence"], "properties": { "claim": { "type": "string" }, "evidenceIds": { "type": "array", "items": { "type": "string" } }, "confidence": { "type": "string", "enum": ["tentative", "moderate", "strong"] } } }, "maxItems": 8 },
+    "transferAndRetention": { "type": "array", "items": { "type": "object", "required": ["claim", "evidenceIds", "confidence"], "properties": { "claim": { "type": "string" }, "evidenceIds": { "type": "array", "items": { "type": "string" } }, "confidence": { "type": "string", "enum": ["tentative", "moderate", "strong"] } } }, "maxItems": 8 },
+    "studyPriorities": { "type": "array", "items": { "type": "object", "required": ["skillId", "action", "reason", "evidenceIds"], "properties": { "skillId": { "type": "string" }, "action": { "type": "string" }, "reason": { "type": "string" }, "evidenceIds": { "type": "array", "items": { "type": "string" } } } }, "maxItems": 8 },
+    "sevenDayPlan": { "type": "array", "items": { "type": "object", "required": ["day", "minutes", "work", "successCheck"], "properties": { "day": { "type": "string" }, "minutes": { "type": "integer", "minimum": 5, "maximum": 180 }, "work": { "type": "string" }, "successCheck": { "type": "string" } } }, "minItems": 1, "maxItems": 7 },
+    "recommendedMix": { "type": "string" },
+    "limitations": { "type": "array", "items": { "type": "string" }, "maxItems": 8 },
+    "learnerModel": { "type": "object", "required": ["summary", "strengths", "hypotheses", "priorities", "skillDirectives", "coachingStyle", "nextSession"], "properties": {
+      "summary": { "type": "string" },
+      "strengths": { "type": "array", "items": { "type": "object", "required": ["claim", "evidenceIds", "confidence"], "properties": { "claim": { "type": "string" }, "evidenceIds": { "type": "array", "items": { "type": "string" } }, "confidence": { "type": "string", "enum": ["tentative", "moderate", "strong"] } } }, "maxItems": 6 },
+      "hypotheses": { "type": "array", "items": { "type": "object", "required": ["claim", "evidenceIds", "confidence"], "properties": { "claim": { "type": "string" }, "evidenceIds": { "type": "array", "items": { "type": "string" } }, "confidence": { "type": "string", "enum": ["tentative", "moderate", "strong"] } } }, "maxItems": 8 },
+      "priorities": { "type": "array", "items": { "type": "object", "required": ["claim", "evidenceIds", "confidence"], "properties": { "claim": { "type": "string" }, "evidenceIds": { "type": "array", "items": { "type": "string" } }, "confidence": { "type": "string", "enum": ["tentative", "moderate", "strong"] } } }, "maxItems": 6 },
+      "skillDirectives": { "type": "array", "items": { "type": "object", "required": ["skillId", "priority", "targetDifficulty", "reason", "evidenceIds"], "properties": { "skillId": { "type": "string" }, "priority": { "type": "number", "minimum": 0, "maximum": 1 }, "targetDifficulty": { "type": "integer", "minimum": 1, "maximum": 5 }, "reason": { "type": "string" }, "evidenceIds": { "type": "array", "items": { "type": "string" } } } }, "maxItems": 10 },
+      "coachingStyle": { "type": "string" }, "nextSession": { "type": "string" }
+    } }
+  }
+}

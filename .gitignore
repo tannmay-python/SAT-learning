@@ -1,0 +1,19 @@
+node_modules
+dist
+.env
+.env.local
+tmp
+*.log
+.DS_Store
+
+# Local SAT source material and learner memory
+SAT Mocks/
+data/active/
+data/events/
+data/questions/
+data/profile/
+data/reports/
+
+# Test and tooling output
+coverage/
+.vite/
