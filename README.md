@@ -32,7 +32,7 @@ SATLAS deliberately separates measurement from interpretation.
 
 The deterministic layer records facts and provides guardrails:
 
-- correctness, selected answer, confidence, response time, hint use, difficulty
+- correctness, selected answer, optional five-point confidence, response time, hint use, difficulty
 - difficulty-calibrated ability and mastery measurements
 - recall dates and overdue review
 - mock routing and transparent practice-score estimates
@@ -85,7 +85,10 @@ mocks avoid per-question latency and are analysed as completed sessions.
 - immediate authored explanations and distractor-specific feedback
 - same-skill repair after a miss and spaced recall
 - a 98-question, 134-minute two-stage mock with real module lengths, break,
-  flags, review grid, calculator, and formula reference
+  flags, review grid, the official College Board Desmos scientific and graphing
+  configurations, and the complete SAT formula reference
+- confidence begins unset and affects mastery or AI calibration only when the
+  learner explicitly chooses one of five ratings
 
 ## Verification
 
@@ -107,3 +110,5 @@ passage density, answer balance, representations, and structural difficulty.
 - [College Board digital SAT test specifications](https://satsuite.collegeboard.org/media/pdf/digital-sat-test-overview.pdf)
 - [College Board Assessment Framework](https://satsuite.collegeboard.org/media/pdf/assessment-framework-for-digital-sat-suite.pdf)
 - [College Board official practice](https://satsuite.collegeboard.org/practice)
+- [College Board Bluebook testing tools](https://bluebook.collegeboard.org/students/tools)
+- [Official Desmos College Board testing calculators](https://www.desmos.com/testing)

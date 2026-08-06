@@ -23,7 +23,7 @@ export function MocksPage() {
       <section className="mock-feature-grid">
         <div><Clock size={23} weight="duotone" /><strong>True module clocks</strong><p>32 minutes for each Reading and Writing module, 35 for each Math module.</p></div>
         <div><ListChecks size={23} weight="duotone" /><strong>Two-stage routing</strong><p>Module 1 is broad. Your result selects a lower- or higher-difficulty second module.</p></div>
-        <div><Calculator size={23} weight="duotone" /><strong>Math tools</strong><p>A scientific scratch calculator and the official formula reference are available throughout Math.</p></div>
+        <div><Calculator size={23} weight="duotone" /><strong>Math tools</strong><p>The official College Board Desmos scientific and graphing configurations plus the complete SAT formula reference are available throughout Math.</p></div>
         <div><Flag size={23} weight="duotone" /><strong>Bluebook-like review</strong><p>Move freely inside a module, flag items, and review unanswered questions before submitting.</p></div>
       </section>
 

@@ -6,6 +6,7 @@ import { generateMathQuestion, mathSkillIds } from '../engine/mathGenerators'
 import { selectNextQuestion } from '../engine/adaptive'
 import { isCorrectResponse } from '../engine/questions'
 import { QuestionCard } from '../components/QuestionCard'
+import { MathTools } from '../components/MathTools'
 import { useAppState } from '../state/AppState'
 import type { Confidence, Question, SectionId, SessionRecord } from '../types'
 
@@ -21,7 +22,7 @@ export function PracticePage() {
   const [length, setLength] = useState(diagnostic ? 12 : reviewOnly ? 8 : 10)
   const [current, setCurrent] = useState<Question | null>(null)
   const [response, setResponse] = useState('')
-  const [confidence, setConfidence] = useState<Confidence>('unsure')
+  const [confidence, setConfidence] = useState<Confidence>()
   const [submitted, setSubmitted] = useState(false)
   const [elapsedSeconds, setElapsedSeconds] = useState(0)
   const [seen, setSeen] = useState<string[]>([])
@@ -43,7 +44,7 @@ export function PracticePage() {
   const chooseNext = (forcedSkill?: string) => {
     const available = getPool().filter((question) => !seen.includes(question.id))
     const next = selectNextQuestion(available.length ? available : getPool(), stateMap, new Set(seen), forcedSkill, learnerModel.skillDirectives)
-    setCurrent(next ?? null); setResponse(''); setConfidence('unsure'); setSubmitted(false); setCurrentAttemptId(undefined); setElapsedSeconds(0)
+    setCurrent(next ?? null); setResponse(''); setConfidence(undefined); setSubmitted(false); setCurrentAttemptId(undefined); setElapsedSeconds(0)
     questionStarted.current = Date.now()
   }
   const begin = () => { setStarted(true); chooseNext() }
@@ -113,7 +114,7 @@ export function PracticePage() {
   const analysis = currentAttemptId ? analyses.find((item) => item.attemptId === currentAttemptId) : undefined
   const timeLabel = `${Math.floor(elapsedSeconds / 60)}:${String(elapsedSeconds % 60).padStart(2, '0')}`
   return current ? <div className="practice-runner">
-    <header className="runner-header"><div><span>Adaptive set</span><strong>Question {Math.min(seen.length + (submitted ? 0 : 1), length)} of {length}</strong></div><div className="inline-progress"><i style={{ width: `${seen.length / length * 100}%` }} /></div><div className={`question-timer ${elapsedSeconds > current.estimatedSeconds ? 'over' : ''}`}><Clock size={20} weight="duotone" /><span><small>Question time</small><strong>{timeLabel}</strong></span><em>target {Math.round(current.estimatedSeconds / 5) * 5}s</em></div><button className="ghost-button" onClick={() => { if (confirm('End this set? Answered questions are already on disk.')) setComplete(true) }}>End</button></header>
+    <header className="runner-header"><div><span>Adaptive set</span><strong>Question {Math.min(seen.length + (submitted ? 0 : 1), length)} of {length}</strong></div><div className="inline-progress"><i style={{ width: `${seen.length / length * 100}%` }} /></div>{current.section === 'math' && <MathTools className="practice-math-tools" />}<div className={`question-timer ${elapsedSeconds > current.estimatedSeconds ? 'over' : ''}`}><Clock size={20} weight="duotone" /><span><small>Question time</small><strong>{timeLabel}</strong></span><em>target {Math.round(current.estimatedSeconds / 5) * 5}s</em></div><button className="ghost-button" onClick={() => { if (confirm('End this set? Answered questions are already on disk.')) setComplete(true) }}>End</button></header>
     <QuestionCard key={current.id} question={current} response={response} onResponse={setResponse} confidence={confidence} onConfidence={setConfidence} submitted={submitted} analysis={analysis} aiAvailable={aiStatus.available} onAnalyzeRequest={currentAttemptId ? (justification) => analyzeAttempt(currentAttemptId, justification).then(() => undefined) : undefined} />
     <footer className="question-actions">{!submitted ? <button className="primary-button" disabled={!response.trim()} onClick={() => void submit()}>Check answer <ArrowRight size={17} /></button> : <button className="primary-button" onClick={() => void advance()}>{seen.length >= length ? 'Finish set' : retrySkill ? 'Try one like it' : 'Next question'} <ArrowRight size={17} /></button>}{submitted && <span className={isCorrectResponse(current, response) ? 'correct-label' : 'incorrect-label'}>{isCorrectResponse(current, response) ? <CheckCircle size={17} /> : <XCircle size={17} />}{isCorrectResponse(current, response) ? 'Correct' : 'Review, then retry'}</span>}</footer>
   </div> : null

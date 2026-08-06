@@ -9,8 +9,8 @@ interface Props {
   question: Question
   response: string
   onResponse: (value: string) => void
-  confidence: Confidence
-  onConfidence: (value: Confidence) => void
+  confidence?: Confidence
+  onConfidence: (value?: Confidence) => void
   submitted: boolean
   analysis?: AttemptAnalysis
   aiAvailable?: boolean
@@ -81,7 +81,17 @@ export function QuestionCard({ question, response, onResponse, confidence, onCon
       )}
 
       {!submitted && showConfidence && (
-        <fieldset className="confidence-picker"><legend>How sure are you?</legend>{(['guessing', 'unsure', 'confident'] as Confidence[]).map((value) => <button type="button" key={value} className={confidence === value ? 'active' : ''} onClick={() => onConfidence(value)}>{value[0].toUpperCase() + value.slice(1)}</button>)}</fieldset>
+        <fieldset className="confidence-picker">
+          <legend><span>Confidence</span><small>Optional — used only if you select it</small></legend>
+          {([
+            ['guess', 'Pure guess'],
+            ['low', 'Low'],
+            ['medium', '50 / 50'],
+            ['high', 'High'],
+            ['certain', 'Certain'],
+          ] as Array<[Confidence, string]>).map(([value, label]) => <button type="button" key={value} aria-pressed={confidence === value} className={confidence === value ? 'active' : ''} onClick={() => onConfidence(confidence === value ? undefined : value)}>{label}</button>)}
+          {confidence && <button type="button" className="confidence-clear" onClick={() => onConfidence(undefined)}>Clear</button>}
+        </fieldset>
       )}
 
       {submitted && (

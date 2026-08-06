@@ -28,15 +28,16 @@ export const masteryPercent = (state?: SkillState) => {
 export function updateSkillState(previous: SkillState | undefined, attempt: Attempt): SkillState {
   const state = previous ?? defaultSkillState(attempt.skillId)
   const expected = expectedSuccess(state.theta, attempt.difficulty)
-  const confidenceWeight: Record<Confidence, number> = { guessing: 0.82, unsure: 0.94, confident: 1.08 }
-  const evidenceWeight = confidenceWeight[attempt.confidence] * (attempt.usedHint ? 0.72 : 1)
+  const confidenceWeight: Record<Confidence, number> = { guess: 0.82, low: 0.91, medium: 1, high: 1.07, certain: 1.13 }
+  const evidenceWeight = (attempt.confidence ? confidenceWeight[attempt.confidence] : 1) * (attempt.usedHint ? 0.72 : 1)
   const outcome = attempt.correct ? 1 : 0
   const learningRate = Math.max(0.12, 0.46 / Math.sqrt(1 + state.attempts / 4))
   const theta = Math.max(-3, Math.min(3, state.theta + learningRate * evidenceWeight * (outcome - expected)))
   const alpha = state.alpha + (attempt.correct ? evidenceWeight : 0)
   const beta = state.beta + (attempt.correct ? 0 : evidenceWeight)
   const streak = attempt.correct ? state.streak + 1 : 0
-  const ease = Math.max(1.3, Math.min(3, state.ease + (attempt.correct ? 0.04 : -0.22) + (attempt.confidence === 'confident' && !attempt.correct ? -0.08 : 0)))
+  const highConfidenceMiss = !attempt.correct && (attempt.confidence === 'high' || attempt.confidence === 'certain')
+  const ease = Math.max(1.3, Math.min(3, state.ease + (attempt.correct ? 0.04 : -0.22) + (highConfidenceMiss ? -0.08 : 0)))
 
   let intervalDays: number
   if (!attempt.correct) intervalDays = 0.01

@@ -12,7 +12,7 @@ export type DomainId =
 
 export type Difficulty = 1 | 2 | 3 | 4 | 5
 export type QuestionFormat = 'multiple-choice' | 'student-produced'
-export type Confidence = 'guessing' | 'unsure' | 'confident'
+export type Confidence = 'guess' | 'low' | 'medium' | 'high' | 'certain'
 export type SessionType = 'adaptive' | 'diagnostic' | 'review' | 'section' | 'mock'
 
 export interface Choice {
@@ -99,7 +99,7 @@ export interface Attempt {
   difficulty: Difficulty
   response: string
   correct: boolean
-  confidence: Confidence
+  confidence?: Confidence
   elapsedMs: number
   usedHint: boolean
   mistakeType?: string

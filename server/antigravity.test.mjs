@@ -3,9 +3,9 @@ import { intervalFacts, normalizeReport } from './antigravity.mjs'
 
 describe('interval report evidence guardrails', () => {
   const attempts = [
-    { id: 'a1', section: 'math', skillId: 'linear-equations-one-variable', correct: true, elapsedMs: 71_000, difficulty: 4, confidence: 'confident', questionSnapshot: { estimatedSeconds: 105 } },
-    { id: 'a2', section: 'rw', skillId: 'inferences', correct: false, elapsedMs: 98_000, difficulty: 4, confidence: 'confident', questionSnapshot: { estimatedSeconds: 80 } },
-    { id: 'a3', section: 'rw', skillId: 'boundaries', correct: true, elapsedMs: 52_000, difficulty: 3, confidence: 'unsure', questionSnapshot: { estimatedSeconds: 55 } },
+    { id: 'a1', section: 'math', skillId: 'linear-equations-one-variable', correct: true, elapsedMs: 71_000, difficulty: 4, confidence: 'high', questionSnapshot: { estimatedSeconds: 105 } },
+    { id: 'a2', section: 'rw', skillId: 'inferences', correct: false, elapsedMs: 98_000, difficulty: 4, confidence: 'certain', questionSnapshot: { estimatedSeconds: 80 } },
+    { id: 'a3', section: 'rw', skillId: 'boundaries', correct: true, elapsedMs: 52_000, difficulty: 3, questionSnapshot: { estimatedSeconds: 55 } },
   ]
 
   it('computes authoritative section and skill counts', () => {
@@ -13,6 +13,10 @@ describe('interval report evidence guardrails', () => {
     expect(facts.sections.rw).toMatchObject({ total: 2, correct: 1, averageSeconds: 75 })
     expect(facts.sections.math).toMatchObject({ total: 1, correct: 1, averageSeconds: 71 })
     expect(facts.skills.inferences).toMatchObject({ total: 1, correct: 0, averageSeconds: 98 })
+    expect(facts.confidence).toEqual({
+      high: expect.objectContaining({ total: 1, correct: 1 }),
+      certain: expect.objectContaining({ total: 1, correct: 0 }),
+    })
   })
 
   it('overrides model arithmetic and removes invented and unsupported categories', () => {

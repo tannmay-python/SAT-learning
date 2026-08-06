@@ -106,7 +106,7 @@ function compactAttempt(record) {
     difficulty: record.difficulty,
     response: record.response,
     correct: record.correct,
-    confidence: record.confidence,
+    ...(record.confidence ? { confidence: record.confidence } : {}),
     elapsedSeconds: Math.round(record.elapsedMs / 1000),
     usedHint: record.usedHint,
     reasoningNote: record.reasoningNote || null,
@@ -152,6 +152,7 @@ Requirements:
 - Reconstruct the shortest reliable SAT method step by step, using the exact text, quantities, or grammar rule in the item.
 - Teach the underlying concept, explain why the chosen option works or fails, and include one concise transfer question the learner can answer mentally.
 - Compare elapsed time with the supplied estimated time, but never equate speed with mastery.
+- Confidence is voluntary. If CURRENT ANSWER EVENT omits confidence, do not invent or infer a rating and do not discuss calibration. If it includes confidence, treat that explicit selection as one signal and compare it with the reasoning and outcome.
 - The next move must name a concrete skill, difficulty, or review action.
 - Be specific and comprehensive without padding. Do not use generic encouragement.
 - Never call a skill mastered from one answer. A single item can demonstrate a method on that item, but learner-model claims based on it must remain tentative until repeated or transferred.
@@ -267,7 +268,7 @@ export function intervalFacts(attempts) {
     overall: summarize(attempts),
     sections: Object.fromEntries(['rw', 'math'].map((section) => [section, summarize(attempts.filter((item) => item.section === section))]).filter(([, facts]) => facts.total > 0)),
     skills: Object.fromEntries([...new Set(attempts.map((item) => item.skillId))].map((skillId) => [skillId, summarize(attempts.filter((item) => item.skillId === skillId))])),
-    confidence: Object.fromEntries(['guessing', 'unsure', 'confident'].map((level) => [level, summarize(attempts.filter((item) => item.confidence === level))]).filter(([, facts]) => facts.total > 0)),
+    confidence: Object.fromEntries([...new Set(attempts.map((item) => item.confidence).filter(Boolean))].map((level) => [level, summarize(attempts.filter((item) => item.confidence === level))])),
   }
 }
 
@@ -333,6 +334,7 @@ Requirements:
 - For every represented skill, report correct/total, average elapsed seconds, the most defensible mechanism, target difficulty, and a concrete action.
 - Classify errors into evidence-supported mechanisms such as concept gap, text/condition misread, setup/model selection, execution, pacing, or confidence miscalibration. Do not force an error into a category without evidence.
 - Go beyond accuracy summaries: infer decision habits, confidence calibration, transfer, retention, pacing, and the likely highest-leverage work.
+- Confidence is voluntary. An omitted confidence field means no rating was supplied: do not infer a default, include it in calibration, or treat it as evidence. Analyze confidence only for attempts that contain an explicit rating.
 - Separate evidence from hypothesis. Every claim cites exact attempt or session IDs.
 - Do not call a one-off error a pattern. State limitations and missing evidence explicitly.
 - Never call a skill mastered, firm, fluent, or retained unless at least three successful attempts span at least two materially different forms and there is retention or transfer evidence. With less evidence, say exactly what was demonstrated and keep the inference tentative.

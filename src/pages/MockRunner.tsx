@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useLocation } from 'wouter'
-import { ArrowLeft, ArrowRight, Calculator, CheckCircle, Clock, Flag, ListNumbers, X } from '@phosphor-icons/react'
+import { ArrowLeft, ArrowRight, CheckCircle, Clock, Flag, ListNumbers, X } from '@phosphor-icons/react'
 import { QuestionCard } from '../components/QuestionCard'
+import { MathTools } from '../components/MathTools'
 import { buildInitialMock, buildMathModuleTwo, buildRemainingMock, routeModuleOne, scoreMockSection } from '../engine/mock'
 import { isCorrectResponse } from '../engine/questions'
 import { useAppState } from '../state/AppState'
-import type { Confidence, MockModule, Question, SessionRecord } from '../types'
+import type { MockModule, Question, SessionRecord } from '../types'
 
 type RunnerStage = 'intro' | 'question' | 'review' | 'break' | 'complete'
 
@@ -34,14 +35,10 @@ export function MockRunner() {
   const [, navigate] = useLocation()
   const { recordAttempt, saveSession, activeMock, saveActiveMock } = useAppState()
   const [mock, setMock] = useState<ActiveMock>(() => activeMock ? activeMock as ActiveMock : newMock())
-  const [toolsOpen, setToolsOpen] = useState<'calculator' | 'reference' | null>(null)
-  const [calculatorValue, setCalculatorValue] = useState('')
-  const [calculatorResult, setCalculatorResult] = useState('')
   const questionStarted = useRef(Date.now())
   const module = mock.modules[mock.moduleIndex]
   const question = module?.questions[mock.questionIndex]
   const response = question ? mock.answers[question.id] ?? '' : ''
-  const confidence: Confidence = 'unsure'
 
   useEffect(() => {
     const timer = window.setTimeout(() => void saveActiveMock(mock.stage === 'complete' ? null : mock), 250)
@@ -91,7 +88,7 @@ export function MockRunner() {
       await recordAttempt({
         id: `${mock.id}-${item.id}`, sessionId: mock.id, questionId: item.id, section: item.section, domain: item.domain,
         skillId: item.skillId, difficulty: item.difficulty, response: itemResponse, correct: isCorrectResponse(item, itemResponse),
-        confidence: 'unsure', elapsedMs: averageTime, usedHint: false,
+        elapsedMs: averageTime, usedHint: false,
         mistakeType: isCorrectResponse(item, itemResponse) ? undefined : item.misconceptionByChoice?.[itemResponse] ?? 'Timed execution error', createdAt: new Date().toISOString(),
       }, item)
     }
@@ -136,15 +133,6 @@ export function MockRunner() {
     setMock((state) => ({ ...state, moduleIndex: state.moduleIndex + 1, questionIndex: 0, remaining: state.modules[state.moduleIndex + 1].durationSeconds, stage: 'intro' }))
   }
 
-  const calculate = () => {
-    const sanitized = calculatorValue.replace(/\^/g, '**')
-    if (!/^[0-9+\-*/().\s*]+$/.test(sanitized)) { setCalculatorResult('Check the expression'); return }
-    try {
-      const value = Function(`"use strict"; return (${sanitized})`)()
-      setCalculatorResult(Number.isFinite(value) ? String(Math.round(value * 1e10) / 1e10) : 'Undefined')
-    } catch { setCalculatorResult('Check the expression') }
-  }
-
   if (mock.stage === 'break') {
     return <main className="break-screen"><div className="break-clock"><Clock size={33} weight="duotone" /><strong>{time}</strong></div><p className="eyebrow">10-minute break</p><h1>Reading and Writing is done.</h1><p>Stand up, drink water, and reset. Math begins when the timer ends, or when you choose to return.</p><button className="primary-button" onClick={skipBreak}>Begin Math <ArrowRight size={18} /></button></main>
   }
@@ -172,15 +160,14 @@ export function MockRunner() {
         <button className="mock-logo" onClick={() => navigate('/mocks')}>SATLAS</button>
         <div><span>{module.section === 'rw' ? 'Reading and Writing' : 'Math'}</span><strong>Module {module.module}</strong></div>
         <button className="timer-button" aria-label={`Time remaining ${time}`}><Clock size={18} />{time}</button>
-        {module.section === 'math' && <div className="mock-tools"><button onClick={() => setToolsOpen(toolsOpen === 'calculator' ? null : 'calculator')}><Calculator size={18} />Calculator</button><button onClick={() => setToolsOpen(toolsOpen === 'reference' ? null : 'reference')}>Reference</button></div>}
+        {module.section === 'math' && <MathTools className="mock-tools" />}
       </header>
       <div className="mock-progress"><i style={{ width: `${(mock.questionIndex + 1) / module.questions.length * 100}%` }} /></div>
       <main className="mock-question-wrap">
         <div className="mock-question-heading"><span>Question {mock.questionIndex + 1} of {module.questions.length}</span><button className={mock.flags.includes(question.id) ? 'active' : ''} onClick={toggleFlag}><Flag size={17} weight={mock.flags.includes(question.id) ? 'fill' : 'regular'} />Mark for review</button></div>
-        <QuestionCard question={question} response={response} onResponse={setResponse} confidence={confidence} onConfidence={() => undefined} submitted={false} showConfidence={false} showMeta={false} compact />
+        <QuestionCard question={question} response={response} onResponse={setResponse} confidence={undefined} onConfidence={() => undefined} submitted={false} showConfidence={false} showMeta={false} compact />
       </main>
       <footer className="mock-footer"><button className="ghost-button" disabled={mock.questionIndex === 0} onClick={() => goQuestion(mock.questionIndex - 1)}><ArrowLeft size={18} />Back</button><button className="question-number-button" onClick={() => setMock((state) => ({ ...state, stage: 'review' }))}>{answeredCount}/{module.questions.length} answered</button>{mock.questionIndex === module.questions.length - 1 ? <button className="primary-button" onClick={() => setMock((state) => ({ ...state, stage: 'review' }))}>Review module <ArrowRight size={18} /></button> : <button className="primary-button" onClick={() => goQuestion(mock.questionIndex + 1)}>Next <ArrowRight size={18} /></button>}</footer>
-      {toolsOpen && <aside className="tool-drawer"><header><strong>{toolsOpen === 'calculator' ? 'Calculator' : 'Reference sheet'}</strong><button onClick={() => setToolsOpen(null)} aria-label="Close tool"><X size={19} /></button></header>{toolsOpen === 'calculator' ? <div className="calculator-panel"><input value={calculatorValue} onChange={(event) => setCalculatorValue(event.target.value)} onKeyDown={(event) => { if (event.key === 'Enter') calculate() }} placeholder="(18 + 6) / 3" /><output>{calculatorResult || '0'}</output><button className="primary-button" onClick={calculate}>Calculate</button><small>Use +, -, *, /, parentheses, and ^ for powers.</small></div> : <div className="reference-sheet"><h3>Areas</h3><code>Rectangle: A = lw</code><code>Triangle: A = 1/2 bh</code><code>Circle: A = πr²</code><h3>Volumes</h3><code>Prism: V = lwh</code><code>Cylinder: V = πr²h</code><code>Sphere: V = 4/3 πr³</code><code>Cone: V = 1/3 πr²h</code><h3>Triangles and circles</h3><code>a² + b² = c²</code><code>C = 2πr</code><code>Triangle angles sum to 180°</code><code>Circle arc totals 360° or 2π radians</code></div>}</aside>}
     </div>
   ) : null
 }

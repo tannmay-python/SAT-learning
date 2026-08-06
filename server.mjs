@@ -43,7 +43,7 @@ const attemptSchema = z.object({
   difficulty: z.number().int().min(1).max(5),
   response: z.string(),
   correct: z.boolean(),
-  confidence: z.enum(['guessing', 'unsure', 'confident']),
+  confidence: z.enum(['guess', 'low', 'medium', 'high', 'certain']).optional(),
   elapsedMs: z.number().int().nonnegative(),
   usedHint: z.boolean(),
   mistakeType: z.string().optional(),
