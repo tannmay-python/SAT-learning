@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'wouter'
 import { ArrowRight, Brain, CheckCircle, Clock, Repeat, Sparkle, Target, XCircle } from '@phosphor-icons/react'
+import { curriculum, domains, skillById } from '../data/curriculum'
 import { readingQuestionBank } from '../data/readingBank'
 import { generateMathQuestion, mathSkillIds } from '../engine/mathGenerators'
 import { mixedSectionPlan, planReadingBlueprint, sectionTargetDifficulty, selectNextQuestion, weakerSection } from '../engine/adaptive'
@@ -9,7 +10,7 @@ import { DifficultyScalePicker, DifficultyStars, difficultyLabel } from '../comp
 import { QuestionCard } from '../components/QuestionCard'
 import { MathTools } from '../components/MathTools'
 import { useAppState } from '../state/AppState'
-import type { Confidence, Difficulty, GeneratedQuestionRecord, Question, SectionId, SessionRecord } from '../types'
+import type { Confidence, Difficulty, GeneratedQuestionRecord, Question, QuestionBlueprint, SectionId, SessionRecord } from '../types'
 
 type PracticeMode = 'mixed' | SectionId
 type QuestionSource = 'fresh' | 'authored'
@@ -24,6 +25,11 @@ export function PracticePage() {
   const [length, setLength] = useState(diagnostic ? 12 : reviewOnly ? 8 : 10)
   const [questionSource, setQuestionSource] = useState<QuestionSource>('fresh')
   const [difficultyOverride, setDifficultyOverride] = useState<Difficulty | 'adaptive'>('adaptive')
+  // Set from the Topic row. When present it overrides Focus entirely: every
+  // question in the set, including freshly generated ones, is pinned to this
+  // one skill rather than following the section-mix logic below.
+  const [topicSkillId, setTopicSkillId] = useState<string | undefined>()
+  const topicSkill = topicSkillId ? skillById.get(topicSkillId) : undefined
   const [preparing, setPreparing] = useState(false)
   const [preparationNotice, setPreparationNotice] = useState('')
   const [sessionQuestions, setSessionQuestions] = useState<GeneratedQuestionRecord[]>([])
@@ -62,9 +68,10 @@ export function PracticePage() {
     difficultyOverride === 'adaptive' ? calibratedTargets : { rw: difficultyOverride, math: difficultyOverride }
   ), [calibratedTargets, difficultyOverride])
 
-  const previewPlan = useMemo(() => mode === 'mixed'
-    ? mixedSectionPlan(length, weakerSection(attempts))
-    : Array.from({ length }, () => mode), [attempts, length, mode])
+  const previewPlan = useMemo(() => {
+    if (topicSkill) return Array.from({ length }, () => topicSkill.section)
+    return mode === 'mixed' ? mixedSectionPlan(length, weakerSection(attempts)) : Array.from({ length }, () => mode)
+  }, [attempts, length, mode, topicSkill])
   const previewCounts = useMemo(() => ({
     rw: previewPlan.filter((section) => section === 'rw').length,
     math: previewPlan.filter((section) => section === 'math').length,
@@ -110,10 +117,14 @@ export function PracticePage() {
     setPreparationNotice('')
     if (questionSource === 'fresh' && aiStatus.available && previewCounts.rw > 0) {
       setPreparing(true)
-      const blueprint = planReadingBlueprint(readingQuestionBank, previewCounts.rw, stateMap, new Set(attempts.map((attempt) => attempt.questionId)), learnerModel.skillDirectives, sectionTargets.rw)
-        // Same exactness fix applied to freshly generated items: pin the
-        // requested difficulty directly rather than the blended recommendation.
-        .map((entry) => difficultyOverride === 'adaptive' ? entry : { ...entry, difficulty: difficultyOverride })
+      // A topic drill on an R&W skill skips the diverse skill-mix planner and
+      // asks for that one skill directly; otherwise every slot varies by design.
+      const blueprint: QuestionBlueprint[] = topicSkill && topicSkill.section === 'rw'
+        ? Array.from({ length: previewCounts.rw }, () => ({ section: 'rw', domain: topicSkill.domain, skillId: topicSkill.id, difficulty: sectionTargets.rw }))
+        : planReadingBlueprint(readingQuestionBank, previewCounts.rw, stateMap, new Set(attempts.map((attempt) => attempt.questionId)), learnerModel.skillDirectives, sectionTargets.rw)
+          // Same exactness fix applied to freshly generated items: pin the
+          // requested difficulty directly rather than the blended recommendation.
+          .map((entry) => difficultyOverride === 'adaptive' ? entry : { ...entry, difficulty: difficultyOverride })
       try {
         prepared = await prepareFreshQuestions(blueprint)
         // Generation now keeps whatever passes rather than discarding a whole
@@ -131,14 +142,14 @@ export function PracticePage() {
     setSessionQuestions(prepared)
     setSectionPlan(plan)
     setStarted(true)
-    chooseNext(undefined, [], plan, [...prepared, ...questionBank])
+    chooseNext(topicSkillId, [], plan, [...prepared, ...questionBank])
   }
 
   useEffect(() => {
     if (started && !current && !complete && seen.length === 0) {
       const plan = previewPlan
       setSectionPlan(plan)
-      chooseNext(undefined, [], plan, questionBank)
+      chooseNext(topicSkillId, [], plan, questionBank)
     }
     // Seed auto-start diagnostic and review sessions once.
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -174,7 +185,9 @@ export function PracticePage() {
       }
       await saveSession(session); setComplete(true); return
     }
-    chooseNext(retrySkill)
+    // A topic drill stays pinned to that one skill for every question;
+    // outside a drill, only a miss forces the next pick (same-skill repair).
+    chooseNext(topicSkillId ?? retrySkill)
   }
 
   const restart = () => {
@@ -188,11 +201,19 @@ export function PracticePage() {
     <div className="practice-setup">
       <header className="page-heading"><div><p className="eyebrow">Adaptive practice</p><h1>Work at the edge of your ability.</h1><p>The next item blends calibrated difficulty with the latest completed-set analysis.</p></div><span className={`analyst-pill ${aiStatus.state}`}><i />{aiStatus.available ? 'Gemini available' : 'Calibration only'}</span></header>
       <section className="setup-panel">
-        <div className="setup-row"><span>Focus</span><div className="segmented">{([['mixed', 'Adaptive mix'], ['rw', 'Reading + Writing'], ['math', 'Math']] as const).map(([value, label]) => <button key={value} className={mode === value ? 'active' : ''} onClick={() => setMode(value)}>{label}</button>)}</div></div>
+        <div className={`setup-row ${topicSkill ? 'setup-row-overridden' : ''}`}><span>Focus</span><div className="segmented">{([['mixed', 'Adaptive mix'], ['rw', 'Reading + Writing'], ['math', 'Math']] as const).map(([value, label]) => <button key={value} disabled={Boolean(topicSkill)} className={mode === value ? 'active' : ''} onClick={() => setMode(value)}>{label}</button>)}</div></div>
+        <div className="setup-row"><span>Topic drill</span><select className="topic-select" value={topicSkillId ?? ''} onChange={(event) => setTopicSkillId(event.target.value || undefined)}>
+          <option value="">All topics — use Focus above</option>
+          {domains.map((domain) => <optgroup key={domain.id} label={domain.title}>{curriculum.filter((skill) => skill.domain === domain.id).map((skill) => <option key={skill.id} value={skill.id}>{skill.title}</option>)}</optgroup>)}
+        </select></div>
         <div className="setup-row"><span>Length</span><div className="segmented">{[5, 10, 15, 20].map((value) => <button key={value} className={length === value ? 'active' : ''} onClick={() => setLength(value)}>{value}</button>)}</div></div>
         <div className="setup-row"><span>Difficulty</span><DifficultyScalePicker value={difficultyOverride} onChange={setDifficultyOverride} /></div>
-        {mode !== 'math' && <div className="setup-row"><span>R&amp;W source</span><div className="segmented"><button className={questionSource === 'fresh' ? 'active' : ''} disabled={!aiStatus.available} onClick={() => setQuestionSource('fresh')}>Fresh + adaptive</button><button className={questionSource === 'authored' || !aiStatus.available ? 'active' : ''} onClick={() => setQuestionSource('authored')}>Authored + instant</button></div></div>}
-        <div className="setup-intelligence"><Brain size={20} /><div><strong>{mode === 'mixed' ? `${previewCounts.rw} Reading and Writing + ${previewCounts.math} Math` : `${length} ${mode === 'rw' ? 'Reading and Writing' : 'Math'} questions`}</strong><p>{difficultyOverride === 'adaptive' ? <>Current target: {mode !== 'math' && `R&W ${difficultyLabel(sectionTargets.rw)}`}{mode === 'mixed' && ' / '}{mode !== 'rw' && `Math ${difficultyLabel(sectionTargets.math)}`}. Skill-level evidence and analyst directives refine each question.</> : <>Fixed at {difficultyLabel(difficultyOverride)} for every question in this set. Calibration keeps recording, but the level itself will not move.</>}</p></div></div>
+        {(topicSkill ? topicSkill.section === 'rw' : mode !== 'math') && <div className="setup-row"><span>R&amp;W source</span><div className="segmented"><button className={questionSource === 'fresh' ? 'active' : ''} disabled={!aiStatus.available} onClick={() => setQuestionSource('fresh')}>Fresh + adaptive</button><button className={questionSource === 'authored' || !aiStatus.available ? 'active' : ''} onClick={() => setQuestionSource('authored')}>Authored + instant</button></div></div>}
+        <div className="setup-intelligence"><Brain size={20} /><div><strong>{topicSkill ? `${length} ${topicSkill.title} questions` : mode === 'mixed' ? `${previewCounts.rw} Reading and Writing + ${previewCounts.math} Math` : `${length} ${mode === 'rw' ? 'Reading and Writing' : 'Math'} questions`}</strong><p>{topicSkill
+          ? <>Every question in this set drills {topicSkill.title} only, at {difficultyOverride === 'adaptive' ? `your current ${difficultyLabel(sectionTargets[topicSkill.section])} target for this skill` : difficultyLabel(difficultyOverride)}. Focus and the section mix are set aside for the drill.</>
+          : difficultyOverride === 'adaptive'
+            ? <>Current target: {mode !== 'math' && `R&W ${difficultyLabel(sectionTargets.rw)}`}{mode === 'mixed' && ' / '}{mode !== 'rw' && `Math ${difficultyLabel(sectionTargets.math)}`}. Skill-level evidence and analyst directives refine each question.</>
+            : <>Fixed at {difficultyLabel(difficultyOverride)} for every question in this set. Calibration keeps recording, but the level itself will not move.</>}</p></div></div>
         <button className="primary-button" onClick={() => void begin()}>Start set <ArrowRight size={17} /></button>
       </section>
       <div className="practice-principles"><span><Clock size={17} /> Pace is recorded</span><span><Repeat size={17} /> Misses trigger repair</span><span><Target size={17} /> Mixed means both sections</span></div>
