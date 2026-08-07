@@ -232,6 +232,18 @@ const boundsLine = (skillId, label) => {
   return `${label}: ${band.p25}-${Math.round(band.p95 * 1.12)} words, typical ${band.median}`
 }
 
+/**
+ * The single number the model is asked to hit for one item. Undershooting the
+ * floor was the most common first-pass failure once bounds were raised to
+ * official density, so the target sits with real margin above the floor
+ * rather than at its edge -- a model that runs a little short still lands
+ * inside the range instead of needing a repair round.
+ */
+function passageTargetWords(skillId, difficulty) {
+  const bounds = passageBounds(skillId, difficulty)
+  return Math.min(bounds.max - 10, Math.round(bounds.min * 1.18))
+}
+
 const BLANK = /_{2,}/
 /** Skills whose official form is a passage with a blank the choices fill. */
 const blankSkills = new Set(['boundaries', 'form-structure-sense', 'transitions', 'words-in-context', 'inferences'])
@@ -364,10 +376,27 @@ export function queueAdaptiveQuestionGeneration(blueprint) {
       priorPrompt: attempt.questionSnapshot?.prompt,
       priorStimulusOpening: attempt.questionSnapshot?.stimulus?.slice(0, 180),
     }))
+    // A per-item literal target is easier for the model to hit than a range
+    // it has to interpret; this is what actually fixed the undershoot problem,
+    // not the range alone.
+    const blueprintWithTargets = cleanBlueprint.map((entry) => ({ ...entry, targetWords: passageTargetWords(entry.skillId, entry.difficulty) }))
     const prompt = `Create exactly ${cleanBlueprint.length} original digital SAT Reading and Writing questions, one for each blueprint entry and in the same order.
 
 QUESTION BLUEPRINT
-${JSON.stringify(cleanBlueprint, null, 2)}
+${JSON.stringify(blueprintWithTargets, null, 2)}
+
+Each entry's targetWords is a literal word count for that item's stimulus (both texts combined for Cross-Text Connections). Write to within about 10 words of it. This is not a suggestion: undershooting it is the most common reason a fresh item gets bounced back for a rewrite.
+
+TWO ORIGINAL, ALREADY-VETTED EXAMPLES AT THE RIGHT DENSITY (calibration only, do not reuse their content, names, or context)
+
+Command of Textual Evidence, Difficulty 3, 98 words:
+"The Havenport Courier began in 1851 as a four-page weekly serving dockworkers and merchants, and its earliest circulation ledgers list only subscribers living within walking distance of the harbor. Those ledgers break off in 1869, which has made the paper's later reach difficult to establish from the newspaper's own records. Historian Amara Oyelaran has instead assembled indirect sources from the following two decades, among them freight manifests, a printer's invoices for paper stock, and family correspondence held in the surrounding countryside. On the basis of this material she argues that the Courier reached readers well beyond the city itself by the 1880s."
+Prompt: "Which finding would most directly support the historian's argument?"
+Notice the shape: an institution and a limitation of the direct record, then a named researcher's method and claim built from indirect evidence. That structure is what makes the passage long without padding.
+
+Inferences, Difficulty 3, blank format, 91 words:
+"In a memory task, participants recalled word pairs equally well in silence and with steady background noise that held constant in volume and pitch throughout each trial. Recall declined only when the background instead contained changing speech, with sentences that shifted in topic and speaker every few seconds. A separate control condition ruled out fatigue by running the silence and steady-noise trials at matched points across the session. These patterns suggest that recall in this task ______"
+(Note: the blank sits at the end after a full multi-sentence setup, not after one clause.)
 
 CURRENT LEARNER MODEL
 ${JSON.stringify(evidence.learnerModel, null, 2)}
@@ -385,27 +414,21 @@ Fidelity and originality requirements:
 - These must be new questions, not reconstructions, paraphrases, or continuations of released College Board items. Do not mention SATLAS, Gemini, the learner, or this prompt inside an item.
 - Match the digital SAT's self-contained one-question-per-passage format, restrained academic tone, four plausible choices, and exact skill named in each blueprint.
 - Use varied humanities, literature, history, social-science, and natural-science contexts. Do not reuse a context or named researcher across this set.
-- Passage length is the single most common way practice items betray themselves as practice items. The ranges below were measured from ${officialDensity._sample} questions across seven official practice forms; treat them as binding. Write to the typical value or above, and use the upper half of the range for Difficulty 4-5.
-  ${boundsLine('words-in-context', 'Words in Context')}
-  ${boundsLine('text-structure-purpose', 'Text Structure and Purpose')}
-  ${boundsLine('central-ideas-details', 'Central Ideas and Details')}
-  ${boundsLine('command-evidence-textual', 'Command of Textual Evidence')}
-  ${boundsLine('command-evidence-quantitative', 'Command of Quantitative Evidence, prose only')}
-  ${boundsLine('inferences', 'Inferences')}
-  ${boundsLine('boundaries', 'Boundaries and Form, Structure, and Sense')}
-  ${boundsLine('transitions', 'Transitions')}
-  ${boundsLine('rhetorical-synthesis', 'Rhetorical Synthesis student notes')}
-- A Command of Evidence or Inferences item is not a one-sentence claim followed by four findings. On the real test it is a full paragraph that establishes a researcher, a question, a method, and a result, and only then poses the claim to be supported or completed. Write that paragraph.
+- Hit each item's targetWords from the blueprint above. If a Command of Evidence or Inferences item comes up short, the fix is almost always that it is a one-sentence claim followed by four findings; the real form is a full paragraph that establishes a researcher, a question, a method, and a result, and only then poses the claim to be supported or completed. Write that paragraph rather than padding with adjectives.
 - Cross-Text Connections must include two independently substantive texts totaling ${officialDensity.bands['cross-text-connections'].p25}-${Math.round(officialDensity.bands['cross-text-connections'].p95 * 1.12)} words with at least 45 words in each; put Text 1 in stimulus and Text 2 in secondaryStimulus.
 - Command of Quantitative Evidence must include a compact table whose rows align with its headers, plus prose that introduces the study and the claim. The passage and table must both be needed.
 - Difficulty 1 tests one direct move. Difficulty 2 uses a credible but visible trap. Difficulty 3 requires a careful relationship or two linked moves. Difficulty 4 uses tighter distinctions and denser evidence. Difficulty 5 requires precise synthesis or rejection of a highly plausible overclaim. Do not fake difficulty with rare vocabulary alone.
 - Words in Context, Transitions, Boundaries, Form Structure and Sense, and Inferences items are written as a passage containing exactly one ____ blank. The blank REPLACES the text the choices supply; that text must not also sit beside the blank in the passage. Writing "provided freshwater for decades ____ their design protected the supply" alongside a choice of "decades;" is wrong, because it reads back as "for decades decades; their design". Write "provided freshwater for ____ their design protected the supply" so each choice supplies the word together with its punctuation.
 - Spread the correct answer across positions. Over the whole set the key must not sit on the same letter more than twice, and never on the same letter three times in a row.
 - Write plain prose. No markdown, asterisks, underscores, or italic markers anywhere in a stimulus, prompt, or choice; write species and title names as plain text. Name researchers by role and name in the official register ("marine ecologist Clara Vance"), not with an academic title.
-- Before writing the choices, solve the item. There must be exactly one defensible answer. Each wrong choice must embody a specific, realistic mistake and be rejected by the supplied text, table, or grammar rule.
+- Do not open every item the same way. At most one item in this set may open with "[Field] [role] [Name] ...". Vary openings across the set: some can start with the phenomenon or finding itself, some with an institution or historical moment, some with a direct claim that the rest of the passage supports or complicates. A batch that reads like the same template with the nouns swapped is a fidelity failure even if every individual item passes every other check.
+- Before writing the choices, decide the four choices' roles: the correct answer, and three specific, distinct error types the wrong choices will embody. Do not let two wrong choices encode the same kind of error. Draw from this taxonomy and name (privately, in your own reasoning) which one each distractor uses:
+  reversal (states the opposite of what the text supports); scope shift (true of part of the evidence but overstated to the whole, or vice versa); right-idea-wrong-mechanism (correct outcome, wrong cause or process); plausible-but-unstated (a reasonable-sounding claim the passage never actually makes); off-target (answers a nearby but different question than the one asked); overclaim (goes further than the evidence licenses, e.g. proves vs suggests, always vs sometimes, causes vs is associated with).
+  Then solve the item yourself from the finished text, independent of which choice you intended as correct. There must be exactly one choice that survives your independent solve. If two survive, the two distractors are too similar in strength or share an error type; rewrite one of them before moving on, not after.
+- Each wrong choice must be rejected by the supplied text, table, or grammar rule -- never by outside knowledge or by being obviously silly. A distractor a learner could eliminate without reading the passage is not testing anything.
 - Keep all evidence needed to answer inside the item. Do not require outside facts. Avoid political persuasion, distressing content, and culturally narrow assumptions.
 - explanation must state why the answer follows and why the central trap fails. concept must name a reusable SAT method in plain language.
-- whyWrong and misconceptionByChoice should map each wrong answer letter to a concise diagnosis. estimatedSeconds must be 40-120.
+- whyWrong and misconceptionByChoice should map each wrong answer letter to a concise diagnosis naming its specific error type from the taxonomy above, not a generic "not supported by the passage."
 - Return only the structured questions.`
     const generated = await runStructured({ prompt, schema: 'generated-reading-set.json', model: generationModel, effort: 'high', timeout: '3m' })
 
@@ -466,16 +489,63 @@ ${JSON.stringify(accepted.map((question, index) => ({ index, section: question.s
 
 Return one review for every candidate index in order. solvedAnswer is your independently derived A-D answer. uniqueAnswer must be false whenever another choice could reasonably be defended.`
     const reviewed = await runStructured({ prompt: reviewPrompt, schema: 'generated-reading-review.json', model: observerModel, effort: 'high', timeout: '3m' })
-    // Reviews are indexed against `accepted`, so the surviving items are
-    // selected by that index rather than by position in a filtered array;
-    // otherwise partial acceptance would attach the wrong blueprint to a record.
+    // Reviews are indexed against `accepted`, so items are matched by that
+    // index rather than by position in a filtered array; otherwise partial
+    // acceptance would attach the wrong blueprint to a record.
     const reviews = reviewed.reviews || []
-    const survivors = accepted
-      .map((question, index) => ({ question, entry: acceptedEntries[index], review: reviews.find((item) => item.index === index) }))
-      .filter((item) => item.review?.verdict === 'accept' && item.review.uniqueAnswer === true && item.review.solvedAnswer === item.question.answer)
+    const reviewResults = accepted.map((question, index) => ({ question, entry: acceptedEntries[index], review: reviews.find((item) => item.index === index) }))
+    const passesReview = (item) => item.review?.verdict === 'accept' && item.review.uniqueAnswer === true && item.review.solvedAnswer === item.question.answer
+    let survivors = reviewResults.filter(passesReview)
+    const flagged = reviewResults.filter((item) => !passesReview(item))
+
+    // A reviewer rejection usually means one distractor is still defensible,
+    // not that the whole item is unsalvageable. Giving the generator the
+    // specific disagreement and a second try recovers real items instead of
+    // dropping them, the same way the length-repair pass already does above.
+    if (flagged.length) {
+      const repairPrompt = `An independent reviewer solved ${flagged.length} of your questions and disagreed with your answer key or found more than one defensible choice. Rewrite only these items so exactly one choice survives an independent solve. You may rewrite the passage, the choices, or both; keep the same skill, domain, and difficulty. Return them in the order listed, one per entry.
+
+ITEMS AND THE REVIEWER'S DISAGREEMENT
+${JSON.stringify(flagged.map((item, index) => ({
+  index,
+  blueprint: item.entry,
+  yourStimulus: item.question.stimulus,
+  yourSecondaryStimulus: item.question.secondaryStimulus,
+  yourChoices: item.question.choices,
+  yourAnswer: item.question.answer,
+  reviewerSolvedAnswer: item.review?.solvedAnswer ?? 'no verdict returned',
+  reviewerSaysUnique: item.review?.uniqueAnswer ?? false,
+  reviewerReason: item.review?.reason ?? 'The reviewer could not confirm a unique defensible answer.',
+})), null, 2)}
+
+If the reviewer's solved answer differs from yours, decide which one the text actually supports and rewrite the item so that choice is unambiguously correct and the other three are each rejected by a specific, stated flaw. If the reviewer says no choice is unique, strengthen whichever distractor is currently also defensible until it is clearly wrong, or sharpen the passage's evidence for the intended answer. The same distractor taxonomy, passage-length targets, and blank-format rules from the original instructions still apply.
+
+Return only the rewritten questions.`
+      try {
+        const repaired = await runStructured({ prompt: repairPrompt, schema: 'generated-reading-set.json', model: generationModel, effort: 'high', timeout: '3m' })
+        const rewritten = flagged
+          .map((item, index) => ({ entry: item.entry, question: validateGeneratedReadingQuestion(repaired.questions?.[index], item.entry) }))
+          .filter((item) => item.question)
+        if (rewritten.length) {
+          const recheckPrompt = `Independently solve each candidate below without trusting any hidden answer key, the same standard as before. Return one review per index in order.
+
+CANDIDATES WITHOUT ANSWER KEYS
+${JSON.stringify(rewritten.map((item, index) => ({ index, section: item.question.section, domain: item.question.domain, skillId: item.question.skillId, difficulty: item.question.difficulty, stimulus: item.question.stimulus, secondaryStimulus: item.question.secondaryStimulus, table: item.question.table, prompt: item.question.prompt, choices: item.question.choices })), null, 2)}`
+          const rechecked = await runStructured({ prompt: recheckPrompt, schema: 'generated-reading-review.json', model: observerModel, effort: 'high', timeout: '3m' })
+          const recheckReviews = rechecked.reviews || []
+          const rewrittenSurvivors = rewritten
+            .map((item, index) => ({ question: item.question, entry: item.entry, review: recheckReviews.find((review) => review.index === index) }))
+            .filter(passesReview)
+          survivors = [...survivors, ...rewrittenSurvivors]
+        }
+      } catch (error) {
+        console.warn('Antigravity generation: reviewer-rejection repair pass failed, continuing with the items that passed the first review.', error)
+      }
+    }
+
     if (!survivors.length) throw new Error('The independent answer-key review rejected every question in this batch. The authored bank is being used for this set.')
     if (survivors.length < accepted.length) {
-      console.warn(`Antigravity generation: the reviewer rejected ${accepted.length - survivors.length} of ${accepted.length} items; keeping the rest.`)
+      console.warn(`Antigravity generation: the reviewer flagged ${flagged.length} of ${accepted.length} items; recovered ${survivors.length - reviewResults.filter(passesReview).length} after a targeted rewrite, kept ${survivors.length} total.`)
     }
     // Only after both models have agreed on the answer is it safe to move the
     // key off whichever letter the generator favoured.
