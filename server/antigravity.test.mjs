@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { applyGenerationReviews, hasSuspiciousReadingOverlap, intervalFacts, normalizeReport, blankConventionFault, plainProse, rebalanceAnswerPositions, validateGeneratedReadingQuestion } from './antigravity.mjs'
+import { applyGenerationReviews, hasSuspiciousReadingOverlap, intervalFacts, normalizeReport, blankConventionFault, plainProse, rebalanceAnswerPositions, remapChoiceReferences, validateGeneratedReadingQuestion } from './antigravity.mjs'
 
 describe('interval report evidence guardrails', () => {
   const attempts = [
@@ -155,5 +155,40 @@ describe('blank convention', () => {
 
   it('rejects more than one blank', () => {
     expect(blankConventionFault(item('One ____ and then another ____ blank.', ['a', 'b', 'c', 'd']))).toMatch(/more than one blank/)
+  })
+})
+
+describe('explanation text stays consistent with the rebalanced letters', () => {
+  it('remaps every Choice mention using the old-to-new letter table', () => {
+    const oldToNew = { C: 'A', A: 'B', B: 'C', D: 'D' }
+    const explanation = 'Choice C is correct because the passage supports it. Choice A is incorrect because it misreads the claim. Choice B misinterprets the evidence. Choice D is incorrect because it is unsupported.'
+    expect(remapChoiceReferences(explanation, oldToNew)).toBe(
+      'Choice A is correct because the passage supports it. Choice B is incorrect because it misreads the claim. Choice C misinterprets the evidence. Choice D is incorrect because it is unsupported.'
+    )
+  })
+
+  it('rewrites the explanation so it names the same letter rebalanceAnswerPositions assigns as the answer', () => {
+    const question = {
+      choices: [
+        { id: 'A', text: 'weaving techniques choice' },
+        { id: 'B', text: 'sunlight damage choice' },
+        { id: 'C', text: 'chemical evidence choice, the correct one' },
+        { id: 'D', text: 'thermal insulation choice' },
+      ],
+      answer: 'C',
+      explanation: 'Choice C is correct because it presents the chemical evidence. Choice A is incorrect because it discusses weaving techniques. Choice B is incorrect because it misreads sunlight damage. Choice D is incorrect because it compares thermal insulation.',
+      concept: 'Choice C names the main purpose correctly.',
+      whyWrong: { A: 'Choice A wrongly focuses on technique.', B: 'Choice B misreads the evidence.', D: 'Choice D is off topic.' },
+      misconceptionByChoice: { A: 'Discusses technique, not purpose.', B: 'Misreads sunlight evidence.', D: 'Off topic.' },
+    }
+    const [balanced] = rebalanceAnswerPositions([question])
+    const correctChoice = balanced.choices.find((choice) => choice.id === balanced.answer)
+    expect(correctChoice.text).toBe('chemical evidence choice, the correct one')
+    expect(balanced.explanation).toMatch(new RegExp(`Choice ${balanced.answer} is correct because it presents the chemical evidence`))
+    // Every other choice's explanation sentence must now cite its own new letter, not a stale one.
+    for (const choice of balanced.choices) {
+      if (choice.id === balanced.answer) continue
+      expect(balanced.whyWrong[choice.id], choice.id).toBeTruthy()
+    }
   })
 })

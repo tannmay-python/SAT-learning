@@ -28,3 +28,31 @@ export function DifficultyStars({ difficulty, showLabel = true, size = 12 }: { d
 }
 
 export const difficultyLabel = (difficulty: Difficulty) => labels[difficulty]
+
+/**
+ * Lets the learner pin a practice set to one difficulty instead of letting the
+ * calibrated target decide. "Adaptive" (the default) hands the target back to
+ * `sectionTargetDifficulty`; picking a star fixes every question in that
+ * section to that level regardless of recent evidence.
+ */
+export function DifficultyScalePicker({ value, onChange }: { value: Difficulty | 'adaptive'; onChange: (value: Difficulty | 'adaptive') => void }) {
+  return (
+    <div className="difficulty-scale-picker">
+      <button type="button" className={value === 'adaptive' ? 'active' : ''} onClick={() => onChange('adaptive')}>Adaptive</button>
+      {([1, 2, 3, 4, 5] as const).map((step) => (
+        <button
+          type="button"
+          key={step}
+          className={value === step ? 'active' : ''}
+          title={`${labels[step]} — ${step} of 5`}
+          aria-label={`Fix difficulty at ${step} of 5, ${labels[step]}`}
+          aria-pressed={value === step}
+          onClick={() => onChange(step)}
+        >
+          <Star size={13} weight={typeof value === 'number' && step <= value ? 'fill' : 'regular'} />
+        </button>
+      ))}
+      <em>{value === 'adaptive' ? 'Follows your calibration' : labels[value]}</em>
+    </div>
+  )
+}

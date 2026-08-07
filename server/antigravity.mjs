@@ -159,6 +159,24 @@ export function plainProse(value = '') {
  * solved the item from the choice text, not its letter, so reordering cannot
  * change which choice is correct; the per-letter diagnoses move with their text.
  */
+/**
+ * The model writes its explanation in prose that names letters directly
+ * ("Choice C is correct because..."), using whichever letters it assigned
+ * before this rebalance. Rewriting the choice array without also rewriting
+ * those mentions leaves prose that names the wrong letter throughout -- the
+ * scored answer is still correct, but the displayed reasoning is not. Each
+ * match is remapped independently via the old-to-new letter table, so a
+ * permutation (old C becomes new A, old A becomes new B, ...) cannot cascade
+ * into a second, incorrect substitution the way a sequential find-replace would.
+ */
+export function remapChoiceReferences(text, oldToNew) {
+  if (!text) return text
+  return String(text).replace(/\b([Cc]hoice)\s+([A-D])\b/g, (match, word, letter) => {
+    const mapped = oldToNew[letter]
+    return mapped ? `${word} ${mapped}` : match
+  })
+}
+
 export function rebalanceAnswerPositions(questions) {
   const ids = ['A', 'B', 'C', 'D']
   return questions.map((question, index) => {
@@ -167,19 +185,29 @@ export function rebalanceAnswerPositions(questions) {
     const others = question.choices.filter((choice) => choice.id !== question.answer)
     const target = index % 4
     const ordered = [...others.slice(0, target), correct, ...others.slice(target)]
+    const oldToNew = Object.fromEntries(ordered.map((choice, position) => [choice.id, ids[position]]))
     const whyWrong = {}
     const misconceptionByChoice = {}
     const choices = ordered.map((choice, position) => {
       if (choice !== correct) {
         const reason = question.misconceptionByChoice?.[choice.id] ?? question.whyWrong?.[choice.id]
         if (reason) {
-          whyWrong[ids[position]] = reason
-          misconceptionByChoice[ids[position]] = reason
+          const remapped = remapChoiceReferences(reason, oldToNew)
+          whyWrong[ids[position]] = remapped
+          misconceptionByChoice[ids[position]] = remapped
         }
       }
       return { id: ids[position], text: choice.text }
     })
-    return { ...question, choices, answer: ids[target], whyWrong, misconceptionByChoice }
+    return {
+      ...question,
+      choices,
+      answer: ids[target],
+      whyWrong,
+      misconceptionByChoice,
+      explanation: remapChoiceReferences(question.explanation, oldToNew),
+      concept: remapChoiceReferences(question.concept, oldToNew),
+    }
   })
 }
 

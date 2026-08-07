@@ -5,11 +5,11 @@ import { readingQuestionBank } from '../data/readingBank'
 import { generateMathQuestion, mathSkillIds } from '../engine/mathGenerators'
 import { mixedSectionPlan, planReadingBlueprint, sectionTargetDifficulty, selectNextQuestion, weakerSection } from '../engine/adaptive'
 import { isCorrectResponse } from '../engine/questions'
-import { DifficultyStars } from '../components/DifficultyStars'
+import { DifficultyScalePicker, DifficultyStars, difficultyLabel } from '../components/DifficultyStars'
 import { QuestionCard } from '../components/QuestionCard'
 import { MathTools } from '../components/MathTools'
 import { useAppState } from '../state/AppState'
-import type { Confidence, GeneratedQuestionRecord, Question, SectionId, SessionRecord } from '../types'
+import type { Confidence, Difficulty, GeneratedQuestionRecord, Question, SectionId, SessionRecord } from '../types'
 
 type PracticeMode = 'mixed' | SectionId
 type QuestionSource = 'fresh' | 'authored'
@@ -23,6 +23,7 @@ export function PracticePage() {
   const [mode, setMode] = useState<PracticeMode>('mixed')
   const [length, setLength] = useState(diagnostic ? 12 : reviewOnly ? 8 : 10)
   const [questionSource, setQuestionSource] = useState<QuestionSource>('fresh')
+  const [difficultyOverride, setDifficultyOverride] = useState<Difficulty | 'adaptive'>('adaptive')
   const [preparing, setPreparing] = useState(false)
   const [preparationNotice, setPreparationNotice] = useState('')
   const [sessionQuestions, setSessionQuestions] = useState<GeneratedQuestionRecord[]>([])
@@ -49,10 +50,17 @@ export function PracticePage() {
     return [...officialQuestions, ...readingQuestionBank, ...math, ...generatedQuestions]
   }, [generatedQuestions, officialQuestions])
 
-  const sectionTargets = useMemo(() => ({
+  const calibratedTargets = useMemo(() => ({
     rw: sectionTargetDifficulty(attempts, 'rw'),
     math: sectionTargetDifficulty(attempts, 'math'),
   }), [attempts])
+  // A fixed pick overrides the calibrated target for both sections; selection
+  // and generation both read this rather than the raw calibrated value, so a
+  // learner deliberately drilling Difficulty 4 does not get pulled back to
+  // whatever level their history currently calibrates to.
+  const sectionTargets = useMemo(() => (
+    difficultyOverride === 'adaptive' ? calibratedTargets : { rw: difficultyOverride, math: difficultyOverride }
+  ), [calibratedTargets, difficultyOverride])
 
   const previewPlan = useMemo(() => mode === 'mixed'
     ? mixedSectionPlan(length, weakerSection(attempts))
@@ -72,7 +80,16 @@ export function PracticePage() {
     }
     if (nextPlan.some((section, index) => section !== plan[index])) setSectionPlan(nextPlan)
     const preferredSection = nextPlan[slot] ?? (mode === 'mixed' ? weakerSection(attempts) : mode)
-    const pool = bank.filter((question) => question.section === preferredSection)
+    let pool = bank.filter((question) => question.section === preferredSection)
+    // A fixed pick must be exact, not just a floor: recommendedDifficulty()
+    // blends the calibrated target with skill directives and can land above or
+    // below it, so the pool is narrowed to the literal level directly instead
+    // of trusting that blend. Falls back to the full pool only if that skill
+    // and section genuinely has nothing written at the chosen level.
+    if (difficultyOverride !== 'adaptive') {
+      const exact = pool.filter((question) => question.difficulty === difficultyOverride)
+      if (exact.length) pool = exact
+    }
     const available = pool.filter((question) => !seenIds.includes(question.id))
     const historicalSeen = new Set([...attempts.map((attempt) => attempt.questionId), ...seenIds])
     const next = selectNextQuestion(
@@ -94,6 +111,9 @@ export function PracticePage() {
     if (questionSource === 'fresh' && aiStatus.available && previewCounts.rw > 0) {
       setPreparing(true)
       const blueprint = planReadingBlueprint(readingQuestionBank, previewCounts.rw, stateMap, new Set(attempts.map((attempt) => attempt.questionId)), learnerModel.skillDirectives, sectionTargets.rw)
+        // Same exactness fix applied to freshly generated items: pin the
+        // requested difficulty directly rather than the blended recommendation.
+        .map((entry) => difficultyOverride === 'adaptive' ? entry : { ...entry, difficulty: difficultyOverride })
       try {
         prepared = await prepareFreshQuestions(blueprint)
         // Generation now keeps whatever passes rather than discarding a whole
@@ -170,8 +190,9 @@ export function PracticePage() {
       <section className="setup-panel">
         <div className="setup-row"><span>Focus</span><div className="segmented">{([['mixed', 'Adaptive mix'], ['rw', 'Reading + Writing'], ['math', 'Math']] as const).map(([value, label]) => <button key={value} className={mode === value ? 'active' : ''} onClick={() => setMode(value)}>{label}</button>)}</div></div>
         <div className="setup-row"><span>Length</span><div className="segmented">{[5, 10, 15, 20].map((value) => <button key={value} className={length === value ? 'active' : ''} onClick={() => setLength(value)}>{value}</button>)}</div></div>
+        <div className="setup-row"><span>Difficulty</span><DifficultyScalePicker value={difficultyOverride} onChange={setDifficultyOverride} /></div>
         {mode !== 'math' && <div className="setup-row"><span>R&amp;W source</span><div className="segmented"><button className={questionSource === 'fresh' ? 'active' : ''} disabled={!aiStatus.available} onClick={() => setQuestionSource('fresh')}>Fresh + adaptive</button><button className={questionSource === 'authored' || !aiStatus.available ? 'active' : ''} onClick={() => setQuestionSource('authored')}>Authored + instant</button></div></div>}
-        <div className="setup-intelligence"><Brain size={20} /><div><strong>{mode === 'mixed' ? `${previewCounts.rw} Reading and Writing + ${previewCounts.math} Math` : `${length} ${mode === 'rw' ? 'Reading and Writing' : 'Math'} questions`}</strong><p>Current target: {mode !== 'math' && `R&W D${sectionTargets.rw}`}{mode === 'mixed' && ' / '}{mode !== 'rw' && `Math D${sectionTargets.math}`}. Skill-level evidence and analyst directives refine each question.</p></div></div>
+        <div className="setup-intelligence"><Brain size={20} /><div><strong>{mode === 'mixed' ? `${previewCounts.rw} Reading and Writing + ${previewCounts.math} Math` : `${length} ${mode === 'rw' ? 'Reading and Writing' : 'Math'} questions`}</strong><p>{difficultyOverride === 'adaptive' ? <>Current target: {mode !== 'math' && `R&W ${difficultyLabel(sectionTargets.rw)}`}{mode === 'mixed' && ' / '}{mode !== 'rw' && `Math ${difficultyLabel(sectionTargets.math)}`}. Skill-level evidence and analyst directives refine each question.</> : <>Fixed at {difficultyLabel(difficultyOverride)} for every question in this set. Calibration keeps recording, but the level itself will not move.</>}</p></div></div>
         <button className="primary-button" onClick={() => void begin()}>Start set <ArrowRight size={17} /></button>
       </section>
       <div className="practice-principles"><span><Clock size={17} /> Pace is recorded</span><span><Repeat size={17} /> Misses trigger repair</span><span><Target size={17} /> Mixed means both sections</span></div>
