@@ -138,6 +138,9 @@ export interface SessionRecord {
   correct?: number
   total?: number
   estimatedScore?: number
+  /** Section split of estimatedScore, mock sessions only. Absent on older records. */
+  rwScore?: number
+  mathScore?: number
 }
 
 export interface LearnerSettings {

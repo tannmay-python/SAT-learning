@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { applyGenerationReviews, hasSuspiciousReadingOverlap, intervalFacts, normalizeReport, blankConventionFault, plainProse, rebalanceAnswerPositions, remapChoiceReferences, validateGeneratedReadingQuestion } from './antigravity.mjs'
+import { applyGenerationReviews, hasSuspiciousReadingOverlap, intervalFacts, normalizeReport, blankConventionFault, computeGoalFacts, plainProse, rebalanceAnswerPositions, remapChoiceReferences, validateGeneratedReadingQuestion } from './antigravity.mjs'
 
 describe('interval report evidence guardrails', () => {
   const attempts = [
@@ -190,5 +190,38 @@ describe('explanation text stays consistent with the rebalanced letters', () => 
       if (choice.id === balanced.answer) continue
       expect(balanced.whyWrong[choice.id], choice.id).toBeTruthy()
     }
+  })
+})
+
+describe('goal facts for the report prompt', () => {
+  const settings = { targetScore: 1600, testDate: '2026-09-01' }
+
+  it('returns nulls for trend and gap without a target score or enough mocks', () => {
+    const goal = computeGoalFacts({}, [], [])
+    expect(goal.targetScore).toBeNull()
+    expect(goal.gapToGoal).toBeNull()
+    expect(goal.weeklyTrend).toBeNull()
+    expect(goal.mockHistory).toEqual([])
+  })
+
+  it('computes a weekly trend from two or more completed mocks', () => {
+    const sessions = [
+      { type: 'mock', completedAt: '2026-07-01T00:00:00Z', estimatedScore: 1200, rwScore: 600, mathScore: 600 },
+      { type: 'mock', completedAt: '2026-07-15T00:00:00Z', estimatedScore: 1300, rwScore: 650, mathScore: 650 },
+    ]
+    const goal = computeGoalFacts(settings, [], sessions)
+    expect(goal.mockHistory).toHaveLength(2)
+    expect(goal.weeklyTrend).toBe(50)
+    expect(goal.gapToGoal).toBe(1600 - goal.currentEstimate.total)
+  })
+
+  it('ignores incomplete or non-mock sessions', () => {
+    const sessions = [
+      { type: 'adaptive', completedAt: '2026-07-01T00:00:00Z', estimatedScore: 900 },
+      { type: 'mock', estimatedScore: 1000 },
+    ]
+    const goal = computeGoalFacts(settings, [], sessions)
+    expect(goal.mockHistory).toEqual([])
+    expect(goal.weeklyTrend).toBeNull()
   })
 })

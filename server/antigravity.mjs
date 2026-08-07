@@ -706,6 +706,58 @@ export function intervalFacts(attempts) {
   }
 }
 
+const mathSkillIds = new Set([
+  'linear-equations-one-variable', 'linear-equations-two-variables', 'linear-functions', 'systems-linear-equations', 'linear-inequalities',
+  'equivalent-expressions', 'nonlinear-equations', 'nonlinear-functions', 'systems-nonlinear',
+  'ratios-rates-units', 'percentages', 'one-variable-data', 'two-variable-data', 'probability', 'sampling-margin-error', 'statistical-claims',
+  'area-volume', 'lines-angles-triangles', 'right-triangle-trig', 'circles',
+])
+
+/**
+ * The report prompt has never referenced the learner's target score or test
+ * date, so "goal-oriented" analysis had nothing to be oriented against. This
+ * mirrors the scoring math in src/engine/goal.ts (same logistic curve, same
+ * sqrt-attempts weighting) rather than importing it, because the browser
+ * bundle and this Node server are separate runtimes with no existing shared
+ * module boundary; keep the two in sync if the constants ever change.
+ */
+export function computeGoalFacts(settings, skillStates, sessions) {
+  const sectionTheta = (skillIds) => {
+    const selected = skillStates.filter((state) => skillIds.has(state.skillId) && state.attempts > 0)
+    if (!selected.length) return 0
+    const totalWeight = selected.reduce((sum, state) => sum + Math.sqrt(state.attempts), 0)
+    return selected.reduce((sum, state) => sum + state.theta * Math.sqrt(state.attempts), 0) / totalWeight
+  }
+  const scoreFromTheta = (theta) => Math.max(200, Math.min(800, Math.round((200 + 600 / (1 + Math.exp(-1.12 * theta))) / 10) * 10))
+  const rw = scoreFromTheta(sectionTheta(readingSkills))
+  const math = scoreFromTheta(sectionTheta(mathSkillIds))
+  const currentEstimate = { rw, math, total: rw + math }
+
+  const mockHistory = sessions
+    .filter((session) => session.type === 'mock' && session.completedAt && typeof session.estimatedScore === 'number')
+    .sort((a, b) => a.completedAt.localeCompare(b.completedAt))
+    .map((session) => ({ date: session.completedAt, total: session.estimatedScore, rw: session.rwScore, math: session.mathScore }))
+
+  let weeklyTrend = null
+  if (mockHistory.length >= 2) {
+    const first = mockHistory[0]
+    const last = mockHistory[mockHistory.length - 1]
+    const weeks = Math.max(1 / 7, (new Date(last.date).getTime() - new Date(first.date).getTime()) / (7 * 24 * 60 * 60 * 1000))
+    weeklyTrend = Math.round((last.total - first.total) / weeks)
+  }
+
+  const daysRemaining = settings.testDate ? Math.ceil((new Date(settings.testDate).getTime() - Date.now()) / (24 * 60 * 60 * 1000)) : null
+  return {
+    targetScore: settings.targetScore || null,
+    testDate: settings.testDate || null,
+    daysRemaining,
+    currentEstimate,
+    gapToGoal: settings.targetScore ? settings.targetScore - currentEstimate.total : null,
+    mockHistory,
+    weeklyTrend,
+  }
+}
+
 export function normalizeReport(report, attempts, facts, allowedEvidenceIds) {
   const sectionNames = { rw: 'Reading and Writing', math: 'Math' }
   const currentAttemptIds = new Set(attempts.map((item) => item.id))
@@ -784,6 +836,7 @@ async function createReport({ id, type, period, attempts, sessions, model, effor
   const revision = resetRevision
   const evidence = await getEvidence()
   const facts = intervalFacts(attempts)
+  const goal = computeGoalFacts(evidence.settings, evidence.skillStates, evidence.sessions)
   const prompt = `Write an evidence-bound ${type === 'comprehensive' ? 'complete learning-history' : 'completed-set'} SAT learning report and update the learner model.
 
 PERIOD: ${period}
@@ -796,6 +849,10 @@ ${JSON.stringify(sessions, null, 2)}
 COMPUTED INTERVAL FACTS (authoritative; do not recalculate or contradict)
 ${JSON.stringify(facts, null, 2)}
 
+GOAL CONTEXT (authoritative; computed independently of this report, do not recalculate)
+${JSON.stringify(goal, null, 2)}
+Target score, days remaining, current section-weighted score estimate, gap to close, and weekly point trend across completed full mocks (null fields mean that fact is not yet knowable, e.g. no target set or fewer than two mocks -- say so plainly rather than inventing a number).
+
 PRIOR AI OBSERVATIONS
 ${JSON.stringify(evidence.analyses.slice(-30), null, 2)}
 
@@ -803,6 +860,8 @@ CURRENT LEARNER MODEL
 ${JSON.stringify(evidence.learnerModel, null, 2)}
 
 Requirements:
+- If GOAL CONTEXT has a targetScore, the executiveSummary must explicitly address it: current estimate versus target, the gap in points, and whether the recorded trend (if any) closes that gap before daysRemaining runs out. If weeklyTrend and daysRemaining are both present, state the simple projection (current estimate plus weeklyTrend times weeks remaining) and say plainly whether that lands at, above, or below target -- do not soften a below-target projection into vague encouragement. If targetScore is null, do not invent one; note that a target has not been set instead.
+- studyPriorities and recommendedMix must be shaped by GOAL CONTEXT: when one section (Reading and Writing vs Math) has the larger share of the point gap to target, that section gets the heavier weight in the recommended plan, and say why in the priority's reason.
 - Start with exact computed counts from the raw evidence. Give separate Reading and Writing and Math breakdowns whenever both appear.
 - sectionBreakdown must include only sections with at least one answer in COMPUTED INTERVAL FACTS. Never add a 0/0 section.
 - For every represented skill, report correct/total, average elapsed seconds, the most defensible mechanism, target difficulty, and a concrete action.

@@ -232,10 +232,11 @@ export async function hasReport(id) {
 }
 
 export async function getEvidence() {
-  const [attempts, sessions, analyses, skillStates, learnerModel, generatedQuestions] = await Promise.all([
+  const [attempts, sessions, analyses, skillStates, learnerModel, generatedQuestions, settings] = await Promise.all([
     readJsonl(paths.attempts), readJsonl(paths.sessions), readJsonl(paths.analyses), readJson(paths.skills, []), readJson(paths.learnerModel, defaultLearnerModel), readJsonl(paths.questions),
+    readJson(paths.settings, defaultSettings),
   ])
-  return { attempts, sessions, analyses, skillStates, learnerModel, generatedQuestions }
+  return { attempts, sessions, analyses, skillStates, learnerModel, generatedQuestions, settings }
 }
 
 export async function setActiveMock(mock) {

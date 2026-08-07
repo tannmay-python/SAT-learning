@@ -1,13 +1,40 @@
 import { useMemo, useState } from 'react'
-import { Brain, ChartBar, Clock, FileText, Lightning, Target, WarningCircle } from '@phosphor-icons/react'
+import { Link } from 'wouter'
+import { Brain, ChartBar, Clock, FileText, FlagCheckered, Lightning, Target, WarningCircle } from '@phosphor-icons/react'
 import { curriculum, skillById } from '../data/curriculum'
 import { masteryPercent } from '../engine/adaptive'
+import { computeGoalProgress, type GoalProgress } from '../engine/goal'
 import { buildLearningInsights } from '../engine/insights'
 import { friendlyReportSummary, friendlyReportTitle, readerText } from '../engine/reportCopy'
 import { useAppState } from '../state/AppState'
 import type { EvidenceClaim, ReportSummary } from '../types'
 
 type InsightsView = 'history' | 'coach'
+
+/**
+ * The headline question ("how am I doing for my goal") sits above both tabs
+ * rather than inside either one, since it's the answer a learner with a
+ * target score actually opens Insights to check.
+ */
+function GoalPanel({ progress }: { progress: GoalProgress }) {
+  if (!progress.targetScore) {
+    return <section className="analysis-section goal-panel goal-panel-empty"><FlagCheckered size={22} weight="duotone" /><div><h2>Set a target score to track progress toward it.</h2><p>Add a target score and test date in Settings to see your current gap, weekly pace, and a projected score here.</p><Link className="text-button" href="/settings">Go to Settings</Link></div></section>
+  }
+  const scale = (value: number) => Math.max(0, Math.min(100, (value - 400) / 12))
+  const gap = progress.gapToGoal ?? 0
+  return <section className="analysis-section goal-panel">
+    <div className="section-heading"><div><h2>Your goal</h2><p>{progress.testDate ? (progress.daysRemaining! >= 0 ? `${progress.daysRemaining} days until test day, ${new Date(progress.testDate).toLocaleDateString(undefined, { day: 'numeric', month: 'long', year: 'numeric' })}` : 'Test date has passed — update it in Settings') : 'No test date set. Add one in Settings for a pace projection.'}</p></div><FlagCheckered size={20} weight="duotone" /></div>
+    <div className="goal-headline">
+      <div><span>Current estimate</span><strong>{progress.currentEstimate.total}</strong><small>±{progress.currentEstimate.confidenceRadius} · R&amp;W {progress.currentEstimate.rw} / Math {progress.currentEstimate.math}</small></div>
+      <div className={gap > 0 ? 'goal-gap behind' : 'goal-gap ahead'}><span>{gap > 0 ? 'Gap to close' : 'At or above target'}</span><strong>{gap > 0 ? `${gap}` : `+${-gap}`}</strong></div>
+      <div><span>Target</span><strong>{progress.targetScore}</strong></div>
+    </div>
+    <div className="goal-track"><i className="goal-track-fill" style={{ width: `${scale(progress.currentEstimate.total)}%` }} /><b className="goal-track-mark" style={{ left: `${scale(progress.targetScore)}%` }} title={`Target: ${progress.targetScore}`} /></div>
+    {progress.weeklyTrend !== null ? <p className="goal-trend">{progress.weeklyTrend >= 0 ? 'Trending up' : 'Trending down'} about {Math.abs(progress.weeklyTrend)} point{Math.abs(progress.weeklyTrend) === 1 ? '' : 's'} a week across {progress.mockHistory.length} full mocks. {progress.projectedScore !== null && progress.testDate && progress.daysRemaining! >= 0 && <>At this rate, test-day estimate is near <strong>{progress.projectedScore}</strong>{progress.onTrackMargin !== null && (progress.onTrackMargin >= 0 ? `, ${progress.onTrackMargin} above target.` : `, ${Math.abs(progress.onTrackMargin)} short — worth more weekly volume or a harder look at whichever section has the bigger gap.`)}</>}</p>
+      : <p className="muted-copy">Complete a second full mock to see a trend and a projected test-day score. One mock is a snapshot; two show direction.</p>}
+    {progress.mockHistory.length > 0 && <div className="goal-mock-history">{progress.mockHistory.map((point) => <div key={point.date}><span>{new Date(point.date).toLocaleDateString(undefined, { day: 'numeric', month: 'short' })}</span><strong>{point.total}</strong>{point.rw !== undefined && point.math !== undefined && <small>R&amp;W {point.rw} / Math {point.math}</small>}</div>)}</div>}
+  </section>
+}
 
 function ClaimList({ claims, empty }: { claims: EvidenceClaim[]; empty: string }) {
   return claims.length ? <div className="claim-list">{claims.map((item, index) => <article key={`${item.claim}-${index}`}><p>{readerText(item.claim)}</p><span>{item.confidence} confidence, based on {item.evidenceIds.length} answer{item.evidenceIds.length === 1 ? '' : 's'}</span></article>)}</div> : <p className="muted-copy">{empty}</p>
@@ -58,12 +85,13 @@ function HistoryView({ insights }: { insights: ReturnType<typeof buildLearningIn
 }
 
 export function InsightsPage() {
-  const { attempts, sessions, skillStates, learnerModel, analyses, reports, aiStatus, generateComprehensiveReport } = useAppState()
+  const { attempts, sessions, skillStates, settings, learnerModel, analyses, reports, aiStatus, generateComprehensiveReport } = useAppState()
   const [view, setView] = useState<InsightsView>('history')
   const [generating, setGenerating] = useState(false)
   const [message, setMessage] = useState('')
   const latestReport = reports[0]
   const insights = useMemo(() => buildLearningInsights(attempts, sessions), [attempts, sessions])
+  const goalProgress = useMemo(() => computeGoalProgress(settings, skillStates, sessions), [settings, skillStates, sessions])
 
   const generate = async () => {
     setGenerating(true); setMessage('')
@@ -74,6 +102,8 @@ export function InsightsPage() {
 
   return <div className="analysis-page">
     <header className="page-heading analysis-heading"><div><p className="eyebrow">Insights</p><h1>Your work, made useful.</h1><p>See what you have practiced, how your pace is changing, and what deserves attention next.</p></div><div className="analyst-card"><span className={`analyst-dot ${aiStatus.state}`} /><div><strong>{aiStatus.state === 'working' ? 'Gemini is working' : aiStatus.available ? 'Gemini is ready' : 'Analyst unavailable'}</strong><small>{aiStatus.activeTask ?? `${aiStatus.queued} queued`}</small></div></div></header>
+
+    <GoalPanel progress={goalProgress} />
 
     <div className="insights-toolbar"><div className="insights-tabs" role="tablist" aria-label="Insights view"><button role="tab" aria-selected={view === 'history'} className={view === 'history' ? 'active' : ''} onClick={() => setView('history')}>History</button><button role="tab" aria-selected={view === 'coach'} className={view === 'coach' ? 'active' : ''} onClick={() => setView('coach')}>Coach</button></div><button className="secondary-button" disabled={generating || attempts.length < 3 || !aiStatus.available} onClick={() => void generate()}>{generating ? 'Building your report…' : 'Build complete report'}</button></div>
     {message && <p className="status-message report-status" role="status">{message}</p>}

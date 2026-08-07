@@ -203,7 +203,7 @@ export function MockRunner() {
         id: mock.id, type: 'mock', startedAt: mock.startedAt, completedAt: new Date().toISOString(),
         questionIds: [...rwQuestions, ...mathQuestions].map((item) => item.id), answers: mock.answers, flags: mock.flags,
         route: { rw: mock.rwRoute, math: mock.mathRoute }, correct: rw.correct + math.correct, total: rw.total + math.total,
-        estimatedScore: rw.score + math.score,
+        estimatedScore: rw.score + math.score, rwScore: rw.score, mathScore: math.score,
       }
       await saveSession(session)
       await saveActiveMock(null)
