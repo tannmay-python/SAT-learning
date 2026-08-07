@@ -1,6 +1,7 @@
 import { appendFile, mkdir, readFile, rename, rm, writeFile } from 'node:fs/promises'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { readOfficialQuestions } from './official-bank.mjs'
 
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 export const dataDirectory = resolve(projectRoot, 'data')
@@ -138,7 +139,7 @@ export async function initializeStore() {
 }
 
 export async function getState(aiStatus) {
-  const [settings, skillStates, learnerModel, attempts, sessions, analyses, generatedQuestions, reports, activeMock] = await Promise.all([
+  const [settings, skillStates, learnerModel, attempts, sessions, analyses, generatedQuestions, reports, activeMock, officialQuestions] = await Promise.all([
     readJson(paths.settings, defaultSettings),
     readJson(paths.skills, []),
     readJson(paths.learnerModel, defaultLearnerModel),
@@ -148,6 +149,7 @@ export async function getState(aiStatus) {
     readJsonl(paths.questions),
     readJson(paths.reportsIndex, []),
     readJson(paths.activeMock, null),
+    readOfficialQuestions(),
   ])
   return {
     settings,
@@ -157,6 +159,7 @@ export async function getState(aiStatus) {
     sessions: sessions.toReversed(),
     analyses: analyses.toReversed(),
     generatedQuestions: generatedQuestions.filter((question) => question.validationStatus === 'accepted'),
+    officialQuestions,
     reports: reports.toReversed().map((report) => report.type === 'weekly' ? { ...report, type: 'comprehensive' } : report),
     activeMock,
     aiStatus,

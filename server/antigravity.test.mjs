@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { applyGenerationReviews, hasSuspiciousReadingOverlap, intervalFacts, normalizeReport, plainProse, rebalanceAnswerPositions, validateGeneratedReadingQuestion } from './antigravity.mjs'
+import { applyGenerationReviews, hasSuspiciousReadingOverlap, intervalFacts, normalizeReport, blankConventionFault, plainProse, rebalanceAnswerPositions, validateGeneratedReadingQuestion } from './antigravity.mjs'
 
 describe('interval report evidence guardrails', () => {
   const attempts = [
@@ -119,5 +119,41 @@ describe('generated item presentation guardrails', () => {
       if (choice.id === moved.answer) continue
       expect(moved.misconceptionByChoice[choice.id]).toBe(`because ${choice.text.split(' ')[1]}`)
     }
+  })
+})
+
+describe('blank convention', () => {
+  const item = (stimulus, choices, skillId = 'boundaries') => ({
+    skillId,
+    stimulus,
+    choices: ['A', 'B', 'C', 'D'].map((id, index) => ({ id, text: choices[index] })),
+  })
+
+  it('rejects a passage that already supplies the word every choice repeats', () => {
+    const fault = blankConventionFault(item(
+      'The pipes provided freshwater to urban neighborhoods for decades ____ their subterranean design protected the supply from contamination.',
+      ['decades;', 'decades,', 'decades', 'decades, and which'],
+    ))
+    expect(fault).toMatch(/repeats "decades"/)
+  })
+
+  it('accepts the same item once the blank replaces that word', () => {
+    expect(blankConventionFault(item(
+      'The pipes provided freshwater to urban neighborhoods for ____ their subterranean design protected the supply from contamination.',
+      ['decades;', 'decades,', 'decades', 'decades, and which'],
+    ))).toBeNull()
+  })
+
+  it('requires a blank for the skills whose official form has one', () => {
+    expect(blankConventionFault(item('A passage with no blank at all.', ['a', 'b', 'c', 'd']))).toMatch(/no ____ blank/)
+    expect(blankConventionFault(item('A passage with no blank at all.', ['a', 'b', 'c', 'd'], 'inferences'))).toMatch(/no ____ blank/)
+  })
+
+  it('leaves skills that have no blank alone', () => {
+    expect(blankConventionFault(item('A passage with no blank at all.', ['a', 'b', 'c', 'd'], 'central-ideas-details'))).toBeNull()
+  })
+
+  it('rejects more than one blank', () => {
+    expect(blankConventionFault(item('One ____ and then another ____ blank.', ['a', 'b', 'c', 'd']))).toMatch(/more than one blank/)
   })
 })

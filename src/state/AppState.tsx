@@ -39,6 +39,7 @@ interface AppStateValue {
   attempts: Attempt[]
   sessions: SessionRecord[]
   generatedQuestions: GeneratedQuestionRecord[]
+  officialQuestions: Question[]
   analyses: AttemptAnalysis[]
   learnerModel: LearnerModel
   reports: ReportSummary[]
@@ -165,6 +166,7 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
     attempts: snapshot?.attempts ?? [],
     sessions: snapshot?.sessions ?? [],
     generatedQuestions: snapshot?.generatedQuestions ?? [],
+    officialQuestions: snapshot?.officialQuestions ?? [],
     analyses: snapshot?.analyses ?? [],
     learnerModel: snapshot?.learnerModel ?? defaultLearnerModel,
     reports: snapshot?.reports ?? [],

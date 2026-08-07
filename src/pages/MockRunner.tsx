@@ -39,14 +39,16 @@ function newMock(freshPool: Question[], stage: RunnerStage): ActiveMock {
 
 export function MockRunner() {
   const [, navigate] = useLocation()
-  const { recordAttempt, saveSession, activeMock, saveActiveMock, attempts, stateMap, learnerModel, generatedQuestions, prepareFreshQuestions, aiStatus } = useAppState()
-  // Every item Gemini has written before is free to reuse and needs no waiting,
-  // so a mock always draws on the accumulated pool even when it writes none.
-  const [freshPool, setFreshPool] = useState<Question[]>(generatedQuestions)
+  const { recordAttempt, saveSession, activeMock, saveActiveMock, attempts, stateMap, learnerModel, generatedQuestions, officialQuestions, prepareFreshQuestions, aiStatus } = useAppState()
+  // Released official items and everything Gemini has written before are free
+  // to reuse and need no waiting, so a mock always draws on that accumulated
+  // pool even when it writes nothing new.
+  const carriedPool = useMemo(() => [...officialQuestions, ...generatedQuestions], [officialQuestions, generatedQuestions])
+  const [freshPool, setFreshPool] = useState<Question[]>(carriedPool)
   const [prepareNotice, setPrepareNotice] = useState('')
   const [mock, setMock] = useState<ActiveMock>(() => activeMock
     ? activeMock as ActiveMock
-    : newMock(generatedQuestions, aiStatus.available ? 'prepare' : 'intro'))
+    : newMock(carriedPool, aiStatus.available ? 'prepare' : 'intro'))
   const questionStarted = useRef(Date.now())
   const preparationStarted = useRef(false)
 
@@ -70,7 +72,7 @@ export function MockRunner() {
           ? `${error.message} This mock uses the authored bank and your previously generated questions.`
           : 'Fresh questions were unavailable, so this mock uses the authored bank.')
       }
-      const pool = [...prepared, ...generatedQuestions]
+      const pool = [...prepared, ...carriedPool]
       setFreshPool(pool)
       setMock((state) => {
         // A mock already under way must never have its questions swapped.

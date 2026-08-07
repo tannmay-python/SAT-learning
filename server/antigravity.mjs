@@ -204,21 +204,63 @@ const boundsLine = (skillId, label) => {
   return `${label}: ${band.p25}-${Math.round(band.p95 * 1.12)} words, typical ${band.median}`
 }
 
-export function validateGeneratedReadingQuestion(raw, blueprint) {
-  if (!raw || raw.section !== 'rw' || !readingSkills.has(raw.skillId)) return null
-  if (raw.skillId !== blueprint.skillId || raw.domain !== blueprint.domain || raw.difficulty !== blueprint.difficulty) return null
-  if (!Array.isArray(raw.choices) || raw.choices.length !== 4) return null
+const BLANK = /_{2,}/
+/** Skills whose official form is a passage with a blank the choices fill. */
+const blankSkills = new Set(['boundaries', 'form-structure-sense', 'transitions', 'words-in-context', 'inferences'])
+
+/**
+ * A blank item has to still read correctly once a choice is dropped into it.
+ * The generator's characteristic failure is leaving the word in the passage AND
+ * repeating it in every choice, which yields "for decades decades; their
+ * subterranean design" — sound by every other check and plainly broken to read.
+ * Returns a reason string, or null when the item is fine.
+ */
+export function blankConventionFault(raw) {
+  const stimulus = String(raw.stimulus || '')
+  const blanks = stimulus.match(/_{2,}/g) || []
+  if (blankSkills.has(raw.skillId) && blanks.length === 0) return 'the passage has no ____ blank for the choices to fill'
+  if (blanks.length === 0) return null
+  if (blanks.length > 1) return 'the passage has more than one blank'
+  for (const choice of raw.choices) {
+    const filled = stimulus.replace(BLANK, String(choice.text || '')).replace(/\s+/g, ' ')
+    const repeat = filled.match(/\b([A-Za-z]{3,})\b[\s,;:]+\1\b/i)
+    if (repeat) return `choice ${choice.id} repeats "${repeat[1]}", which the passage already supplies next to the blank`
+  }
+  return null
+}
+
+/**
+ * Returns why an item was rejected, or null when it is sound. Separated from
+ * the builder so a failed batch can tell the model exactly what to repair
+ * instead of silently falling back to the authored bank.
+ */
+export function validationFault(raw, blueprint) {
+  if (!raw || raw.section !== 'rw' || !readingSkills.has(raw.skillId)) return 'not a recognised Reading and Writing skill'
+  if (raw.skillId !== blueprint.skillId || raw.domain !== blueprint.domain || raw.difficulty !== blueprint.difficulty) {
+    return `does not match the requested blueprint (wanted ${blueprint.skillId} at difficulty ${blueprint.difficulty})`
+  }
+  if (!Array.isArray(raw.choices) || raw.choices.length !== 4) return 'does not have exactly four choices'
   const choiceIds = raw.choices.map((choice) => choice?.id)
   const choiceTexts = raw.choices.map((choice) => String(choice?.text || '').trim())
-  if (new Set(choiceIds).size !== 4 || !['A', 'B', 'C', 'D'].every((id) => choiceIds.includes(id))) return null
-  if (new Set(choiceTexts.map((text) => text.toLowerCase())).size !== 4 || choiceTexts.some((text) => text.length < 1)) return null
-  if (!choiceIds.includes(raw.answer) || String(raw.prompt || '').trim().length < 12 || String(raw.explanation || '').trim().length < 35) return null
+  if (new Set(choiceIds).size !== 4 || !['A', 'B', 'C', 'D'].every((id) => choiceIds.includes(id))) return 'choice ids are not exactly A, B, C, D'
+  if (new Set(choiceTexts.map((text) => text.toLowerCase())).size !== 4 || choiceTexts.some((text) => text.length < 1)) return 'two choices are identical or empty'
+  if (!choiceIds.includes(raw.answer)) return 'the answer does not name one of the choices'
+  if (String(raw.prompt || '').trim().length < 12) return 'the prompt is missing or too short'
+  if (String(raw.explanation || '').trim().length < 35) return 'the explanation is missing or too short'
   const totalStimulusWords = words(`${raw.stimulus || ''} ${raw.secondaryStimulus || ''}`)
   const bounds = passageBounds(raw.skillId, raw.difficulty)
-  if (totalStimulusWords < bounds.min || totalStimulusWords > bounds.max) return null
-  if (raw.skillId === 'cross-text-connections' && (words(raw.stimulus) < 45 || words(raw.secondaryStimulus) < 45)) return null
-  if (raw.skillId === 'command-evidence-quantitative' && !raw.table) return null
-  if (raw.table && (!Array.isArray(raw.table.headers) || !Array.isArray(raw.table.rows) || raw.table.rows.some((row) => row.length !== raw.table.headers.length))) return null
+  if (totalStimulusWords < bounds.min) return `the passage is ${totalStimulusWords} words but official items of this type run ${bounds.min}-${bounds.max}; it must be lengthened`
+  if (totalStimulusWords > bounds.max) return `the passage is ${totalStimulusWords} words, above the ${bounds.max}-word official ceiling for this type`
+  if (raw.skillId === 'cross-text-connections' && (words(raw.stimulus) < 45 || words(raw.secondaryStimulus) < 45)) return 'each of Text 1 and Text 2 must reach 45 words'
+  if (raw.skillId === 'command-evidence-quantitative' && !raw.table) return 'a quantitative-evidence item must include a table'
+  if (raw.table && (!Array.isArray(raw.table.headers) || !Array.isArray(raw.table.rows) || raw.table.rows.some((row) => row.length !== raw.table.headers.length))) {
+    return 'the table rows do not line up with its headers'
+  }
+  return blankConventionFault(raw)
+}
+
+export function validateGeneratedReadingQuestion(raw, blueprint) {
+  if (validationFault(raw, blueprint)) return null
   const whyWrong = {}
   const misconceptionByChoice = {}
   for (const choice of raw.choices) {
@@ -329,6 +371,7 @@ Fidelity and originality requirements:
 - Cross-Text Connections must include two independently substantive texts totaling ${officialDensity.bands['cross-text-connections'].p25}-${Math.round(officialDensity.bands['cross-text-connections'].p95 * 1.12)} words with at least 45 words in each; put Text 1 in stimulus and Text 2 in secondaryStimulus.
 - Command of Quantitative Evidence must include a compact table whose rows align with its headers, plus prose that introduces the study and the claim. The passage and table must both be needed.
 - Difficulty 1 tests one direct move. Difficulty 2 uses a credible but visible trap. Difficulty 3 requires a careful relationship or two linked moves. Difficulty 4 uses tighter distinctions and denser evidence. Difficulty 5 requires precise synthesis or rejection of a highly plausible overclaim. Do not fake difficulty with rare vocabulary alone.
+- Words in Context, Transitions, Boundaries, Form Structure and Sense, and Inferences items are written as a passage containing exactly one ____ blank. The blank REPLACES the text the choices supply; that text must not also sit beside the blank in the passage. Writing "provided freshwater for decades ____ their design protected the supply" alongside a choice of "decades;" is wrong, because it reads back as "for decades decades; their design". Write "provided freshwater for ____ their design protected the supply" so each choice supplies the word together with its punctuation.
 - Spread the correct answer across positions. Over the whole set the key must not sit on the same letter more than twice, and never on the same letter three times in a row.
 - Write plain prose. No markdown, asterisks, underscores, or italic markers anywhere in a stimulus, prompt, or choice; write species and title names as plain text. Name researchers by role and name in the official register ("marine ecologist Clara Vance"), not with an academic title.
 - Before writing the choices, solve the item. There must be exactly one defensible answer. Each wrong choice must embody a specific, realistic mistake and be rejected by the supplied text, table, or grammar rule.
@@ -337,15 +380,54 @@ Fidelity and originality requirements:
 - whyWrong and misconceptionByChoice should map each wrong answer letter to a concise diagnosis. estimatedSeconds must be 40-120.
 - Return only the structured questions.`
     const generated = await runStructured({ prompt, schema: 'generated-reading-set.json', model: generationModel, effort: 'high', timeout: '3m' })
-    const accepted = cleanBlueprint.map((entry, index) => validateGeneratedReadingQuestion(generated.questions?.[index], entry)).filter(Boolean)
-    if (accepted.length !== cleanBlueprint.length) throw new Error('The fresh batch did not pass every structural fidelity check. The authored bank will be used instead.')
+
+    // Items are kept or repaired individually. Rejecting the whole batch over
+    // one out-of-range passage is what made fresh questions feel unreliable:
+    // a single stray item sent the entire set back to the authored bank.
+    const slots = cleanBlueprint.map((entry, index) => ({
+      entry,
+      question: validateGeneratedReadingQuestion(generated.questions?.[index], entry),
+      fault: validationFault(generated.questions?.[index], entry),
+    }))
+
+    const broken = slots.filter((slot) => !slot.question)
+    if (broken.length) {
+      console.warn(`Antigravity generation: repairing ${broken.length} of ${slots.length} items — ${broken.map((slot) => `${slot.entry.skillId}: ${slot.fault}`).join('; ')}`)
+      const repairPrompt = `${broken.length} of the questions you just wrote were rejected by an automatic fidelity check. Rewrite only those, keeping everything that was already correct about them and fixing exactly the stated problem. Return them in the order listed, one per entry.
+
+REJECTED ITEMS AND THE REASON EACH FAILED
+${JSON.stringify(broken.map((slot, index) => ({ index, blueprint: slot.entry, reason: slot.fault })), null, 2)}
+
+The same fidelity contract as before still applies, and the passage-length ranges are binding:
+${boundsLine(broken[0].entry.skillId, 'for example, this type')}
+
+If the reason mentions a blank: the passage must contain exactly one ____ blank, and the word the choices supply must NOT also appear beside the blank in the passage. Writing "for decades ____ their design" with a choice of "decades;" is wrong, because it reads "for decades decades; their design". The passage must read "for ____ their design" so the choice supplies the word and its punctuation.
+
+Return only the rewritten questions.`
+      try {
+        const repaired = await runStructured({ prompt: repairPrompt, schema: 'generated-reading-set.json', model: generationModel, effort: 'high', timeout: '3m' })
+        broken.forEach((slot, index) => {
+          const fixed = validateGeneratedReadingQuestion(repaired.questions?.[index], slot.entry)
+          if (fixed) slot.question = fixed
+        })
+      } catch (error) {
+        console.warn('Antigravity generation: repair pass failed, continuing with the items that passed.', error)
+      }
+    }
+
     const priorQuestions = [
       ...evidence.generatedQuestions,
       ...evidence.attempts.map((attempt) => attempt.questionSnapshot).filter(Boolean),
     ]
-    if (accepted.some((question, index) => hasSuspiciousReadingOverlap(question, [...priorQuestions, ...accepted.slice(0, index)]))) {
-      throw new Error('The fresh batch was too similar to existing material. The authored bank will be used instead.')
+    const accepted = []
+    const acceptedEntries = []
+    for (const slot of slots) {
+      if (!slot.question) continue
+      if (hasSuspiciousReadingOverlap(slot.question, [...priorQuestions, ...accepted])) continue
+      accepted.push(slot.question)
+      acceptedEntries.push(slot.entry)
     }
+    if (!accepted.length) throw new Error('No question in this batch passed the fidelity checks. The authored bank is being used for this set.')
     const reviewPrompt = `Act as an adversarial digital SAT item reviewer. Independently solve every candidate below without trusting any hidden answer key. Reject an item if more than one choice is defensible, no choice is fully defensible, the requested skill is not actually tested, a table is decorative, the difficulty is mislabeled, or the wording is unlike a concise official digital SAT item. Accept only items you would be comfortable putting into scored practice.
 
 BLUEPRINT
@@ -356,20 +438,29 @@ ${JSON.stringify(accepted.map((question, index) => ({ index, section: question.s
 
 Return one review for every candidate index in order. solvedAnswer is your independently derived A-D answer. uniqueAnswer must be false whenever another choice could reasonably be defended.`
     const reviewed = await runStructured({ prompt: reviewPrompt, schema: 'generated-reading-review.json', model: observerModel, effort: 'high', timeout: '3m' })
-    const approved = applyGenerationReviews(accepted, reviewed.reviews || [])
-    if (approved.length !== cleanBlueprint.length) throw new Error('The independent answer-key review rejected part of the fresh batch. The authored bank will be used instead.')
+    // Reviews are indexed against `accepted`, so the surviving items are
+    // selected by that index rather than by position in a filtered array;
+    // otherwise partial acceptance would attach the wrong blueprint to a record.
+    const reviews = reviewed.reviews || []
+    const survivors = accepted
+      .map((question, index) => ({ question, entry: acceptedEntries[index], review: reviews.find((item) => item.index === index) }))
+      .filter((item) => item.review?.verdict === 'accept' && item.review.uniqueAnswer === true && item.review.solvedAnswer === item.question.answer)
+    if (!survivors.length) throw new Error('The independent answer-key review rejected every question in this batch. The authored bank is being used for this set.')
+    if (survivors.length < accepted.length) {
+      console.warn(`Antigravity generation: the reviewer rejected ${accepted.length - survivors.length} of ${accepted.length} items; keeping the rest.`)
+    }
     // Only after both models have agreed on the answer is it safe to move the
     // key off whichever letter the generator favoured.
-    const balanced = rebalanceAnswerPositions(approved)
+    const balanced = rebalanceAnswerPositions(survivors.map((item) => item.question))
     const reviewedAt = new Date().toISOString()
     const records = balanced.map((question, index) => ({
       ...question,
       generation: {
         model: generationModel,
         promptVersion,
-        blueprint: cleanBlueprint[index],
+        blueprint: survivors[index].entry,
         reviewerModel: observerModel,
-        reviewerVerdict: reviewed.reviews.find((item) => item.index === index)?.reason || 'Accepted after independent solve.',
+        reviewerVerdict: survivors[index].review?.reason || 'Accepted after independent solve.',
         reviewedAt,
       },
     }))

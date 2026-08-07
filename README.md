@@ -5,7 +5,9 @@ learner model. The browser is only the interface. The canonical learning record
 lives as readable files in [`data`](./data).
 
 It is an independent study tool, not affiliated with or endorsed by College
-Board. Its questions are original and it does not reproduce released items.
+Board. Every question in this repository is original. A local install can also
+import questions from released practice forms the learner already owns; that
+extract stays on the learner's machine and is never committed here.
 
 ## Run it
 
@@ -66,6 +68,25 @@ batch of fresh Reading and Writing items and adds them to everything generated
 for you previously, so repeat sittings are not the authored bank reshuffled. If
 generation is slow, unavailable, or declined, the mock starts immediately from
 the authored bank.
+
+## Your own released forms
+
+`scripts/import-official-questions.py` extracts real questions from the released
+practice forms in `SAT Mocks` — passage, stem, choices, the official answer key,
+and College Board's own explanation of why each wrong choice is wrong — and
+writes them to `data/questions/official.jsonl`. Practice sets and mocks prefer
+these over anything this app writes.
+
+That file is gitignored and must stay that way. The questions are College
+Board's copyright and this repository is public; the extract is for the owner's
+local study only and is never committed. A clone without it simply has no
+official material and falls back to the authored bank.
+
+Extraction is conservative. An item is emitted only when it has four distinct
+choices, a recognised official stem, a passage, and a key recovered from the
+answer form, and only when it survives a sweep for two-column bleed and
+mid-word truncation. Rejects and their reasons go to
+`data/questions/official-rejects.jsonl` so the yield can be improved later.
 
 ## Passage length
 

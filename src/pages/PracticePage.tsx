@@ -5,6 +5,7 @@ import { readingQuestionBank } from '../data/readingBank'
 import { generateMathQuestion, mathSkillIds } from '../engine/mathGenerators'
 import { mixedSectionPlan, planReadingBlueprint, sectionTargetDifficulty, selectNextQuestion, weakerSection } from '../engine/adaptive'
 import { isCorrectResponse } from '../engine/questions'
+import { DifficultyStars } from '../components/DifficultyStars'
 import { QuestionCard } from '../components/QuestionCard'
 import { MathTools } from '../components/MathTools'
 import { useAppState } from '../state/AppState'
@@ -14,7 +15,7 @@ type PracticeMode = 'mixed' | SectionId
 type QuestionSource = 'fresh' | 'authored'
 
 export function PracticePage() {
-  const { stateMap, attempts, recordAttempt, analyzeAttempt, saveSession, prepareFreshQuestions, generatedQuestions, learnerModel, analyses, aiStatus } = useAppState()
+  const { stateMap, attempts, recordAttempt, analyzeAttempt, saveSession, prepareFreshQuestions, generatedQuestions, officialQuestions, learnerModel, analyses, aiStatus } = useAppState()
   const params = new URLSearchParams(window.location.search)
   const diagnostic = params.get('mode') === 'diagnostic'
   const reviewOnly = params.get('mode') === 'review'
@@ -43,8 +44,10 @@ export function PracticePage() {
 
   const questionBank = useMemo(() => {
     const math = mathSkillIds.flatMap((skillId, skillIndex) => ([1, 2, 3, 4, 5] as const).flatMap((difficulty) => [0, 1].map((variant) => generateMathQuestion(skillId, difficulty, 10_000 + skillIndex * 100 + difficulty * 10 + variant))))
-    return [...readingQuestionBank, ...math, ...generatedQuestions]
-  }, [generatedQuestions])
+    // Real released items outrank anything written for this app, so they sit
+    // first in the pool and win ties during selection.
+    return [...officialQuestions, ...readingQuestionBank, ...math, ...generatedQuestions]
+  }, [generatedQuestions, officialQuestions])
 
   const sectionTargets = useMemo(() => ({
     rw: sectionTargetDifficulty(attempts, 'rw'),
@@ -93,6 +96,12 @@ export function PracticePage() {
       const blueprint = planReadingBlueprint(readingQuestionBank, previewCounts.rw, stateMap, new Set(attempts.map((attempt) => attempt.questionId)), learnerModel.skillDirectives, sectionTargets.rw)
       try {
         prepared = await prepareFreshQuestions(blueprint)
+        // Generation now keeps whatever passes rather than discarding a whole
+        // batch over one bad item, so a short batch is a normal outcome to
+        // report rather than a failure to hide.
+        if (prepared.length < previewCounts.rw) {
+          setPreparationNotice(`${prepared.length} of ${previewCounts.rw} Reading and Writing questions were written fresh for you. The rest come from the authored bank.`)
+        }
       } catch (error) {
         setPreparationNotice(error instanceof Error ? `${error.message} The authored bank is being used for this set.` : 'Fresh questions were unavailable, so the authored bank is being used.')
       } finally {
@@ -177,7 +186,7 @@ export function PracticePage() {
   const analysis = currentAttemptId ? analyses.find((item) => item.attemptId === currentAttemptId) : undefined
   const timeLabel = `${Math.floor(elapsedSeconds / 60)}:${String(elapsedSeconds % 60).padStart(2, '0')}`
   return current ? <div className="practice-runner">
-    <header className="runner-header"><div><span>{current.section === 'rw' ? 'Reading and Writing' : 'Math'} · Difficulty {current.difficulty}</span><strong>Question {Math.min(seen.length + (submitted ? 0 : 1), length)} of {length}</strong></div><div className="inline-progress"><i style={{ width: `${seen.length / length * 100}%` }} /></div>{current.section === 'math' && <MathTools className="practice-math-tools" />}<div className={`question-timer ${elapsedSeconds > current.estimatedSeconds ? 'over' : ''}`}><Clock size={20} weight="duotone" /><span><small>Question time</small><strong>{timeLabel}</strong></span><em>target {Math.round(current.estimatedSeconds / 5) * 5}s</em></div><button className="ghost-button" onClick={() => { if (confirm('End this set? Answered questions are already on disk.')) setComplete(true) }}>End</button></header>
+    <header className="runner-header"><div><span>{current.section === 'rw' ? 'Reading and Writing' : 'Math'}<DifficultyStars difficulty={current.difficulty} size={11} /></span><strong>Question {Math.min(seen.length + (submitted ? 0 : 1), length)} of {length}</strong></div><div className="inline-progress"><i style={{ width: `${seen.length / length * 100}%` }} /></div>{current.section === 'math' && <MathTools className="practice-math-tools" />}<div className={`question-timer ${elapsedSeconds > current.estimatedSeconds ? 'over' : ''}`}><Clock size={20} weight="duotone" /><span><small>Question time</small><strong>{timeLabel}</strong></span><em>target {Math.round(current.estimatedSeconds / 5) * 5}s</em></div><button className="ghost-button" onClick={() => { if (confirm('End this set? Answered questions are already on disk.')) setComplete(true) }}>End</button></header>
     {preparationNotice && <div className="practice-notice" role="status">{preparationNotice}</div>}
     <QuestionCard key={current.id} question={current} response={response} onResponse={setResponse} confidence={confidence} onConfidence={setConfidence} submitted={submitted} analysis={analysis} aiAvailable={aiStatus.available} onAnalyzeRequest={currentAttemptId ? (justification) => analyzeAttempt(currentAttemptId, justification).then(() => undefined) : undefined} />
     <footer className="question-actions">{!submitted ? <button className="primary-button" disabled={!response.trim()} onClick={() => void submit()}>Check answer <ArrowRight size={17} /></button> : <button className="primary-button" onClick={() => void advance()}>{seen.length >= length ? 'Finish set' : retrySkill ? 'Try one like it' : 'Next question'} <ArrowRight size={17} /></button>}{submitted && <span className={isCorrectResponse(current, response) ? 'correct-label' : 'incorrect-label'}>{isCorrectResponse(current, response) ? <CheckCircle size={17} /> : <XCircle size={17} />}{isCorrectResponse(current, response) ? 'Correct' : 'Review, then retry'}</span>}</footer>

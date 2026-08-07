@@ -298,6 +298,8 @@ export interface LearningStateSnapshot {
   sessions: SessionRecord[]
   skillStates: SkillState[]
   generatedQuestions: GeneratedQuestionRecord[]
+  /** Items imported from the learner's own released practice forms, when present. */
+  officialQuestions: Question[]
   analyses: AttemptAnalysis[]
   learnerModel: LearnerModel
   reports: ReportSummary[]

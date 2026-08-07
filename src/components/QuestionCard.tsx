@@ -4,6 +4,7 @@ import { Link } from 'wouter'
 import type { AttemptAnalysis, Confidence, DataPlot, Question } from '../types'
 import { displayAnswer, isCorrectResponse } from '../engine/questions'
 import { domainById, skillById } from '../data/curriculum'
+import { DifficultyStars } from './DifficultyStars'
 
 interface Props {
   question: Question
@@ -54,7 +55,7 @@ export function QuestionCard({ question, response, onResponse, confidence, onCon
       {showMeta && <header className="question-meta">
         <span>{domainById.get(question.domain)?.shortTitle}</span>
         <span>{skillById.get(question.skillId)?.shortTitle}</span>
-        <span className="difficulty-mark" aria-label={`Difficulty ${question.difficulty} of 5`}>{Array.from({ length: 5 }, (_, index) => <i key={index} className={index < question.difficulty ? 'filled' : ''} />)}</span>
+        <DifficultyStars difficulty={question.difficulty} />
       </header>}
 
       <div className="question-content">

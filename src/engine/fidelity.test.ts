@@ -154,3 +154,45 @@ describe('official-mock fidelity guardrails', () => {
     }
   })
 })
+
+describe('blank convention in the authored bank', () => {
+  // Mirrors blankConventionFault in server/antigravity.mjs. A generated item
+  // once shipped as "...for decades ____ their design..." with a choice of
+  // "decades;", which reads back as "for decades decades;". The authored bank
+  // is held to the same rule.
+  const blankSkills = new Set(['boundaries', 'form-structure-sense', 'transitions', 'words-in-context', 'inferences'])
+
+  it('gives every blank-format item exactly one blank', () => {
+    for (const question of readingQuestionBank) {
+      const blanks = (question.stimulus?.match(/_{2,}/g) ?? []).length
+      if (blankSkills.has(question.skillId)) expect(blanks, `${question.id} should have one blank`).toBe(1)
+      else expect(blanks, `${question.id} should have no blank`).toBe(0)
+    }
+  })
+
+  it('never leaves the word a choice supplies sitting beside the blank', () => {
+    for (const question of readingQuestionBank) {
+      if (!/_{2,}/.test(question.stimulus ?? '')) continue
+      for (const choice of question.choices ?? []) {
+        const filled = question.stimulus!.replace(/_{2,}/, choice.text).replace(/\s+/g, ' ')
+        const repeat = filled.match(/\b([A-Za-z]{3,})\b[\s,;:]+\1\b/i)
+        expect(repeat?.[1], `${question.id} choice ${choice.id} repeats "${repeat?.[1]}"`).toBeUndefined()
+      }
+    }
+  })
+
+  it('asks each skill its official question stem', () => {
+    const stems: Record<string, RegExp> = {
+      'words-in-context': /most logical and precise word or phrase|most nearly mean/i,
+      transitions: /most logical transition/i,
+      boundaries: /conforms to the conventions of Standard English/i,
+      'form-structure-sense': /conforms to the conventions of Standard English/i,
+      inferences: /most logically completes the text/i,
+      'rhetorical-synthesis': /most effectively uses relevant information from the notes/i,
+    }
+    for (const question of readingQuestionBank) {
+      const stem = stems[question.skillId]
+      if (stem) expect(question.prompt, `${question.id} stem`).toMatch(stem)
+    }
+  })
+})
