@@ -58,9 +58,18 @@ export interface Question {
 }
 
 export interface LessonExample {
+  /** Relative difficulty within the lesson. Every skill carries one of each. */
+  level: 'Easier' | 'Harder'
   prompt: string
   answer: string
+  /** Full reasoning chain: what to notice, what to eliminate and why, what the answer does that the others do not. */
   walkthrough: string
+}
+
+/** A skill that learners genuinely conflate with this one, plus the rule of thumb that separates them. */
+export interface SkillConfusion {
+  skillId: string
+  distinction: string
 }
 
 export interface SkillTopic {
@@ -70,13 +79,16 @@ export interface SkillTopic {
   title: string
   shortTitle: string
   description: string
+  /** Tutor-voice paragraph: what the SAT is testing, why it is tested this way, what separates a learner who has it. */
+  whyItMatters: string
   frequency: string
   coreIdeas: string[]
   method: string[]
   tells: string[]
   traps: string[]
   formulae?: string[]
-  example: LessonExample
+  examples: LessonExample[]
+  confusedWith?: SkillConfusion[]
 }
 
 export interface DomainMeta {

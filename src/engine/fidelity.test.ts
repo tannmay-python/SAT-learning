@@ -62,8 +62,8 @@ describe('official-mock fidelity guardrails', () => {
   })
 
   it('matches official stimulus density measured from the seven released forms', () => {
-    expect(readingQuestionBank).toHaveLength(88)
-    expect(new Set(readingQuestionBank.map((question) => question.id)).size).toBe(88)
+    expect(readingQuestionBank).toHaveLength(116)
+    expect(new Set(readingQuestionBank.map((question) => question.id)).size).toBe(116)
 
     // Guardrails are the measured official bands, not hand-set numbers. A bank
     // whose passages sit below the official 25th percentile reads lighter than
@@ -104,8 +104,8 @@ describe('official-mock fidelity guardrails', () => {
     expect(percentile(discursiveChoiceLengths, 0.9)).toBeGreaterThanOrEqual(21)
 
     const visualQuestions = readingQuestionBank.filter((question) => question.table || question.plot)
-    expect(visualQuestions.filter((question) => question.table)).toHaveLength(3)
-    expect(visualQuestions.filter((question) => question.plot)).toHaveLength(3)
+    expect(visualQuestions.filter((question) => question.table)).toHaveLength(5)
+    expect(visualQuestions.filter((question) => question.plot)).toHaveLength(4)
     expect(visualQuestions.every((question) => question.skillId === 'command-evidence-quantitative')).toBe(true)
     expect(visualQuestions.every((question) => /data from the (table|graph)/i.test(question.prompt))).toBe(true)
     expect(visualQuestions.every((question) => (question.choices?.filter((choice) => /\d/.test(choice.text)).length ?? 0) >= 2)).toBe(true)
