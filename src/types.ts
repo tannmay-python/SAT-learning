@@ -105,6 +105,8 @@ export interface Attempt {
   mistakeType?: string
   reasoningNote?: string
   createdAt: string
+  analysisMode?: string
+  questionSnapshot?: Question
 }
 
 export interface SkillState {
@@ -152,6 +154,21 @@ export interface LearnerSettings {
 export interface GeneratedQuestionRecord extends Question {
   createdAt: string
   validationStatus: 'accepted' | 'quarantined'
+  generation?: {
+    model: string
+    promptVersion: string
+    blueprint: QuestionBlueprint
+    reviewerModel: string
+    reviewerVerdict: string
+    reviewedAt: string
+  }
+}
+
+export interface QuestionBlueprint {
+  section: SectionId
+  domain: DomainId
+  skillId: string
+  difficulty: Difficulty
 }
 
 export interface EvidenceClaim {
@@ -243,7 +260,7 @@ export interface StudyDay {
 
 export interface ReportSummary {
   id: string
-  type: 'session' | 'weekly'
+  type: 'session' | 'comprehensive'
   title: string
   period: string
   createdAt: string
@@ -251,6 +268,7 @@ export interface ReportSummary {
   path: string
   jsonPath: string
   model: string
+  answerCount?: number
   sectionBreakdown: ReportSectionBreakdown[]
   skillBreakdown: ReportSkillBreakdown[]
   errorTaxonomy: ReportErrorClass[]
@@ -266,6 +284,7 @@ export interface AiStatus {
   access: string
   observerModel: string
   reportModel: string
+  generationModel?: string
   state: 'idle' | 'working' | 'offline' | 'error'
   queued: number
   activeTask?: string

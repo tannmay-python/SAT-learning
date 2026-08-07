@@ -11,7 +11,10 @@ or persist learning history.
 - `profile/skill-state.json` — deterministic calibration and recall state.
 - `profile/learner-model.json` — the analyst's current evidence-backed model.
 - `questions/generated.jsonl` — accepted original AI-generated items.
-- `reports/session/` and `reports/weekly/` — readable Markdown plus machine-readable JSON.
+- `reports/session/` — a readable Markdown and machine-readable JSON review for
+  each completed set or mock.
+- `reports/comprehensive/` — an everything-so-far report created only when the
+  learner requests one in Insights.
 - `active/mock.json` — an in-progress full mock, so it can resume after a restart.
 
 JSONL files are append-only evidence. Derived snapshots can be rebuilt from

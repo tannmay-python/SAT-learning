@@ -120,7 +120,7 @@ export async function initializeStore() {
     mkdir(resolve(dataDirectory, 'events'), { recursive: true }),
     mkdir(resolve(dataDirectory, 'questions'), { recursive: true }),
     mkdir(resolve(dataDirectory, 'reports/session'), { recursive: true }),
-    mkdir(resolve(dataDirectory, 'reports/weekly'), { recursive: true }),
+    mkdir(resolve(dataDirectory, 'reports/comprehensive'), { recursive: true }),
     mkdir(resolve(dataDirectory, 'active'), { recursive: true }),
   ])
   const [settings, skills, learnerModel, reports] = await Promise.all([
@@ -157,7 +157,7 @@ export async function getState(aiStatus) {
     sessions: sessions.toReversed(),
     analyses: analyses.toReversed(),
     generatedQuestions: generatedQuestions.filter((question) => question.validationStatus === 'accepted'),
-    reports: reports.toReversed(),
+    reports: reports.toReversed().map((report) => report.type === 'weekly' ? { ...report, type: 'comprehensive' } : report),
     activeMock,
     aiStatus,
     dataDirectory,
@@ -210,7 +210,7 @@ export async function saveLearnerModel(model) {
 }
 
 export async function saveReport(report, markdown, json) {
-  const folder = report.type === 'weekly' ? 'weekly' : 'session'
+  const folder = report.type === 'comprehensive' ? 'comprehensive' : 'session'
   const jsonPath = resolve(dataDirectory, `reports/${folder}/${report.id}.json`)
   const markdownPath = resolve(dataDirectory, `reports/${folder}/${report.id}.md`)
   await atomicJson(jsonPath, json)
@@ -229,10 +229,10 @@ export async function hasReport(id) {
 }
 
 export async function getEvidence() {
-  const [attempts, sessions, analyses, skillStates, learnerModel] = await Promise.all([
-    readJsonl(paths.attempts), readJsonl(paths.sessions), readJsonl(paths.analyses), readJson(paths.skills, []), readJson(paths.learnerModel, defaultLearnerModel),
+  const [attempts, sessions, analyses, skillStates, learnerModel, generatedQuestions] = await Promise.all([
+    readJsonl(paths.attempts), readJsonl(paths.sessions), readJsonl(paths.analyses), readJson(paths.skills, []), readJson(paths.learnerModel, defaultLearnerModel), readJsonl(paths.questions),
   ])
-  return { attempts, sessions, analyses, skillStates, learnerModel }
+  return { attempts, sessions, analyses, skillStates, learnerModel, generatedQuestions }
 }
 
 export async function setActiveMock(mock) {

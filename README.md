@@ -45,11 +45,48 @@ The Antigravity layer provides the analytical intelligence:
 - teaches the concept and recommends a concrete next move
 - updates evidence-backed hypotheses, strengths, priorities, and per-skill difficulty directives
 - analyses completed sets and mocks in context
-- writes session reports and detailed weekly reports
+- writes a concise report after each completed set
+- builds an everything-so-far report only when the learner requests one in Insights
+- prepares original Reading and Writing questions at the start of a practice set
 
-AI directives influence question selection alongside the calibration guardrails.
-The AI cannot rewrite raw evidence. Its claims are stored separately and cite
-the attempt/session IDs that support them.
+An adaptive mix reserves alternating Reading and Writing and Math slots, beginning
+with the section that needs more evidence or repair. Section performance, per-skill
+calibration, and analyst directives determine the target difficulty. A strong run
+at Difficulty 2 therefore raises the next section target to Difficulty 3 instead
+of leaving every skill pinned to its sparse default.
+
+Fresh Reading and Writing questions use a validated blueprint derived from that
+plan. Generated items must match the requested skill, domain, difficulty, passage
+density, and visual requirements before they enter practice; invalid or unavailable
+items fall back to the authored bank. Math remains deterministic, with distinct
+structures at each difficulty so answers stay independently checkable.
+
+Full mocks draw on the same generation. Before the first module, SATLAS writes a
+batch of fresh Reading and Writing items and adds them to everything generated
+for you previously, so repeat sittings are not the authored bank reshuffled. If
+generation is slow, unavailable, or declined, the mock starts immediately from
+the authored bank.
+
+## Passage length
+
+Practice items give themselves away most often by being too short. The
+guardrails here are therefore measured, not estimated:
+`scripts/measure-official-density.py` extracts the seven official forms in
+`SAT Mocks`, separates the printed columns, cuts the text into numbered
+questions, and counts the words before each question stem. The resulting
+per-skill percentiles live in `server/official-density.json` and are read by
+both the authored-bank fidelity test and the Gemini generation bounds.
+
+Against 208 measured official questions, the earlier bank ran 12 to 45 percent
+short, worst on Command of Evidence and Inferences, where a real item is a full
+research paragraph and the bank offered a single-sentence claim. Every skill now
+meets or exceeds its official median, and the test fails if any item drops below
+the official 25th percentile or past the official long tail.
+
+AI directives influence selection alongside the calibration guardrails. The AI
+cannot rewrite raw evidence. Its claims are stored separately and cite the answer
+and session IDs that support them, while learner-facing report copy hides those
+internal identifiers.
 
 ## Learning memory
 
@@ -64,7 +101,7 @@ data/
   profile/learner-model.json
   questions/generated.jsonl
   reports/session/*.md + *.json
-  reports/weekly/*.md + *.json
+  reports/comprehensive/*.md + *.json
   active/mock.json
 ```
 
@@ -79,7 +116,11 @@ mocks avoid per-question latency and are analysed as completed sessions.
 ## Included SAT content
 
 - 31 revision lessons spanning all 8 published SAT domains
-- 85 original Reading and Writing questions with balanced answer positions
+- 88 original Reading and Writing questions with balanced answer positions and
+  passage lengths calibrated against a direct measurement of the supplied
+  official forms rather than against an impression of them
+- optional validated Gemini generation for fresh, history-aware Reading and
+  Writing practice sets
 - procedural Math generation across 20 skills and 5 structurally distinct difficulty levels
 - original tables and plots for quantitative, statistical, and graph-based reasoning
 - immediate authored explanations and distractor-specific feedback
@@ -97,10 +138,20 @@ npm run check
 npm audit --omit=dev
 ```
 
-The automated suite checks the adaptive measurement model, routing, all Reading
-and Writing items, 200 generated Math combinations, answer integrity, lesson
-coverage, the full mock blueprint, and official-mock fidelity guardrails for
-passage density, answer balance, representations, and structural difficulty.
+The automated suite checks balanced adaptive planning, difficulty movement,
+routing, all Reading and Writing items, generated Math combinations, answer
+integrity, lesson coverage, the full mock blueprint, question order, paired-text
+scarcity, passage density, answer balance, representations, and structural
+difficulty.
+
+## Honest limits
+
+SATLAS is a high-fidelity practice and diagnosis tool, not an official score
+predictor. Its mock score is a transparent practice estimate rather than College
+Board equating, and no study tool can guarantee a 1600. Released forms still
+remain the best final check for exact interface, diagram, wording, and scoring
+behavior. SATLAS is designed to make the work between those checks more adaptive,
+varied, and useful.
 
 ## Official references
 

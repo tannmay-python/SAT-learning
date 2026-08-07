@@ -2,6 +2,7 @@ import { Link } from 'wouter'
 import { ArrowRight, Brain, Clock, FileText } from '@phosphor-icons/react'
 import { curriculum, skillById } from '../data/curriculum'
 import { isDue, masteryPercent } from '../engine/adaptive'
+import { friendlyReportSummary, friendlyReportTitle } from '../engine/reportCopy'
 import { useAppState } from '../state/AppState'
 
 export function DashboardPage() {
@@ -56,7 +57,7 @@ export function DashboardPage() {
         </section>
       </div>
 
-      {reports[0] && <Link href="/insights" className="report-ribbon"><span><FileText size={18} /> Latest report</span><strong>{reports[0].title}</strong><p>{reports[0].executiveSummary}</p><ArrowRight size={17} /></Link>}
+      {reports[0] && <Link href="/insights" className="report-ribbon"><span><FileText size={18} /> Latest report</span><strong>{friendlyReportTitle(reports[0])}</strong><p>{friendlyReportSummary(reports[0])}</p><ArrowRight size={17} /></Link>}
     </div>
   )
 }

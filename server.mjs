@@ -18,8 +18,9 @@ import {
   getAiStatus,
   invalidateAiWork,
   queueAttemptAnalysis,
+  queueAdaptiveQuestionGeneration,
+  queueComprehensiveReport,
   queueSessionReport,
-  queueWeeklyReport,
   recoverPendingReports,
 } from './server/antigravity.mjs'
 
@@ -61,6 +62,13 @@ const settingsSchema = z.object({
   onboardingComplete: z.boolean().optional(),
 }).strict()
 
+const generatedBlueprintSchema = z.array(z.object({
+  section: z.literal('rw'),
+  domain: z.enum(['craft-structure', 'information-ideas', 'standard-english', 'expression-ideas']),
+  skillId: z.enum(['words-in-context', 'text-structure-purpose', 'cross-text-connections', 'central-ideas-details', 'command-evidence-textual', 'command-evidence-quantitative', 'inferences', 'boundaries', 'form-structure-sense', 'rhetorical-synthesis', 'transitions']),
+  difficulty: z.number().int().min(1).max(5),
+})).min(1).max(12)
+
 app.get('/api/state', async (_request, response) => {
   response.json(await getState(getAiStatus()))
 })
@@ -99,7 +107,6 @@ app.post('/api/sessions', async (request, response) => {
   const saved = await saveSession(session)
   if (saved && session.completedAt) {
     queueSessionReport(session)
-      .then(() => queueWeeklyReport(false))
       .catch(() => undefined)
   }
   response.status(saved ? 201 : 200).json({ saved, reportQueued: saved && Boolean(session.completedAt) })
@@ -117,6 +124,17 @@ app.post('/api/generated-questions', async (request, response) => {
   response.status(201).json({ saved: request.body.questions.length })
 })
 
+app.post('/api/practice/generate', async (request, response) => {
+  const parsed = generatedBlueprintSchema.safeParse(request.body?.blueprint)
+  if (!parsed.success) return response.status(400).json({ error: 'The fresh-question plan was invalid.', details: parsed.error.flatten() })
+  try {
+    const questions = await queueAdaptiveQuestionGeneration(parsed.data)
+    response.status(201).json({ questions })
+  } catch (error) {
+    response.status(409).json({ error: error instanceof Error ? error.message : 'Fresh-question generation failed.' })
+  }
+})
+
 app.put('/api/active-mock', async (request, response) => {
   await setActiveMock(request.body?.mock ?? null)
   response.status(204).end()
@@ -127,12 +145,12 @@ app.delete('/api/active-mock', async (_request, response) => {
   response.status(204).end()
 })
 
-app.post('/api/reports/weekly', async (request, response) => {
+app.post('/api/reports/comprehensive', async (_request, response) => {
   try {
-    const report = await queueWeeklyReport(request.body?.force !== false)
+    const report = await queueComprehensiveReport()
     response.json({ report })
   } catch (error) {
-    response.status(409).json({ error: error instanceof Error ? error.message : 'Weekly report failed.' })
+    response.status(409).json({ error: error instanceof Error ? error.message : 'Complete learning report failed.' })
   }
 })
 

@@ -8,7 +8,7 @@ const navigation = [
   { to: '/learn', label: 'Learn' },
   { to: '/practice', label: 'Practice' },
   { to: '/mocks', label: 'Mocks' },
-  { to: '/insights', label: 'Analysis' },
+  { to: '/insights', label: 'Insights' },
   { to: '/mistakes', label: 'Mistakes' },
 ]
 

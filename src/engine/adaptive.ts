@@ -1,4 +1,4 @@
-import type { Attempt, Confidence, Difficulty, Question, SkillDirective, SkillState } from '../types'
+import type { Attempt, Confidence, Difficulty, Question, QuestionBlueprint, SkillDirective, SkillState } from '../types'
 
 const DAY_MS = 24 * 60 * 60 * 1000
 
@@ -72,6 +72,53 @@ export function targetDifficulty(state?: SkillState): Difficulty {
   return ([1, 2, 3, 4, 5] as Difficulty[]).sort((a, b) => Math.abs(expectedSuccess(state.theta, a) - targetSuccess) - Math.abs(expectedSuccess(state.theta, b) - targetSuccess))[0]
 }
 
+const clampDifficulty = (value: number): Difficulty => Math.max(1, Math.min(5, Math.round(value))) as Difficulty
+
+/**
+ * A section-wide calibration prevents sparse per-skill histories from pinning an
+ * otherwise strong learner to Difficulty 2. It moves only one level at a time
+ * and needs a meaningful run of recent evidence before changing the baseline.
+ */
+export function sectionTargetDifficulty(attempts: Attempt[], section: Question['section']): Difficulty {
+  const recent = attempts.filter((attempt) => attempt.section === section).slice(0, 24)
+  if (!recent.length) return 2
+  const averageDifficulty = recent.reduce((sum, attempt) => sum + attempt.difficulty, 0) / recent.length
+  const accuracy = recent.filter((attempt) => attempt.correct).length / recent.length
+  let target = Math.round(averageDifficulty)
+  if (recent.length >= 8 && accuracy >= 0.84) target += 1
+  else if (recent.length >= 6 && accuracy < 0.55) target -= 1
+  return clampDifficulty(target)
+}
+
+export function recommendedDifficulty(
+  state: SkillState | undefined,
+  directive: SkillDirective | undefined,
+  sectionTarget: Difficulty,
+): Difficulty {
+  const measured = targetDifficulty(state)
+  if (directive) {
+    const directiveWeight = Math.max(0, Math.min(1, directive.priority))
+    return clampDifficulty(directive.targetDifficulty * (0.65 + directiveWeight * 0.35) + Math.max(measured, sectionTarget) * (0.35 - directiveWeight * 0.35))
+  }
+  return clampDifficulty(Math.max(measured, sectionTarget))
+}
+
+export function mixedSectionPlan(length: number, first: Question['section'] = 'rw'): Question['section'][] {
+  const safeLength = Math.max(1, Math.floor(length))
+  const second: Question['section'] = first === 'rw' ? 'math' : 'rw'
+  return Array.from({ length: safeLength }, (_, index) => index % 2 === 0 ? first : second)
+}
+
+export function weakerSection(attempts: Attempt[]): Question['section'] {
+  const need = (section: Question['section']) => {
+    const recent = attempts.filter((attempt) => attempt.section === section).slice(0, 24)
+    if (!recent.length) return 2
+    const accuracy = recent.filter((attempt) => attempt.correct).length / recent.length
+    return (1 - accuracy) + 1 / Math.sqrt(recent.length + 1)
+  }
+  return need('rw') >= need('math') ? 'rw' : 'math'
+}
+
 export function isDue(state?: SkillState, now = new Date()): boolean {
   if (!state?.dueAt) return true
   return new Date(state.dueAt).getTime() <= now.getTime()
@@ -83,18 +130,19 @@ export function selectionPriority(
   seenQuestionIds: Set<string>,
   now = new Date(),
   directives: SkillDirective[] = [],
+  sectionTarget?: Difficulty,
 ): number {
   const state = states.get(question.skillId)
   const masteryGap = 1 - masteryPercent(state) / 100
   const due = isDue(state, now) ? 1 : 0
   const uncertainty = state ? 1 / Math.sqrt(state.attempts + 1) : 1
-  const challengeGap = Math.abs(question.difficulty - targetDifficulty(state)) / 4
+  const directive = directives.find((item) => item.skillId === question.skillId)
+  const desiredDifficulty = recommendedDifficulty(state, directive, sectionTarget ?? targetDifficulty(state))
+  const challengeGap = Math.abs(question.difficulty - desiredDifficulty) / 4
   const novelty = seenQuestionIds.has(question.id) ? 0 : 1
   const lowEvidence = state ? Math.max(0, 1 - state.attempts / 5) : 1
-  const directive = directives.find((item) => item.skillId === question.skillId)
   const analyticPriority = directive?.priority ?? 0
-  const analyticDifficultyFit = directive ? 1 - Math.abs(question.difficulty - directive.targetDifficulty) / 4 : 0
-  return masteryGap * 0.27 + due * 0.16 + uncertainty * 0.1 + (1 - challengeGap) * 0.12 + novelty * 0.1 + lowEvidence * 0.05 + analyticPriority * 0.14 + analyticDifficultyFit * 0.06
+  return masteryGap * 0.25 + due * 0.14 + uncertainty * 0.09 + (1 - challengeGap) * 0.22 + novelty * 0.1 + lowEvidence * 0.05 + analyticPriority * 0.15
 }
 
 export function selectNextQuestion(
@@ -103,9 +151,46 @@ export function selectNextQuestion(
   seenQuestionIds: Set<string>,
   forcedSkillId?: string,
   directives: SkillDirective[] = [],
+  preferredSection?: Question['section'],
+  sectionTarget?: Difficulty,
 ): Question | undefined {
-  const candidates = forcedSkillId ? questions.filter((question) => question.skillId === forcedSkillId) : questions
-  return [...candidates].sort((a, b) => selectionPriority(b, states, seenQuestionIds, new Date(), directives) - selectionPriority(a, states, seenQuestionIds, new Date(), directives))[0]
+  const sectionCandidates = preferredSection ? questions.filter((question) => question.section === preferredSection) : questions
+  const skillCandidates = forcedSkillId ? sectionCandidates.filter((question) => question.skillId === forcedSkillId) : sectionCandidates
+  const candidates = skillCandidates.length ? skillCandidates : sectionCandidates.length ? sectionCandidates : questions
+  const exactDifficultyFits = candidates.filter((question) => {
+    const directive = directives.find((item) => item.skillId === question.skillId)
+    const desired = recommendedDifficulty(states.get(question.skillId), directive, sectionTarget ?? targetDifficulty(states.get(question.skillId)))
+    return question.difficulty === desired
+  })
+  const ranked = exactDifficultyFits.length ? exactDifficultyFits : candidates
+  return [...ranked].sort((a, b) => selectionPriority(b, states, seenQuestionIds, new Date(), directives, sectionTarget) - selectionPriority(a, states, seenQuestionIds, new Date(), directives, sectionTarget))[0]
+}
+
+export function planReadingBlueprint(
+  questions: Question[],
+  count: number,
+  states: Map<string, SkillState>,
+  seenQuestionIds: Set<string>,
+  directives: SkillDirective[],
+  sectionTarget: Difficulty,
+): QuestionBlueprint[] {
+  const reading = questions.filter((question) => question.section === 'rw')
+  const skillUses = new Map<string, number>()
+  const chosenIds = new Set<string>()
+  const result: QuestionBlueprint[] = []
+  for (let index = 0; index < count; index += 1) {
+    const candidates = reading.filter((question) => !chosenIds.has(question.id))
+    const next = [...candidates].sort((a, b) => {
+      const score = (question: Question) => selectionPriority(question, states, seenQuestionIds, new Date(), directives, sectionTarget) - (skillUses.get(question.skillId) ?? 0) * 0.18
+      return score(b) - score(a)
+    })[0]
+    if (!next) break
+    const directive = directives.find((item) => item.skillId === next.skillId)
+    result.push({ section: 'rw', domain: next.domain, skillId: next.skillId, difficulty: recommendedDifficulty(states.get(next.skillId), directive, sectionTarget) })
+    chosenIds.add(next.id)
+    skillUses.set(next.skillId, (skillUses.get(next.skillId) ?? 0) + 1)
+  }
+  return result
 }
 
 export function practiceScoreEstimate(rwTheta: number, mathTheta: number) {

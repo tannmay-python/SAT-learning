@@ -1,10 +1,12 @@
 import { execFile } from 'node:child_process'
+import { randomUUID } from 'node:crypto'
 import { existsSync } from 'node:fs'
 import { homedir } from 'node:os'
 import { dirname, resolve } from 'node:path'
 import { promisify } from 'node:util'
 import { fileURLToPath } from 'node:url'
-import { getEvidence, hasReport, saveAnalysis, saveLearnerModel, saveReport } from './store.mjs'
+import { getEvidence, hasReport, saveAnalysis, saveGeneratedQuestions, saveLearnerModel, saveReport } from './store.mjs'
+import officialDensity from './official-density.json' with { type: 'json' }
 
 const execFileAsync = promisify(execFile)
 const serverDirectory = dirname(fileURLToPath(import.meta.url))
@@ -14,7 +16,8 @@ const agyBinary = process.env.ANTIGRAVITY_CLI || resolve(homedir(), '.local/bin/
 const observerModel = process.env.SATLAS_OBSERVER_MODEL || 'gemini-3.6-flash-high'
 const sessionModel = process.env.SATLAS_SESSION_MODEL || 'gemini-3.6-flash-high'
 const reportModel = process.env.SATLAS_REPORT_MODEL || 'gemini-3.6-flash-high'
-const promptVersion = 'satlas-analyst-v3'
+const generationModel = process.env.SATLAS_GENERATION_MODEL || 'gemini-3.6-flash-high'
+const promptVersion = 'satlas-analyst-v4'
 
 const runtime = {
   state: existsSync(agyBinary) ? 'idle' : 'offline',
@@ -39,6 +42,7 @@ export function getAiStatus() {
     access: 'Google AI Pro subscription via local OAuth',
     observerModel,
     reportModel,
+    generationModel,
     ...runtime,
   }
 }
@@ -127,6 +131,253 @@ function withTimestamp(model) {
   return { ...model, updatedAt: new Date().toISOString() }
 }
 
+const readingSkills = new Set([
+  'words-in-context', 'text-structure-purpose', 'cross-text-connections', 'central-ideas-details', 'command-evidence-textual',
+  'command-evidence-quantitative', 'inferences', 'boundaries', 'form-structure-sense', 'rhetorical-synthesis', 'transitions',
+])
+
+const words = (value = '') => value.trim().split(/\s+/).filter(Boolean).length
+
+/**
+ * Models reach for markdown emphasis even when told not to. Official items are
+ * plain prose, and the renderer shows text verbatim, so stray asterisks and
+ * underscores would appear on screen as themselves. Stripping is preferable to
+ * rejecting an otherwise sound batch.
+ */
+export function plainProse(value = '') {
+  return String(value)
+    .replace(/\*\*([^*]+)\*\*/g, '$1')
+    .replace(/\*([^*]+)\*/g, '$1')
+    .replace(/_{1,2}([^_]+)_{1,2}/g, '$1')
+    .replace(/`([^`]+)`/g, '$1')
+    .replace(/\s{2,}/g, ' ')
+    .trim()
+}
+
+/**
+ * Rotates each item's choices so the key is spread across A-D. The reviewer
+ * solved the item from the choice text, not its letter, so reordering cannot
+ * change which choice is correct; the per-letter diagnoses move with their text.
+ */
+export function rebalanceAnswerPositions(questions) {
+  const ids = ['A', 'B', 'C', 'D']
+  return questions.map((question, index) => {
+    const correct = question.choices.find((choice) => choice.id === question.answer)
+    if (!correct) return question
+    const others = question.choices.filter((choice) => choice.id !== question.answer)
+    const target = index % 4
+    const ordered = [...others.slice(0, target), correct, ...others.slice(target)]
+    const whyWrong = {}
+    const misconceptionByChoice = {}
+    const choices = ordered.map((choice, position) => {
+      if (choice !== correct) {
+        const reason = question.misconceptionByChoice?.[choice.id] ?? question.whyWrong?.[choice.id]
+        if (reason) {
+          whyWrong[ids[position]] = reason
+          misconceptionByChoice[ids[position]] = reason
+        }
+      }
+      return { id: ids[position], text: choice.text }
+    })
+    return { ...question, choices, answer: ids[target], whyWrong, misconceptionByChoice }
+  })
+}
+
+/**
+ * Passage length bounds taken from the measured official forms rather than from
+ * intuition. Easy items may sit at the official 25th percentile; Difficulty 4-5
+ * items must reach the official median, because on the real test the harder
+ * items of a type are the longer ones. The ceiling sits just above the official
+ * 95th percentile so generation can produce the long tail the test actually has.
+ */
+function passageBounds(skillId, difficulty) {
+  const band = officialDensity.bands[skillId]
+  if (!band) return { min: difficulty >= 4 ? 75 : 60, max: 190 }
+  return {
+    min: difficulty >= 4 ? band.median : difficulty === 3 ? Math.round((band.p25 + band.median) / 2) : band.p25,
+    max: Math.round(band.p95 * 1.12),
+  }
+}
+
+const boundsLine = (skillId, label) => {
+  const band = officialDensity.bands[skillId]
+  return `${label}: ${band.p25}-${Math.round(band.p95 * 1.12)} words, typical ${band.median}`
+}
+
+export function validateGeneratedReadingQuestion(raw, blueprint) {
+  if (!raw || raw.section !== 'rw' || !readingSkills.has(raw.skillId)) return null
+  if (raw.skillId !== blueprint.skillId || raw.domain !== blueprint.domain || raw.difficulty !== blueprint.difficulty) return null
+  if (!Array.isArray(raw.choices) || raw.choices.length !== 4) return null
+  const choiceIds = raw.choices.map((choice) => choice?.id)
+  const choiceTexts = raw.choices.map((choice) => String(choice?.text || '').trim())
+  if (new Set(choiceIds).size !== 4 || !['A', 'B', 'C', 'D'].every((id) => choiceIds.includes(id))) return null
+  if (new Set(choiceTexts.map((text) => text.toLowerCase())).size !== 4 || choiceTexts.some((text) => text.length < 1)) return null
+  if (!choiceIds.includes(raw.answer) || String(raw.prompt || '').trim().length < 12 || String(raw.explanation || '').trim().length < 35) return null
+  const totalStimulusWords = words(`${raw.stimulus || ''} ${raw.secondaryStimulus || ''}`)
+  const bounds = passageBounds(raw.skillId, raw.difficulty)
+  if (totalStimulusWords < bounds.min || totalStimulusWords > bounds.max) return null
+  if (raw.skillId === 'cross-text-connections' && (words(raw.stimulus) < 45 || words(raw.secondaryStimulus) < 45)) return null
+  if (raw.skillId === 'command-evidence-quantitative' && !raw.table) return null
+  if (raw.table && (!Array.isArray(raw.table.headers) || !Array.isArray(raw.table.rows) || raw.table.rows.some((row) => row.length !== raw.table.headers.length))) return null
+  const whyWrong = {}
+  const misconceptionByChoice = {}
+  for (const choice of raw.choices) {
+    if (choice.id === raw.answer) continue
+    const reason = plainProse(raw.misconceptionByChoice?.[choice.id] || raw.whyWrong?.[choice.id]) || 'This choice is not supported by the passage.'
+    misconceptionByChoice[choice.id] = reason
+    whyWrong[choice.id] = reason
+  }
+  return {
+    id: `ai-rw-${randomUUID()}`,
+    section: 'rw',
+    domain: raw.domain,
+    skillId: raw.skillId,
+    difficulty: raw.difficulty,
+    format: 'multiple-choice',
+    stimulus: plainProse(raw.stimulus),
+    ...(raw.secondaryStimulus ? { secondaryStimulus: plainProse(raw.secondaryStimulus) } : {}),
+    ...(raw.table ? { table: raw.table } : {}),
+    prompt: plainProse(raw.prompt),
+    choices: raw.choices.map((choice) => ({ id: choice.id, text: plainProse(choice.text) })),
+    answer: raw.answer,
+    explanation: plainProse(raw.explanation),
+    concept: plainProse(raw.concept) || 'Use only the evidence and logical relationship supplied in the question.',
+    whyWrong,
+    misconceptionByChoice,
+    estimatedSeconds: Math.max(40, Math.min(120, Math.round(Number(raw.estimatedSeconds) || 75))),
+    source: 'ai-generated',
+    createdAt: new Date().toISOString(),
+    validationStatus: 'accepted',
+  }
+}
+
+const normalizedTokens = (value = '') => value.toLowerCase().replace(/[^a-z0-9\s]/g, ' ').split(/\s+/).filter((token) => token.length > 1)
+
+function shingleOverlap(left, right, size = 5) {
+  const shingles = (value) => {
+    const tokens = normalizedTokens(value)
+    return new Set(Array.from({ length: Math.max(0, tokens.length - size + 1) }, (_, index) => tokens.slice(index, index + size).join(' ')))
+  }
+  const a = shingles(left); const b = shingles(right)
+  if (!a.size || !b.size) return 0
+  let shared = 0
+  for (const item of a) if (b.has(item)) shared += 1
+  return shared / Math.min(a.size, b.size)
+}
+
+function readingText(question) {
+  return `${question?.stimulus || ''} ${question?.secondaryStimulus || ''}`.trim()
+}
+
+export function hasSuspiciousReadingOverlap(question, references) {
+  const source = readingText(question)
+  return references.some((reference) => shingleOverlap(source, readingText(reference)) >= 0.42)
+}
+
+export function applyGenerationReviews(questions, reviews) {
+  return questions.filter((question, index) => {
+    const review = reviews.find((item) => item?.index === index)
+    return review?.verdict === 'accept' && review.uniqueAnswer === true && review.solvedAnswer === question.answer
+  })
+}
+
+export function queueAdaptiveQuestionGeneration(blueprint) {
+  const cleanBlueprint = blueprint.filter((item) => item?.section === 'rw' && readingSkills.has(item.skillId)).slice(0, 12)
+  if (!cleanBlueprint.length) return Promise.reject(new Error('No valid Reading and Writing question blueprint was supplied.'))
+  return enqueue(`preparing ${cleanBlueprint.length} fresh question${cleanBlueprint.length === 1 ? '' : 's'}`, async () => {
+    const evidence = await getEvidence()
+    const recent = evidence.attempts.slice(-40).map((attempt) => ({
+      skillId: attempt.skillId,
+      difficulty: attempt.difficulty,
+      correct: attempt.correct,
+      likelyTrap: attempt.mistakeType || null,
+      priorPrompt: attempt.questionSnapshot?.prompt,
+      priorStimulusOpening: attempt.questionSnapshot?.stimulus?.slice(0, 180),
+    }))
+    const prompt = `Create exactly ${cleanBlueprint.length} original digital SAT Reading and Writing questions, one for each blueprint entry and in the same order.
+
+QUESTION BLUEPRINT
+${JSON.stringify(cleanBlueprint, null, 2)}
+
+CURRENT LEARNER MODEL
+${JSON.stringify(evidence.learnerModel, null, 2)}
+
+RECENT PERFORMANCE AND PRIOR ITEM OPENINGS (use for adaptation and duplicate avoidance)
+${JSON.stringify(recent, null, 2)}
+
+RECENT REQUESTED REASONING REVIEWS
+${JSON.stringify(evidence.analyses.slice(-10).map((analysis) => {
+  const attempt = evidence.attempts.find((item) => item.id === analysis.attemptId)
+  return { skillId: attempt?.skillId, difficulty: attempt?.difficulty, verdict: analysis.verdict, gaps: analysis.gaps, nextMove: analysis.nextMove }
+}), null, 2)}
+
+Fidelity and originality requirements:
+- These must be new questions, not reconstructions, paraphrases, or continuations of released College Board items. Do not mention SATLAS, Gemini, the learner, or this prompt inside an item.
+- Match the digital SAT's self-contained one-question-per-passage format, restrained academic tone, four plausible choices, and exact skill named in each blueprint.
+- Use varied humanities, literature, history, social-science, and natural-science contexts. Do not reuse a context or named researcher across this set.
+- Passage length is the single most common way practice items betray themselves as practice items. The ranges below were measured from ${officialDensity._sample} questions across seven official practice forms; treat them as binding. Write to the typical value or above, and use the upper half of the range for Difficulty 4-5.
+  ${boundsLine('words-in-context', 'Words in Context')}
+  ${boundsLine('text-structure-purpose', 'Text Structure and Purpose')}
+  ${boundsLine('central-ideas-details', 'Central Ideas and Details')}
+  ${boundsLine('command-evidence-textual', 'Command of Textual Evidence')}
+  ${boundsLine('command-evidence-quantitative', 'Command of Quantitative Evidence, prose only')}
+  ${boundsLine('inferences', 'Inferences')}
+  ${boundsLine('boundaries', 'Boundaries and Form, Structure, and Sense')}
+  ${boundsLine('transitions', 'Transitions')}
+  ${boundsLine('rhetorical-synthesis', 'Rhetorical Synthesis student notes')}
+- A Command of Evidence or Inferences item is not a one-sentence claim followed by four findings. On the real test it is a full paragraph that establishes a researcher, a question, a method, and a result, and only then poses the claim to be supported or completed. Write that paragraph.
+- Cross-Text Connections must include two independently substantive texts totaling ${officialDensity.bands['cross-text-connections'].p25}-${Math.round(officialDensity.bands['cross-text-connections'].p95 * 1.12)} words with at least 45 words in each; put Text 1 in stimulus and Text 2 in secondaryStimulus.
+- Command of Quantitative Evidence must include a compact table whose rows align with its headers, plus prose that introduces the study and the claim. The passage and table must both be needed.
+- Difficulty 1 tests one direct move. Difficulty 2 uses a credible but visible trap. Difficulty 3 requires a careful relationship or two linked moves. Difficulty 4 uses tighter distinctions and denser evidence. Difficulty 5 requires precise synthesis or rejection of a highly plausible overclaim. Do not fake difficulty with rare vocabulary alone.
+- Spread the correct answer across positions. Over the whole set the key must not sit on the same letter more than twice, and never on the same letter three times in a row.
+- Write plain prose. No markdown, asterisks, underscores, or italic markers anywhere in a stimulus, prompt, or choice; write species and title names as plain text. Name researchers by role and name in the official register ("marine ecologist Clara Vance"), not with an academic title.
+- Before writing the choices, solve the item. There must be exactly one defensible answer. Each wrong choice must embody a specific, realistic mistake and be rejected by the supplied text, table, or grammar rule.
+- Keep all evidence needed to answer inside the item. Do not require outside facts. Avoid political persuasion, distressing content, and culturally narrow assumptions.
+- explanation must state why the answer follows and why the central trap fails. concept must name a reusable SAT method in plain language.
+- whyWrong and misconceptionByChoice should map each wrong answer letter to a concise diagnosis. estimatedSeconds must be 40-120.
+- Return only the structured questions.`
+    const generated = await runStructured({ prompt, schema: 'generated-reading-set.json', model: generationModel, effort: 'high', timeout: '3m' })
+    const accepted = cleanBlueprint.map((entry, index) => validateGeneratedReadingQuestion(generated.questions?.[index], entry)).filter(Boolean)
+    if (accepted.length !== cleanBlueprint.length) throw new Error('The fresh batch did not pass every structural fidelity check. The authored bank will be used instead.')
+    const priorQuestions = [
+      ...evidence.generatedQuestions,
+      ...evidence.attempts.map((attempt) => attempt.questionSnapshot).filter(Boolean),
+    ]
+    if (accepted.some((question, index) => hasSuspiciousReadingOverlap(question, [...priorQuestions, ...accepted.slice(0, index)]))) {
+      throw new Error('The fresh batch was too similar to existing material. The authored bank will be used instead.')
+    }
+    const reviewPrompt = `Act as an adversarial digital SAT item reviewer. Independently solve every candidate below without trusting any hidden answer key. Reject an item if more than one choice is defensible, no choice is fully defensible, the requested skill is not actually tested, a table is decorative, the difficulty is mislabeled, or the wording is unlike a concise official digital SAT item. Accept only items you would be comfortable putting into scored practice.
+
+BLUEPRINT
+${JSON.stringify(cleanBlueprint, null, 2)}
+
+CANDIDATES WITHOUT ANSWER KEYS
+${JSON.stringify(accepted.map((question, index) => ({ index, section: question.section, domain: question.domain, skillId: question.skillId, difficulty: question.difficulty, stimulus: question.stimulus, secondaryStimulus: question.secondaryStimulus, table: question.table, prompt: question.prompt, choices: question.choices })), null, 2)}
+
+Return one review for every candidate index in order. solvedAnswer is your independently derived A-D answer. uniqueAnswer must be false whenever another choice could reasonably be defended.`
+    const reviewed = await runStructured({ prompt: reviewPrompt, schema: 'generated-reading-review.json', model: observerModel, effort: 'high', timeout: '3m' })
+    const approved = applyGenerationReviews(accepted, reviewed.reviews || [])
+    if (approved.length !== cleanBlueprint.length) throw new Error('The independent answer-key review rejected part of the fresh batch. The authored bank will be used instead.')
+    // Only after both models have agreed on the answer is it safe to move the
+    // key off whichever letter the generator favoured.
+    const balanced = rebalanceAnswerPositions(approved)
+    const reviewedAt = new Date().toISOString()
+    const records = balanced.map((question, index) => ({
+      ...question,
+      generation: {
+        model: generationModel,
+        promptVersion,
+        blueprint: cleanBlueprint[index],
+        reviewerModel: observerModel,
+        reviewerVerdict: reviewed.reviews.find((item) => item.index === index)?.reason || 'Accepted after independent solve.',
+        reviewedAt,
+      },
+    }))
+    await saveGeneratedQuestions(records)
+    return records
+  })
+}
+
 export function queueAttemptAnalysis(attempt, question, learnerJustification) {
   if (queuedAttemptIds.has(attempt.id)) return Promise.resolve(null)
   queuedAttemptIds.add(attempt.id)
@@ -157,6 +408,8 @@ Requirements:
 - Be specific and comprehensive without padding. Do not use generic encouragement.
 - Never call a skill mastered from one answer. A single item can demonstrate a method on that item, but learner-model claims based on it must remain tentative until repeated or transferred.
 - Every analytical claim must cite real IDs from the evidence above.
+- Write for the learner, not for a research log. Use plain language, short paragraphs, and familiar skill names. Never place raw UUIDs, ISO timestamps, or phrases such as "during the period" in reader-facing prose; IDs belong only in evidenceIds.
+- Lead with what happened, why it matters, and one useful next step. Avoid clinical labels, inflated certainty, and repetitive restatement of the supplied data.
 - Return the full updated learner model, retaining earlier claims that remain supported.`
     const result = await runStructured({ prompt, schema: 'attempt-analysis.json', model: observerModel, effort: 'high', timeout: '3m' })
     if (revision !== resetRevision) return null
@@ -179,15 +432,16 @@ Requirements:
 }
 
 function reportMarkdown(report, meta) {
-  const claims = (items) => items.length ? items.map((item) => `- ${item.claim}  \n  Evidence: ${item.evidenceIds.join(', ') || 'insufficient'} (${item.confidence})`).join('\n') : '- No defensible claim yet.'
-  const priorities = report.studyPriorities.length ? report.studyPriorities.map((item) => `- **${item.skillId}:** ${item.action} — ${item.reason}  \n  Evidence: ${item.evidenceIds.join(', ')}`).join('\n') : '- Continue mixed calibration.'
-  const days = report.sevenDayPlan.map((item) => `- **${item.day} · ${item.minutes} min:** ${item.work}  \n  Success check: ${item.successCheck}`).join('\n')
+  const skillName = (skillId) => skillId.split('-').map((word) => word === 'rw' ? 'R&W' : `${word[0]?.toUpperCase() || ''}${word.slice(1)}`).join(' ')
+  const claims = (items) => items.length ? items.map((item) => `- ${item.claim}  \n  Evidence: ${item.evidenceIds.length || 'No'} recorded answer${item.evidenceIds.length === 1 ? '' : 's'} (${item.confidence})`).join('\n') : '- No defensible claim yet.'
+  const priorities = report.studyPriorities.length ? report.studyPriorities.map((item) => `- **${skillName(item.skillId)}:** ${item.action} - ${item.reason}  \n  Evidence: ${item.evidenceIds.length} recorded answer${item.evidenceIds.length === 1 ? '' : 's'}`).join('\n') : '- Continue mixed calibration.'
+  const days = report.sevenDayPlan.map((item) => `- **${item.day}, ${item.minutes} min:** ${item.work}  \n  Success check: ${item.successCheck}`).join('\n')
   const sections = report.sectionBreakdown.map((item) => `### ${item.section}\n\n**Accuracy:** ${item.accuracySummary}\n\n**Pacing:** ${item.pacingSummary}\n\n${claims(item.findings)}\n\n**Recommended focus:** ${item.recommendedFocus}`).join('\n\n')
-  const skills = report.skillBreakdown.length ? report.skillBreakdown.map((item) => `- **${item.skillId} · ${item.correct}/${item.total}, ${item.averageSeconds}s average:** ${item.diagnosis}  \n  Next: difficulty ${item.nextDifficulty}; ${item.action}  \n  Evidence: ${item.evidenceIds.join(', ') || 'insufficient'} (${item.confidence})`).join('\n') : '- No skill has enough evidence for a defensible breakdown.'
-  const errors = report.errorTaxonomy.length ? report.errorTaxonomy.map((item) => `- **${item.label} (${item.count}):** ${item.mechanism}  \n  Evidence: ${item.evidenceIds.join(', ') || 'insufficient'}`).join('\n') : '- No error class is defensible yet.'
+  const skills = report.skillBreakdown.length ? report.skillBreakdown.map((item) => `- **${skillName(item.skillId)}: ${item.correct}/${item.total}, ${item.averageSeconds}s average.** ${item.diagnosis}  \n  Next: difficulty ${item.nextDifficulty}; ${item.action}`).join('\n') : '- No skill has enough evidence for a defensible breakdown.'
+  const errors = report.errorTaxonomy.length ? report.errorTaxonomy.map((item) => `- **${item.label} (${item.count}):** ${item.mechanism}`).join('\n') : '- No error class is defensible yet.'
   return `# ${report.title}
 
-_Generated ${meta.createdAt} by ${meta.model}. Period: ${meta.period}._
+_Generated ${new Date(meta.createdAt).toLocaleString()} from ${meta.answerCount} recorded answers._
 
 ## Executive summary
 
@@ -247,15 +501,6 @@ ${report.limitations.map((item) => `- ${item}`).join('\n') || '- None stated.'}
 `
 }
 
-function isoWeek(date = new Date()) {
-  const utc = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
-  const day = utc.getUTCDay() || 7
-  utc.setUTCDate(utc.getUTCDate() + 4 - day)
-  const yearStart = new Date(Date.UTC(utc.getUTCFullYear(), 0, 1))
-  const week = Math.ceil((((utc - yearStart) / 86_400_000) + 1) / 7)
-  return `${utc.getUTCFullYear()}-W${String(week).padStart(2, '0')}`
-}
-
 export function intervalFacts(attempts) {
   const summarize = (items) => ({
     total: items.length,
@@ -272,17 +517,27 @@ export function intervalFacts(attempts) {
   }
 }
 
-export function normalizeReport(report, attempts, facts) {
+export function normalizeReport(report, attempts, facts, allowedEvidenceIds) {
   const sectionNames = { rw: 'Reading and Writing', math: 'Math' }
-  const allowedAttemptIds = new Set(attempts.map((item) => item.id))
+  const currentAttemptIds = new Set(attempts.map((item) => item.id))
+  const allowedAttemptIds = allowedEvidenceIds ?? currentAttemptIds
+  const cleanText = (value) => String(value || '')
+    .replace(/\(\s*session\s+[0-9a-f-]{20,}\s*\)/gi, '')
+    .replace(/\bsession\s+[0-9a-f-]{20,}\b/gi, 'this set')
+    .replace(/\b[0-9a-f]{8}-[0-9a-f-]{27,}\b/gi, 'the recorded answer')
+    .replace(/\b\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z\b/g, 'the recorded date')
+    .replace(/during the period/gi, 'Across this work')
+    .replace(/\s{2,}/g, ' ')
+    .trim()
+  const claims = (items = []) => items.map((item) => ({ ...item, claim: cleanText(item.claim), evidenceIds: [...new Set(item.evidenceIds || [])].filter((id) => allowedAttemptIds.has(id)) }))
   const sectionBreakdown = Object.entries(facts.sections).map(([section, computed]) => {
     const generated = report.sectionBreakdown.find((item) => item.section === sectionNames[section])
     return {
       section: sectionNames[section],
       accuracySummary: `${computed.correct}/${computed.total} correct (${Math.round(computed.correct / computed.total * 100)}%)`,
       pacingSummary: `${computed.averageSeconds}s average against a ${computed.averageTargetSeconds}s authored target`,
-      findings: generated?.findings ?? [],
-      recommendedFocus: generated?.recommendedFocus ?? 'Collect more evidence in this section before changing the plan.',
+      findings: claims(generated?.findings),
+      recommendedFocus: cleanText(generated?.recommendedFocus ?? 'Collect more evidence in this section before changing the plan.'),
     }
   })
   const skillBreakdown = Object.entries(facts.skills).map(([skillId, computed]) => {
@@ -292,25 +547,55 @@ export function normalizeReport(report, attempts, facts) {
       correct: computed.correct,
       total: computed.total,
       averageSeconds: computed.averageSeconds,
-      diagnosis: generated?.diagnosis ?? 'Insufficient evidence for a mechanism-level diagnosis.',
+      diagnosis: cleanText(generated?.diagnosis ?? 'Insufficient evidence for a mechanism-level diagnosis.'),
       nextDifficulty: generated?.nextDifficulty ?? Math.max(1, Math.min(5, Math.round(attempts.find((item) => item.skillId === skillId)?.difficulty ?? 3))),
-      action: generated?.action ?? 'Collect another varied item before changing difficulty.',
+      action: cleanText(generated?.action ?? 'Collect another varied item before changing difficulty.'),
       evidenceIds: computed.evidenceIds,
       confidence: generated?.confidence ?? 'tentative',
     }
   })
   const errorTaxonomy = report.errorTaxonomy.map((item) => {
-    const evidenceIds = [...new Set(item.evidenceIds)].filter((id) => allowedAttemptIds.has(id) && !attempts.find((attempt) => attempt.id === id)?.correct)
-    return { ...item, evidenceIds, count: evidenceIds.length }
+    const evidenceIds = [...new Set(item.evidenceIds)].filter((id) => currentAttemptIds.has(id) && !attempts.find((attempt) => attempt.id === id)?.correct)
+    return { ...item, label: cleanText(item.label), mechanism: cleanText(item.mechanism), evidenceIds, count: evidenceIds.length }
   }).filter((item) => item.count > 0)
-  return { ...report, sectionBreakdown, skillBreakdown, errorTaxonomy }
+  const studyPriorities = (report.studyPriorities || []).map((item) => ({ ...item, action: cleanText(item.action), reason: cleanText(item.reason), evidenceIds: [...new Set(item.evidenceIds || [])].filter((id) => allowedAttemptIds.has(id)) }))
+  const learnerModel = {
+    ...report.learnerModel,
+    summary: cleanText(report.learnerModel?.summary),
+    strengths: claims(report.learnerModel?.strengths),
+    hypotheses: claims(report.learnerModel?.hypotheses),
+    priorities: claims(report.learnerModel?.priorities),
+    skillDirectives: (report.learnerModel?.skillDirectives || []).map((item) => ({ ...item, reason: cleanText(item.reason), evidenceIds: [...new Set(item.evidenceIds || [])].filter((id) => allowedAttemptIds.has(id)) })),
+    coachingStyle: cleanText(report.learnerModel?.coachingStyle),
+    nextSession: cleanText(report.learnerModel?.nextSession),
+  }
+  return {
+    ...report,
+    title: cleanText(report.title),
+    executiveSummary: cleanText(report.executiveSummary),
+    whatChanged: claims(report.whatChanged),
+    strengths: claims(report.strengths),
+    weaknesses: claims(report.weaknesses),
+    misconceptionPatterns: claims(report.misconceptionPatterns),
+    pacingAndDecisions: claims(report.pacingAndDecisions),
+    confidenceCalibration: claims(report.confidenceCalibration),
+    transferAndRetention: claims(report.transferAndRetention),
+    sectionBreakdown,
+    skillBreakdown,
+    errorTaxonomy,
+    studyPriorities,
+    sevenDayPlan: (report.sevenDayPlan || []).map((item) => ({ ...item, day: cleanText(item.day), work: cleanText(item.work), successCheck: cleanText(item.successCheck) })),
+    recommendedMix: cleanText(report.recommendedMix),
+    limitations: (report.limitations || []).map(cleanText),
+    learnerModel,
+  }
 }
 
 async function createReport({ id, type, period, attempts, sessions, model, effort }) {
   const revision = resetRevision
   const evidence = await getEvidence()
   const facts = intervalFacts(attempts)
-  const prompt = `Write an evidence-bound ${type} SAT learning report and update the learner model.
+  const prompt = `Write an evidence-bound ${type === 'comprehensive' ? 'complete learning-history' : 'completed-set'} SAT learning report and update the learner model.
 
 PERIOD: ${period}
 RAW ANSWER EVENTS
@@ -342,13 +627,21 @@ Requirements:
 - Distinguish a calibration, practice-set, review-set, section, or full-mock report and calibrate the depth to the evidence volume.
 - Create a realistic seven-day plan using targeted lessons, mixed practice, spaced recall, and timed work only when justified.
 - Recommendations must include skill IDs and target difficulty in the learner model.
+- Write directly to the learner in natural, compact language. The report should feel like a thoughtful tutor who knows their history, not a database export.
+- Do not include session IDs, attempt IDs, raw ISO dates, or the phrase "during the period" in any title, summary, diagnosis, finding, action, reason, or limitation. Put exact identifiers only in evidenceIds.
+- Titles must be short and human. For a completed set, describe the result or main lesson. For the complete history, use a timeless title rather than a weekly or period-ending title.
+- Avoid repeating the same counts in several sentences. Explain what the numbers mean and what to do next.
 - Return a complete updated learner model.`
   const generatedReport = await runStructured({ prompt, schema: 'report.json', model, effort, timeout: '3m' })
-  const report = normalizeReport(generatedReport, attempts, facts)
+  const allowedEvidenceIds = new Set([...evidence.attempts.map((item) => item.id), ...evidence.sessions.map((item) => item.id)])
+  const report = normalizeReport(generatedReport, attempts, facts, allowedEvidenceIds)
   if (revision !== resetRevision) return null
   const createdAt = new Date().toISOString()
+  const title = type === 'comprehensive'
+    ? 'Your complete SAT learning report'
+    : `Set review: ${facts.overall.correct} of ${facts.overall.total} correct`
   const summary = {
-    id, type, title: report.title, period, createdAt, executiveSummary: report.executiveSummary, model,
+    id, type, title, period, createdAt, executiveSummary: report.executiveSummary, model, answerCount: attempts.length,
     sectionBreakdown: report.sectionBreakdown,
     skillBreakdown: report.skillBreakdown,
     errorTaxonomy: report.errorTaxonomy,
@@ -359,7 +652,7 @@ Requirements:
   }
   await Promise.all([
     saveLearnerModel(withTimestamp(report.learnerModel)),
-    saveReport(summary, reportMarkdown(report, summary), { ...summary, ...report }),
+    saveReport(summary, reportMarkdown({ ...report, title }, summary), { ...report, ...summary }),
   ])
   return summary
 }
@@ -377,16 +670,14 @@ export function queueSessionReport(session) {
   }).finally(() => queuedReportIds.delete(session.id))
 }
 
-export function queueWeeklyReport(force = false) {
-  const week = isoWeek()
-  return enqueue(`weekly report ${week}`, async () => {
-    if (!force && await hasReport(week)) return null
+export function queueComprehensiveReport() {
+  const id = `comprehensive-${new Date().toISOString().replace(/[:.]/g, '-')}`
+  return enqueue('complete learning report', async () => {
     const evidence = await getEvidence()
-    const cutoff = Date.now() - 7 * 86_400_000
-    const attempts = evidence.attempts.filter((item) => new Date(item.createdAt).getTime() >= cutoff)
-    const sessions = evidence.sessions.filter((item) => new Date(item.completedAt || item.startedAt).getTime() >= cutoff)
-    if (attempts.length < 3) throw new Error('At least three answers are needed for a weekly report.')
-    return createReport({ id: week, type: 'weekly', period: `Seven days ending ${new Date().toISOString().slice(0, 10)}`, attempts, sessions, model: reportModel, effort: 'high' })
+    if (evidence.attempts.length < 3) throw new Error('At least three answers are needed for a complete learning report.')
+    const first = evidence.attempts[0]?.createdAt ?? new Date().toISOString()
+    const last = evidence.attempts.at(-1)?.createdAt ?? first
+    return createReport({ id, type: 'comprehensive', period: `${first} to ${last}`, attempts: evidence.attempts, sessions: evidence.sessions, model: reportModel, effort: 'high' })
   })
 }
 

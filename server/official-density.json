@@ -1,0 +1,18 @@
+{
+  "_source": "scripts/measure-official-density.py over the seven official practice forms in 'SAT Mocks'",
+  "_measures": "words of prose preceding the question stem; table bodies excluded, so quantitative-evidence values are a floor",
+  "_sample": 208,
+  "bands": {
+    "words-in-context": { "sample": 30, "p05": 34, "p25": 42, "median": 50, "p75": 57, "p95": 88 },
+    "text-structure-purpose": { "sample": 16, "p05": 78, "p25": 87, "median": 90, "p75": 108, "p95": 128 },
+    "cross-text-connections": { "sample": 4, "p05": 124, "p25": 128, "median": 129, "p75": 136, "p95": 136 },
+    "central-ideas-details": { "sample": 12, "p05": 58, "p25": 76, "median": 85, "p75": 109, "p95": 123 },
+    "command-evidence-textual": { "sample": 14, "p05": 30, "p25": 68, "median": 98, "p75": 112, "p95": 114 },
+    "command-evidence-quantitative": { "sample": 16, "p05": 29, "p25": 82, "median": 98, "p75": 152, "p95": 243 },
+    "inferences": { "sample": 15, "p05": 60, "p25": 77, "median": 104, "p75": 112, "p95": 122 },
+    "boundaries": { "sample": 40, "p05": 28, "p25": 36, "median": 44, "p75": 53, "p95": 64 },
+    "form-structure-sense": { "sample": 40, "p05": 28, "p25": 36, "median": 44, "p75": 53, "p95": 64 },
+    "transitions": { "sample": 29, "p05": 38, "p25": 48, "median": 52, "p75": 61, "p95": 71 },
+    "rhetorical-synthesis": { "sample": 23, "p05": 45, "p25": 61, "median": 77, "p75": 92, "p95": 106 }
+  }
+}

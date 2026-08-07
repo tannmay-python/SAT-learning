@@ -8,6 +8,7 @@ import type {
   LearnerSettings,
   LearningStateSnapshot,
   Question,
+  QuestionBlueprint,
   ReportSummary,
   SessionRecord,
   SkillState,
@@ -50,9 +51,10 @@ interface AppStateValue {
   analyzeAttempt: (attemptId: string, justification: string) => Promise<AttemptAnalysis>
   saveSession: (session: SessionRecord) => Promise<void>
   saveGeneratedQuestions: (questions: GeneratedQuestionRecord[]) => Promise<void>
+  prepareFreshQuestions: (blueprint: QuestionBlueprint[]) => Promise<GeneratedQuestionRecord[]>
   updateSettings: (patch: Partial<LearnerSettings>) => Promise<void>
   saveActiveMock: (mock: unknown | null) => Promise<void>
-  generateWeeklyReport: () => Promise<void>
+  generateComprehensiveReport: () => Promise<void>
 }
 
 const AppStateContext = createContext<AppStateValue | null>(null)
@@ -119,6 +121,16 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
     await refresh()
   }, [refresh])
 
+  const prepareFreshQuestions = useCallback(async (blueprint: QuestionBlueprint[]) => {
+    const response = await fetch('/api/practice/generate', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ blueprint }),
+    })
+    const payload = await response.json() as { questions?: GeneratedQuestionRecord[]; error?: string }
+    if (!response.ok || !payload.questions?.length) throw new Error(payload.error || 'Gemini could not prepare fresh questions.')
+    await refresh()
+    return payload.questions
+  }, [refresh])
+
   const updateSettings = useCallback(async (patch: Partial<LearnerSettings>) => {
     const response = await fetch('/api/settings', {
       method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(patch),
@@ -134,12 +146,12 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
     setSnapshot((current) => current ? { ...current, activeMock: mock } : current)
   }, [])
 
-  const generateWeeklyReport = useCallback(async () => {
-    const response = await fetch('/api/reports/weekly', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ force: true }),
+  const generateComprehensiveReport = useCallback(async () => {
+    const response = await fetch('/api/reports/comprehensive', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
     })
     const payload = await response.json() as { error?: string }
-    if (!response.ok) throw new Error(payload.error || 'Weekly report failed.')
+    if (!response.ok) throw new Error(payload.error || 'Complete learning report failed.')
     await refresh()
   }, [refresh])
 
@@ -165,10 +177,11 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
     analyzeAttempt,
     saveSession,
     saveGeneratedQuestions,
+    prepareFreshQuestions,
     updateSettings,
     saveActiveMock,
-    generateWeeklyReport,
-  }), [snapshot, error, settings, skillStates, stateMap, refresh, recordAttempt, analyzeAttempt, saveSession, saveGeneratedQuestions, updateSettings, saveActiveMock, generateWeeklyReport])
+    generateComprehensiveReport,
+  }), [snapshot, error, settings, skillStates, stateMap, refresh, recordAttempt, analyzeAttempt, saveSession, saveGeneratedQuestions, prepareFreshQuestions, updateSettings, saveActiveMock, generateComprehensiveReport])
 
   return <AppStateContext.Provider value={value}>{children}</AppStateContext.Provider>
 }
