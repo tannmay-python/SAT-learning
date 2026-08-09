@@ -5,6 +5,7 @@ import type { AttemptAnalysis, Confidence, DataPlot, Question } from '../types'
 import { displayAnswer, isCorrectResponse, sanitizeQuestion } from '../engine/questions'
 import { domainById, skillById } from '../data/curriculum'
 import { DifficultyStars } from './DifficultyStars'
+import { MathText } from './MathText'
 
 interface Props {
   question: Question
@@ -52,6 +53,8 @@ function markedStimulus(text: string, underlinedText?: string) {
 export function QuestionCard({ question, response, onResponse, confidence, onConfidence, submitted, analysis, aiAvailable = false, onAnalyzeRequest, compact = false, showConfidence = true, showMeta = true }: Props) {
   const inputId = useId()
   const displayQuestion = sanitizeQuestion(question)
+  const isMathQuestion = displayQuestion.section === 'math'
+  const renderQuestionText = (text: string) => isMathQuestion ? <MathText text={text} /> : text
   const correct = submitted && isCorrectResponse(question, response)
   const selectedTrap = question.whyWrong?.[response]
   const [analysisOpen, setAnalysisOpen] = useState(false)
@@ -89,13 +92,13 @@ export function QuestionCard({ question, response, onResponse, confidence, onCon
       </header>}
 
       <div className="question-content">
-        {displayQuestion.stimulus && <div className="stimulus">{displayQuestion.stimulus.split('\n').map((line, index) => <p key={index}>{markedStimulus(line, displayQuestion.underlinedText)}</p>)}</div>}
-        {displayQuestion.secondaryStimulus && <div className="stimulus secondary"><strong>Text 2</strong>{markedStimulus(displayQuestion.secondaryStimulus.replace(/^Text 2:\s*/, ''), displayQuestion.underlinedText)}</div>}
+        {displayQuestion.stimulus && <div className="stimulus">{displayQuestion.stimulus.split('\n').map((line, index) => <p key={index}>{isMathQuestion ? <MathText text={line} /> : markedStimulus(line, displayQuestion.underlinedText)}</p>)}</div>}
+        {displayQuestion.secondaryStimulus && <div className="stimulus secondary"><strong>Text 2</strong>{isMathQuestion ? <MathText text={displayQuestion.secondaryStimulus.replace(/^Text 2:\s*/, '')} /> : markedStimulus(displayQuestion.secondaryStimulus.replace(/^Text 2:\s*/, ''), displayQuestion.underlinedText)}</div>}
         {displayQuestion.table && (
-          <div className="table-wrap"><table><caption>{displayQuestion.table.caption}</caption><thead><tr>{displayQuestion.table.headers.map((header) => <th key={header}>{header}</th>)}</tr></thead><tbody>{displayQuestion.table.rows.map((row, rowIndex) => <tr key={rowIndex}>{row.map((cell, cellIndex) => <td key={cellIndex}>{cell}</td>)}</tr>)}</tbody></table></div>
+          <div className="table-wrap"><table><caption>{isMathQuestion ? <MathText text={displayQuestion.table.caption} /> : displayQuestion.table.caption}</caption><thead><tr>{displayQuestion.table.headers.map((header) => <th key={header}>{isMathQuestion ? <MathText text={header} /> : header}</th>)}</tr></thead><tbody>{displayQuestion.table.rows.map((row, rowIndex) => <tr key={rowIndex}>{row.map((cell, cellIndex) => <td key={cellIndex}>{isMathQuestion ? <MathText text={cell} /> : cell}</td>)}</tr>)}</tbody></table></div>
         )}
         {displayQuestion.plot && <QuestionPlot plot={displayQuestion.plot} />}
-        <h2 className="question-prompt">{question.prompt}</h2>
+        <h2 className="question-prompt">{renderQuestionText(question.prompt)}</h2>
       </div>
 
       {question.format === 'multiple-choice' ? (
@@ -108,7 +111,7 @@ export function QuestionCard({ question, response, onResponse, confidence, onCon
             const isWrong = submitted && selected && choice.id !== question.answer
             const eliminated = eliminatedChoices.has(choice.id)
             const choiceText = choice.text.trim() ? choice.text : 'No punctuation'
-            return <div className="choice-row" key={choice.id}><button type="button" role="radio" aria-checked={selected} disabled={submitted || eliminated} className={`choice ${selected ? 'selected' : ''} ${isAnswer ? 'correct' : ''} ${isWrong ? 'wrong' : ''} ${eliminated ? 'eliminated' : ''}`} onClick={() => onResponse(choice.id)}><span>{choice.id}</span><p className={choice.text.trim() ? undefined : 'choice-no-punctuation'}>{choiceText}</p>{isAnswer && <CheckCircle size={20} weight="fill" />}{isWrong && <XCircle size={20} weight="fill" />}{eliminated && <X size={18} weight="bold" />}</button>{!submitted && poeOpen && <button type="button" className={`choice-poe ${eliminated ? 'active' : ''}`} aria-label={`${eliminated ? 'Restore' : 'Eliminate'} choice ${choice.id}`} aria-pressed={eliminated} onClick={() => toggleEliminated(choice.id)}><X size={14} weight="bold" /><span>{eliminated ? 'Restore' : 'Eliminate'}</span></button>}</div>
+            return <div className="choice-row" key={choice.id}><button type="button" role="radio" aria-checked={selected} disabled={submitted || eliminated} className={`choice ${selected ? 'selected' : ''} ${isAnswer ? 'correct' : ''} ${isWrong ? 'wrong' : ''} ${eliminated ? 'eliminated' : ''}`} onClick={() => onResponse(choice.id)}><span>{choice.id}</span><p className={choice.text.trim() ? undefined : 'choice-no-punctuation'}>{isMathQuestion && choice.text.trim() ? <MathText text={choiceText} /> : choiceText}</p>{isAnswer && <CheckCircle size={20} weight="fill" />}{isWrong && <XCircle size={20} weight="fill" />}{eliminated && <X size={18} weight="bold" />}</button>{!submitted && poeOpen && <button type="button" className={`choice-poe ${eliminated ? 'active' : ''}`} aria-label={`${eliminated ? 'Restore' : 'Eliminate'} choice ${choice.id}`} aria-pressed={eliminated} onClick={() => toggleEliminated(choice.id)}><X size={14} weight="bold" /><span>{eliminated ? 'Restore' : 'Eliminate'}</span></button>}</div>
           })}
           </div>
         </div>
@@ -132,10 +135,10 @@ export function QuestionCard({ question, response, onResponse, confidence, onCon
 
       {submitted && (
         <section className={`answer-feedback ${correct ? 'success' : 'error'}`} aria-live="polite">
-          <div className="feedback-title">{correct ? <CheckCircle size={23} weight="fill" /> : <Lightbulb size={23} weight="fill" />}<div><span>{correct ? 'Locked in' : 'Reset the idea'}</span><strong>{correct ? 'Your reasoning landed.' : `Correct answer: ${displayAnswer(question)}`}</strong></div></div>
-          {!correct && selectedTrap && <p className="trap-callout"><b>Your answer:</b> {selectedTrap}</p>}
-          <p>{question.explanation}</p>
-          <div className="concept-reset"><span>Concept reset</span><p>{question.concept}</p><Link href={`/learn?skill=${question.skillId}`}>Open the full lesson</Link></div>
+          <div className="feedback-title">{correct ? <CheckCircle size={23} weight="fill" /> : <Lightbulb size={23} weight="fill" />}<div><span>{correct ? 'Locked in' : 'Reset the idea'}</span><strong>{correct ? 'Your reasoning landed.' : <>Correct answer: {renderQuestionText(displayAnswer(question))}</>}</strong></div></div>
+          {!correct && selectedTrap && <p className="trap-callout"><b>Your answer:</b> {renderQuestionText(selectedTrap)}</p>}
+          <p>{renderQuestionText(question.explanation)}</p>
+          <div className="concept-reset"><span>Concept reset</span><p>{renderQuestionText(question.concept)}</p><Link href={`/learn?skill=${question.skillId}`}>Open the full lesson</Link></div>
         </section>
       )}
 
