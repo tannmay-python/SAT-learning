@@ -96,7 +96,7 @@ function IntervalReport({ report }: { report: ReportSummary }) {
 function ActivityChart({ daily }: { daily: ReturnType<typeof buildLearningInsights>['daily'] }) {
   const peak = Math.max(1, ...daily.map((day) => day.total))
   return <div className="activity-chart" role="img" aria-label="Questions answered on each of the last fourteen days">
-    {daily.map((day, index) => <div className="activity-day" key={day.date} title={`${new Date(`${day.date}T00:00:00`).toLocaleDateString()}: ${day.total} questions, ${day.accuracy}% correct`}><span>{day.total || ''}</span><i style={{ height: `${Math.max(day.total ? 10 : 2, day.total / peak * 100)}%` }} className={day.total ? 'active' : ''} /><small>{index % 2 === 1 ? new Date(`${day.date}T00:00:00`).toLocaleDateString(undefined, { day: 'numeric', month: 'short' }) : ''}</small></div>)}
+    {daily.map((day) => <div className="activity-day" key={day.date} title={`${new Date(`${day.date}T00:00:00`).toLocaleDateString()}: ${day.total} questions, ${day.accuracy}% correct`}><span>{day.total || ''}</span><i style={{ height: `${Math.max(day.total ? 10 : 2, day.total / peak * 100)}%` }} className={day.total ? 'active' : ''} /><small>{new Date(`${day.date}T00:00:00`).toLocaleDateString(undefined, { day: 'numeric', month: 'short' })}</small></div>)}
   </div>
 }
 

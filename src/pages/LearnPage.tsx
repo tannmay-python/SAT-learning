@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'wouter'
-import { ArrowRight, BookOpen, CaretDown, CheckCircle, Compass, MagnifyingGlass, Target, Warning } from '@phosphor-icons/react'
+import { ArrowRight, CaretDown, Compass, MagnifyingGlass } from '@phosphor-icons/react'
 import { curriculum, domains, skillById } from '../data/curriculum'
 import { masteryPercent } from '../engine/adaptive'
 import { useAppState } from '../state/AppState'
@@ -25,7 +25,7 @@ export function LearnPage() {
     <div className="learn-layout">
       <section className="library-intro">
         <div><p className="eyebrow">Complete content map</p><h2>Know the method, then drill it.</h2><p>Thirty-one compact lessons cover every official domain and testing point, with the pattern tells and traps surfaced first.</p></div>
-        <div className="library-stats"><strong>{curriculum.length}</strong><span>skill lessons</span><strong>8</strong><span>official domains</span></div>
+        <div className="library-stats">{curriculum.length} lessons · 8 domains</div>
       </section>
 
       <div className="library-toolbar">
@@ -41,24 +41,23 @@ export function LearnPage() {
           if (!topics.length) return null
           return (
             <section key={domain.id} className="lesson-domain">
-              <header><div><h3>{domain.title}</h3><p>{domain.description}</p></div><span>{domain.weight}% <small>{domain.questionRange}</small></span></header>
+              <header><div><h3>{domain.title}</h3><p>{domain.description}</p></div><span>{domain.weight}% · {domain.questionRange} questions</span></header>
               <div className="lesson-list">
                 {topics.map((topic) => {
                   const state = stateMap.get(topic.id)
                   return (
                     <details key={topic.id} className="lesson" open={selectedSkill === topic.id}>
                       <summary>
-                        <span className="lesson-icon"><BookOpen size={19} weight="duotone" /></span>
                         <span><strong>{topic.title}</strong><small>{topic.description}</small></span>
-                        <span className="lesson-score">{state ? `${masteryPercent(state)}%` : 'Not tested'}</span>
-                        <CaretDown size={17} className="summary-caret" />
+                        <span className="lesson-score">{state ? `${masteryPercent(state)}% mastery` : 'Not tested'}</span>
+                        <CaretDown size={16} weight="light" className="summary-caret" />
                       </summary>
                       <div className="lesson-body">
                         <p className="lesson-why">{topic.whyItMatters}</p>
-                        <div className="lesson-column"><h4>The core idea</h4>{topic.coreIdeas.map((item) => <p key={item}><CheckCircle size={16} weight="fill" />{item}</p>)}</div>
+                        <div className="lesson-column"><h4>The core idea</h4>{topic.coreIdeas.map((item) => <p key={item}>{item}</p>)}</div>
                         <div className="lesson-column"><h4>Fast method</h4><ol>{topic.method.map((item) => <li key={item}>{item}</li>)}</ol></div>
-                        <div className="lesson-column accent"><h4>Pattern tells</h4>{topic.tells.map((item) => <p key={item}><Target size={16} />{item}</p>)}</div>
-                        <div className="lesson-column warning"><h4>Common traps</h4>{topic.traps.map((item) => <p key={item}><Warning size={16} />{item}</p>)}</div>
+                        <div className="lesson-column accent"><h4>Pattern tells</h4>{topic.tells.map((item) => <p key={item}>{item}</p>)}</div>
+                        <div className="lesson-column warning"><h4>Common traps</h4>{topic.traps.map((item) => <p key={item}>{item}</p>)}</div>
                         {topic.formulae && <div className="formula-strip">{topic.formulae.map((formula) => <code key={formula}>{formula}</code>)}</div>}
                         <div className="worked-example-grid">{topic.examples.map((example) => <div className="worked-example" key={example.level}><span>{example.level} worked example</span><strong>{example.prompt}</strong><p><b>{example.answer}</b> {example.walkthrough}</p></div>)}</div>
                         {topic.confusedWith && topic.confusedWith.length > 0 && <div className="confusion-note">{topic.confusedWith.map((item) => { const other = skillById.get(item.skillId); return <div key={item.skillId}><Compass size={16} /><p><strong>Often confused with {other?.title ?? item.skillId}.</strong> {item.distinction} <Link href={`/learn?skill=${item.skillId}`}>Open that lesson <ArrowRight size={12} /></Link></p></div> })}</div>}
