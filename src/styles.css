@@ -471,7 +471,7 @@ input, select, textarea, .primary-button, .secondary-button, .ghost-button, .dan
 .insights-tabs button.active { background: transparent; box-shadow: none; color: var(--text); }
 .report-status { font-size: 12px; }
 .goal-headline { background: transparent; }
-.goal-headline > div { padding: 16px 0; }
+.goal-headline > div { padding: 20px 28px; }
 .goal-headline strong, .insight-metrics strong { font-weight: 400 !important; font-variant-numeric: tabular-nums; }
 .goal-headline strong { font-size: 28px; }
 .insight-metrics { border: 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: transparent; }
@@ -553,8 +553,8 @@ input, select, textarea, .primary-button, .secondary-button, .ghost-button, .dan
 .history-panel > .section-heading, .mistake-list > .section-heading, .pattern-panel > .section-heading { padding: 0 0 22px; }
 .mock-history-row { padding: 24px 0; }
 .mistake-row { padding: 22px 0; }
-.mock-blueprint, .mock-feature-grid { padding: 0 28px; }
-.mock-blueprint > div, .mock-feature-grid > div { padding: 24px 0; }
+.mock-blueprint, .mock-feature-grid { padding: 0; }
+.mock-blueprint > div, .mock-feature-grid > div { padding: 24px 28px; }
 .mistake-layout { gap: 28px; }
 .activity-day > small { font-size: 11px; }
 
@@ -563,7 +563,8 @@ input, select, textarea, .primary-button, .secondary-button, .ghost-button, .dan
   .setup-intelligence { padding-inline: 20px; }
   .setup-panel > .primary-button { margin-inline: 20px; }
   .history-panel, .mistake-list, .pattern-panel { padding: 20px; }
-  .mock-blueprint, .mock-feature-grid { padding-inline: 20px; }
+  .mock-blueprint, .mock-feature-grid { padding: 0; }
+  .mock-blueprint > div, .mock-feature-grid > div { padding-inline: 20px; }
 }
 
 @media (max-width: 900px) {
