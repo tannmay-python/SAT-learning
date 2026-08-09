@@ -41,7 +41,12 @@ function GoalPanel({ progress }: { progress: GoalProgress }) {
 
 function PredictionChart({ progress }: { progress: GoalProgress }) {
   const track = progress.predictionTrack
-  const points = [...track.actual, track.current, track.projection, track.target].filter((point): point is NonNullable<typeof point> => Boolean(point))
+  const renderable = (point: { date: string; total: number } | null | undefined) => Boolean(point && Number.isFinite(point.total) && !Number.isNaN(new Date(point.date).getTime()))
+  const actual = track.actual.filter((point) => renderable(point))
+  const current = renderable(track.current) ? track.current : { date: new Date().toISOString(), total: 1000, kind: 'current' as const }
+  const projection = renderable(track.projection) ? track.projection : null
+  const target = renderable(track.target) ? track.target : null
+  const points = [...actual, current, projection, target].filter((point): point is NonNullable<typeof point> => Boolean(point))
   const times = points.map((point) => new Date(point.date).getTime())
   const scores = points.map((point) => point.total)
   const minTime = Math.min(...times)
@@ -53,25 +58,25 @@ function PredictionChart({ progress }: { progress: GoalProgress }) {
   const tickStep = Math.max(100, Math.ceil((maxScore - minScore) / 5 / 100) * 100)
   const yTicks = Array.from({ length: Math.floor((maxScore - minScore) / tickStep) + 1 }, (_, index) => minScore + index * tickStep)
   if (yTicks[yTicks.length - 1] !== maxScore) yTicks.push(maxScore)
-  const actualPoints = track.actual.map((point) => `${x(point.date)},${y(point.total)}`).join(' ')
-  const forecastStart = track.actual.at(-1) ?? track.current
-  const forecastPoints = track.projection ? `${x(forecastStart.date)},${y(forecastStart.total)} ${x(track.projection.date)},${y(track.projection.total)}` : ''
+  const actualPoints = actual.map((point) => `${x(point.date)},${y(point.total)}`).join(' ')
+  const forecastStart = actual.at(-1) ?? current
+  const forecastPoints = projection ? `${x(forecastStart.date)},${y(forecastStart.total)} ${x(projection.date)},${y(projection.total)}` : ''
   const dateLabel = (date: string) => new Date(date).toLocaleDateString(undefined, { day: 'numeric', month: 'short' })
   return <div className="prediction-chart-wrap">
-    <div className="prediction-chart-heading"><div><strong>Predicted score tracking</strong><small>{track.projection ? 'Checkpoint history plus a test-day projection' : 'All practice evidence informs the current estimate; another mock establishes direction'}</small></div><TrendUp size={18} /></div>
+    <div className="prediction-chart-heading"><div><strong>Predicted score tracking</strong><small>{projection ? 'Checkpoint history plus a test-day projection' : 'All practice evidence informs the current estimate; another mock establishes direction'}</small></div><TrendUp size={18} /></div>
     <svg className="prediction-chart" viewBox="0 0 420 210" role="img" aria-label="Predicted SAT score tracking chart">
       <g className="prediction-grid" aria-hidden="true">{yTicks.map((tick) => <line key={tick} x1="48" y1={y(tick)} x2="398" y2={y(tick)} />)}</g>
       <g className="prediction-axis" aria-hidden="true"><line x1="48" y1="166" x2="398" y2="166" /><line x1="48" y1="166" x2="48" y2="40" /></g>
       {yTicks.map((tick) => <text className="prediction-y-label" key={`label-${tick}`} x="40" y={y(tick) + 3} textAnchor="end">{Math.round(tick)}</text>)}
-      {track.target && <line className="prediction-target" x1="48" y1={y(track.target.total)} x2="398" y2={y(track.target.total)} />}
-      {track.actual.length > 1 && <polyline className="prediction-actual" points={actualPoints} />}
-      {track.projection && <polyline className="prediction-forecast" points={forecastPoints} />}
-      {track.actual.map((point) => <circle className="prediction-point mock" key={`mock-${point.date}`} cx={x(point.date)} cy={y(point.total)} r="4" />)}
-      <circle className="prediction-point current" cx={x(track.current.date)} cy={y(track.current.total)} r="5" />
-      {track.projection && <circle className="prediction-point projection" cx={x(track.projection.date)} cy={y(track.projection.total)} r="4" />}
+      {target && <line className="prediction-target" x1="48" y1={y(target.total)} x2="398" y2={y(target.total)} />}
+      {actual.length > 1 && <polyline className="prediction-actual" points={actualPoints} />}
+      {projection && <polyline className="prediction-forecast" points={forecastPoints} />}
+      {actual.map((point) => <circle className="prediction-point mock" key={`mock-${point.date}`} cx={x(point.date)} cy={y(point.total)} r="4" />)}
+      <circle className="prediction-point current" cx={x(current.date)} cy={y(current.total)} r="5" />
+      {projection && <circle className="prediction-point projection" cx={x(projection.date)} cy={y(projection.total)} r="4" />}
       <text className="prediction-x-label" x="48" y="188">{dateLabel(points[0].date)}</text><text className="prediction-x-label" x="398" y="188" textAnchor="end">{dateLabel(points.at(-1)!.date)}</text>
     </svg>
-    <div className="prediction-legend"><span><i className="legend-dot mock" />Full mock</span><span><i className="legend-dot current" />Current estimate</span>{track.projection && <span><i className="legend-dot projection" />Projection</span>}<span><i className="legend-line target" />Target</span></div>
+    <div className="prediction-legend"><span><i className="legend-dot mock" />Full mock</span><span><i className="legend-dot current" />Current estimate</span>{projection && <span><i className="legend-dot projection" />Projection</span>}<span><i className="legend-line target" />Target</span></div>
   </div>
 }
 

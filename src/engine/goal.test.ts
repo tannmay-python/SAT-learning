@@ -79,4 +79,17 @@ describe('goal progress', () => {
     expect(progress.evidence).toMatchObject({ totalAttempts: 2, rwAttempts: 1, mathAttempts: 1, practiceAttempts: 2, mockAttempts: 0, practiceSessions: 1, fullMocks: 0 })
     expect(progress.estimateJustification).toMatch(/includes|Based on 2 answered responses/)
   })
+
+  it('never exposes NaN when malformed historical evidence is present', () => {
+    const malformed = {
+      id: 'bad', sessionId: 'practice-1', questionId: 'bad-question', section: 'rw', domain: 'craft-structure',
+      skillId: 'words-in-context', difficulty: undefined, response: 'A', correct: true, elapsedMs: 10_000,
+      usedHint: false, createdAt: '2026-08-01T00:00:00Z',
+    } as never as Attempt
+    const progress = computeGoalProgress(settings, [], [], [malformed])
+    expect(Number.isFinite(progress.currentEstimate.rw)).toBe(true)
+    expect(Number.isFinite(progress.currentEstimate.math)).toBe(true)
+    expect(Number.isFinite(progress.currentEstimate.total)).toBe(true)
+    expect(progress.predictionTrack.current.total).toBe(progress.currentEstimate.total)
+  })
 })

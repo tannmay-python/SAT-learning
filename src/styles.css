@@ -631,3 +631,71 @@ input, select, textarea, .primary-button, .secondary-button, .ghost-button, .dan
   font-size: 11px;
   line-height: 1.55;
 }
+
+/* Give stacked information a consistent breathing rhythm. In particular, the
+   goal track is a visual element, not a text underline, so its explanation
+   needs a deliberate separation below it. */
+.analysis-page, .history-view, .coach-view, .mocks-page, .mistakes-page, .settings-page, .learn-layout, .practice-setup {
+  row-gap: 40px;
+}
+.analysis-section > .section-heading {
+  margin-bottom: 24px;
+}
+.goal-panel .goal-headline {
+  margin-top: 22px;
+}
+.goal-panel .goal-track {
+  margin-top: 24px;
+}
+.goal-panel .goal-trend,
+.goal-panel .goal-evidence,
+.goal-panel > .muted-copy {
+  margin-top: 16px;
+}
+.goal-panel .goal-evidence {
+  max-width: 1040px;
+  line-height: 1.65;
+}
+.goal-panel .prediction-chart-wrap {
+  margin-top: 30px;
+  padding: 22px 24px 20px;
+}
+.goal-panel .prediction-chart {
+  margin-top: 18px;
+}
+.goal-panel .prediction-legend {
+  margin-top: 8px;
+}
+.goal-panel .estimate-method,
+.goal-panel .goal-mock-history {
+  margin-top: 20px;
+}
+.history-split, .analysis-grid, .mistake-layout {
+  row-gap: 32px;
+}
+.report-section-grid {
+  gap: 32px;
+}
+.report-detail-block {
+  padding-block: 32px;
+}
+.claim-list article {
+  padding-block: 16px;
+}
+.mistake-row {
+  padding-block: 24px;
+}
+.setup-row,
+.mock-blueprint > div,
+.mock-feature-grid > div {
+  min-height: 76px;
+}
+
+@media (max-width: 700px) {
+  .analysis-page, .history-view, .coach-view, .mocks-page, .mistakes-page, .settings-page, .learn-layout, .practice-setup {
+    row-gap: 32px;
+  }
+  .goal-panel .prediction-chart-wrap {
+    padding-inline: 16px;
+  }
+}

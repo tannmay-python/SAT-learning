@@ -892,24 +892,34 @@ const mathSkillIds = new Set([
  * module boundary; keep the two in sync if the constants ever change.
  */
 export function computeGoalFacts(settings, skillStates, sessions, attempts = []) {
+  const finiteOr = (value, fallback) => Number.isFinite(value) ? value : fallback
+  const validDate = (value) => Boolean(value && !Number.isNaN(Date.parse(value)))
+  const scoreableAttempt = (attempt) => Boolean(
+    attempt?.skillId
+    && (attempt.section === 'rw' || attempt.section === 'math')
+    && Number.isFinite(attempt.difficulty)
+    && typeof attempt.correct === 'boolean'
+    && validDate(attempt.createdAt),
+  )
   const pretestQuestionIds = new Set(sessions.flatMap((session) => session.pretestQuestionIds || []))
-  const scoredAttempts = attempts.filter((attempt) => !pretestQuestionIds.has(attempt.questionId))
-  const estimateStates = attempts.length
+  const scoredAttempts = attempts.filter((attempt) => scoreableAttempt(attempt) && !pretestQuestionIds.has(attempt.questionId))
+  const estimateStates = scoredAttempts.length
     ? [...scoredAttempts].sort((a, b) => a.createdAt.localeCompare(b.createdAt)).reduce((states, attempt) => {
       const previous = states.find((state) => state.skillId === attempt.skillId)
       const state = previous || { skillId: attempt.skillId, theta: 0, alpha: 1, beta: 1, attempts: 0, correct: 0, streak: 0, lapses: 0, avgTimeMs: 0, intervalDays: 0, ease: 2.3 }
       const confidenceWeight = { guess: 0.82, low: 0.91, medium: 1, high: 1.07, certain: 1.13 }
       const evidenceWeight = (attempt.confidence ? confidenceWeight[attempt.confidence] || 1 : 1) * (attempt.usedHint ? 0.72 : 1)
-      const expected = 1 / (1 + Math.exp(-((state.theta - (attempt.difficulty - 3) * 0.72))))
-      const outcome = attempt.correct ? 1 : 0
+      const difficulty = Math.max(1, Math.min(5, Math.round(finiteOr(attempt.difficulty, 3))))
+      const expected = 1 / (1 + Math.exp(-(finiteOr(state.theta, 0) - (difficulty - 3) * 0.72)))
+      const outcome = attempt.correct === true ? 1 : 0
       const learningRate = Math.max(0.12, 0.46 / Math.sqrt(1 + state.attempts / 4))
       const next = {
         ...state,
-        theta: Math.max(-3, Math.min(3, state.theta + learningRate * evidenceWeight * (outcome - expected))),
-        alpha: state.alpha + (attempt.correct ? evidenceWeight : 0),
-        beta: state.beta + (attempt.correct ? 0 : evidenceWeight),
+        theta: Math.max(-3, Math.min(3, finiteOr(state.theta, 0) + learningRate * evidenceWeight * (outcome - expected))),
+        alpha: state.alpha + (outcome ? evidenceWeight : 0),
+        beta: state.beta + (outcome ? 0 : evidenceWeight),
         attempts: state.attempts + 1,
-        correct: state.correct + (attempt.correct ? 1 : 0),
+        correct: state.correct + (outcome ? 1 : 0),
       }
       if (previous) states[states.indexOf(previous)] = next
       else states.push(next)
@@ -917,24 +927,25 @@ export function computeGoalFacts(settings, skillStates, sessions, attempts = [])
     }, [])
     : skillStates
   const sectionTheta = (skillIds) => {
-    const selected = estimateStates.filter((state) => skillIds.has(state.skillId) && state.attempts > 0)
+    const selected = estimateStates.filter((state) => skillIds.has(state.skillId) && Number.isFinite(state.attempts) && state.attempts > 0 && Number.isFinite(state.theta))
     if (!selected.length) return 0
     const totalWeight = selected.reduce((sum, state) => sum + Math.sqrt(state.attempts), 0)
-    return selected.reduce((sum, state) => sum + state.theta * Math.sqrt(state.attempts), 0) / totalWeight
+    if (!Number.isFinite(totalWeight) || totalWeight <= 0) return 0
+    return finiteOr(selected.reduce((sum, state) => sum + state.theta * Math.sqrt(state.attempts), 0) / totalWeight, 0)
   }
-  const scoreFromTheta = (theta) => Math.max(200, Math.min(800, Math.round((200 + 600 / (1 + Math.exp(-1.12 * theta))) / 10) * 10))
+  const scoreFromTheta = (theta) => Math.max(200, Math.min(800, Math.round((200 + 600 / (1 + Math.exp(-1.12 * finiteOr(theta, 0)))) / 10) * 10))
   const liveRw = scoreFromTheta(sectionTheta(readingSkills))
   const liveMath = scoreFromTheta(sectionTheta(mathSkillIds))
 
   const mockHistory = sessions
-    .filter((session) => session.type === 'mock' && session.completedAt && typeof session.estimatedScore === 'number')
+    .filter((session) => session.type === 'mock' && validDate(session.completedAt) && Number.isFinite(session.estimatedScore))
     .sort((a, b) => a.completedAt.localeCompare(b.completedAt))
-    .map((session) => ({ date: session.completedAt, total: session.estimatedScore, rw: session.rwScore, math: session.mathScore }))
+    .map((session) => ({ date: session.completedAt, total: session.estimatedScore, rw: Number.isFinite(session.rwScore) ? session.rwScore : undefined, math: Number.isFinite(session.mathScore) ? session.mathScore : undefined }))
 
   const latestMock = mockHistory.at(-1)
   const mockWeight = mockHistory.length ? Math.min(0.42, 0.2 + Math.max(0, mockHistory.length - 1) * 0.08) : 0
   const nearestTen = (value) => Math.round(value / 10) * 10
-  const blendWithCheckpoint = (live, checkpoint) => checkpoint === undefined ? live : nearestTen(live * (1 - mockWeight) + checkpoint * mockWeight)
+  const blendWithCheckpoint = (live, checkpoint) => !Number.isFinite(checkpoint) ? live : nearestTen(live * (1 - mockWeight) + checkpoint * mockWeight)
   const rw = blendWithCheckpoint(liveRw, latestMock?.rw)
   const math = blendWithCheckpoint(liveMath, latestMock?.math)
   const currentEstimate = { rw, math, total: rw + math }
@@ -966,15 +977,17 @@ export function computeGoalFacts(settings, skillStates, sessions, attempts = [])
     weeklyTrend = Math.round(slopePerDay * 7)
   }
 
-  const daysRemaining = settings.testDate ? Math.ceil((new Date(settings.testDate).getTime() - Date.now()) / (24 * 60 * 60 * 1000)) : null
+  const targetScore = Number.isFinite(settings.targetScore) && settings.targetScore > 0 ? settings.targetScore : null
+  const testDate = validDate(settings.testDate) ? settings.testDate : null
+  const daysRemaining = testDate ? Math.ceil((new Date(testDate).getTime() - Date.now()) / (24 * 60 * 60 * 1000)) : null
   return {
-    targetScore: settings.targetScore || null,
-    testDate: settings.testDate || null,
+    targetScore,
+    testDate,
     daysRemaining,
     currentEstimate,
     estimateJustification,
     evidence,
-    gapToGoal: settings.targetScore ? settings.targetScore - currentEstimate.total : null,
+    gapToGoal: targetScore ? targetScore - currentEstimate.total : null,
     mockHistory,
     weeklyTrend,
   }

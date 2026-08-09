@@ -26,6 +26,16 @@ export interface GoalEvidenceSummary {
   fullMocks: number
 }
 
+const finiteOr = (value: number | undefined, fallback: number): number => Number.isFinite(value) ? value as number : fallback
+const validDate = (value: string | undefined) => Boolean(value && !Number.isNaN(Date.parse(value)))
+const scoreableAttempt = (attempt: Attempt) => Boolean(
+  attempt?.skillId
+  && (attempt.section === 'rw' || attempt.section === 'math')
+  && Number.isFinite(attempt.difficulty)
+  && typeof attempt.correct === 'boolean'
+  && validDate(attempt.createdAt),
+)
+
 export interface GoalProgress {
   targetScore?: number
   testDate?: string
@@ -67,23 +77,29 @@ export function computeGoalProgress(
   attemptsOrNow: Attempt[] | Date = [],
   maybeNow: Date = new Date(),
 ): GoalProgress {
-  const attempts = attemptsOrNow instanceof Date ? [] : attemptsOrNow
-  const now = attemptsOrNow instanceof Date ? attemptsOrNow : maybeNow
+  const attempts = attemptsOrNow instanceof Date ? [] : Array.isArray(attemptsOrNow) ? attemptsOrNow : []
+  const requestedNow = attemptsOrNow instanceof Date ? attemptsOrNow : maybeNow
+  const now = requestedNow instanceof Date && !Number.isNaN(requestedNow.getTime()) ? requestedNow : new Date()
   const rwSkills = [...skillById.values()].filter((skill) => skill.section === 'rw').map((skill) => skill.id)
   const mathSkills = [...skillById.values()].filter((skill) => skill.section === 'math').map((skill) => skill.id)
 
   const mockHistory: ScorePoint[] = sessions
     .filter((session): session is SessionRecord & { completedAt: string; estimatedScore: number } =>
-      session.type === 'mock' && Boolean(session.completedAt) && typeof session.estimatedScore === 'number')
+      session.type === 'mock' && validDate(session.completedAt) && Number.isFinite(session.estimatedScore))
     .sort((a, b) => a.completedAt.localeCompare(b.completedAt))
-    .map((session) => ({ date: session.completedAt, total: session.estimatedScore, rw: session.rwScore, math: session.mathScore }))
+    .map((session) => ({
+      date: session.completedAt,
+      total: session.estimatedScore,
+      rw: Number.isFinite(session.rwScore) ? session.rwScore : undefined,
+      math: Number.isFinite(session.mathScore) ? session.mathScore : undefined,
+    }))
 
   // Mock pretest items are useful for learning, but they are not scored by the
   // SAT and should not move the score estimate. Rebuild the calibration view
   // from the complete answer history when it is available, leaving the stored
   // skill states untouched for spaced-repetition selection.
   const pretestQuestionIds = new Set(sessions.flatMap((session) => session.pretestQuestionIds ?? []))
-  const scoredAttempts = attempts.filter((attempt) => !pretestQuestionIds.has(attempt.questionId))
+  const scoredAttempts = attempts.filter((attempt) => scoreableAttempt(attempt) && !pretestQuestionIds.has(attempt.questionId))
   const estimateStates = scoredAttempts.length
     ? [...scoredAttempts].sort((a, b) => a.createdAt.localeCompare(b.createdAt)).reduce<SkillState[]>((states, attempt) => {
       const index = states.findIndex((state) => state.skillId === attempt.skillId)
@@ -94,6 +110,12 @@ export function computeGoalProgress(
     }, [])
     : skillStates
   const liveEstimate = practiceScoreEstimate(sectionTheta(estimateStates, rwSkills), sectionTheta(estimateStates, mathSkills))
+  const safeLiveEstimate = {
+    rw: finiteOr(liveEstimate.rw, 500),
+    math: finiteOr(liveEstimate.math, 500),
+    total: finiteOr(liveEstimate.total, 1000),
+    confidenceRadius: finiteOr(liveEstimate.confidenceRadius, 95),
+  }
 
   const mockSessionIds = new Set(sessions.filter((session) => session.type === 'mock').map((session) => session.id))
   const mockAttempts = scoredAttempts.filter((attempt) => mockSessionIds.has(attempt.sessionId))
@@ -111,17 +133,17 @@ export function computeGoalProgress(
   const nearestTen = (value: number) => Math.round(value / 10) * 10
   const latestMock = mockHistory[mockHistory.length - 1]
   const mockWeight = mockHistory.length ? Math.min(0.42, 0.2 + Math.max(0, mockHistory.length - 1) * 0.08) : 0
-  const blendWithCheckpoint = (live: number, checkpoint: number | undefined) => checkpoint === undefined ? live : nearestTen(live * (1 - mockWeight) + checkpoint * mockWeight)
+  const blendWithCheckpoint = (live: number, checkpoint: number | undefined) => checkpoint === undefined || !Number.isFinite(checkpoint) ? live : nearestTen(live * (1 - mockWeight) + checkpoint * mockWeight)
   const currentEstimate = {
-    ...liveEstimate,
-    rw: blendWithCheckpoint(liveEstimate.rw, latestMock?.rw),
-    math: blendWithCheckpoint(liveEstimate.math, latestMock?.math),
+    ...safeLiveEstimate,
+    rw: blendWithCheckpoint(safeLiveEstimate.rw, latestMock?.rw),
+    math: blendWithCheckpoint(safeLiveEstimate.math, latestMock?.math),
   }
   currentEstimate.total = currentEstimate.rw + currentEstimate.math
 
   const evidenceRadius = (skillIds: string[]) => {
-    const selected = skillStates.filter((state) => skillIds.includes(state.skillId) && state.attempts > 0)
-    const attemptsObserved = selected.reduce((sum, state) => sum + state.attempts, 0)
+    const selected = skillStates.filter((state) => skillIds.includes(state.skillId) && Number.isFinite(state.attempts) && state.attempts > 0)
+    const attemptsObserved = selected.reduce((sum, state) => sum + finiteOr(state.attempts, 0), 0)
     const coverage = selected.length / Math.max(1, skillIds.length)
     const checkpointConfidence = Math.min(18, mockHistory.length * 6)
     return Math.max(42, Math.min(120, Math.round(128 - Math.sqrt(attemptsObserved) * 6 - coverage * 24 - checkpointConfidence)))
@@ -144,8 +166,9 @@ export function computeGoalProgress(
     weeklyTrend = Math.round(slopePerDay * 7)
   }
 
-  const daysRemaining = settings.testDate
-    ? Math.ceil((new Date(settings.testDate).getTime() - now.getTime()) / DAY_MS)
+  const testDate = validDate(settings.testDate) ? settings.testDate : undefined
+  const daysRemaining = testDate
+    ? Math.ceil((new Date(testDate).getTime() - now.getTime()) / DAY_MS)
     : undefined
 
   let projectedScore: number | null = null
@@ -155,17 +178,18 @@ export function computeGoalProgress(
     projectedScore = Math.max(400, Math.min(1600, Math.round(latest.total + weeklyTrend * weeksRemaining)))
   }
 
-  const gapToGoal = settings.targetScore ? settings.targetScore - currentEstimate.total : undefined
-  const onTrackMargin = projectedScore !== null && settings.targetScore ? projectedScore - settings.targetScore : null
+  const targetScore = Number.isFinite(settings.targetScore) && settings.targetScore > 0 ? settings.targetScore : undefined
+  const gapToGoal = targetScore ? targetScore - currentEstimate.total : undefined
+  const onTrackMargin = projectedScore !== null && targetScore ? projectedScore - targetScore : null
 
   const actual = mockHistory.map((point) => ({ ...point, kind: 'mock' as const }))
   const currentPoint: PredictionPoint = { date: now.toISOString(), total: currentEstimate.total, rw: currentEstimate.rw, math: currentEstimate.math, kind: 'current' }
-  const projection = projectedScore !== null && settings.testDate
-    ? { date: new Date(settings.testDate).toISOString(), total: projectedScore, kind: 'projection' as const }
+  const projection = projectedScore !== null && testDate
+    ? { date: new Date(testDate).toISOString(), total: projectedScore, kind: 'projection' as const }
     : null
-  const target = settings.targetScore
-    ? { date: settings.testDate ? new Date(settings.testDate).toISOString() : now.toISOString(), total: settings.targetScore, kind: 'target' as const }
+  const target = targetScore
+    ? { date: testDate ? new Date(testDate).toISOString() : now.toISOString(), total: targetScore, kind: 'target' as const }
     : null
 
-  return { targetScore: settings.targetScore, testDate: settings.testDate, daysRemaining, currentEstimate, estimateJustification, evidence, gapToGoal, mockHistory, weeklyTrend, projectedScore, onTrackMargin, predictionTrack: { actual, current: currentPoint, projection, target } }
+  return { targetScore, testDate, daysRemaining, currentEstimate, estimateJustification, evidence, gapToGoal, mockHistory, weeklyTrend, projectedScore, onTrackMargin, predictionTrack: { actual, current: currentPoint, projection, target } }
 }

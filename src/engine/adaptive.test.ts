@@ -39,6 +39,15 @@ describe('adaptive learner model', () => {
     expect(unrated.alpha).toBeCloseTo(rated.alpha, 10)
   })
 
+  it('keeps calibration finite when an old answer has malformed numeric fields', () => {
+    const updated = updateSkillState(defaultSkillState('linear-functions'), {
+      ...attempt(true), difficulty: undefined as never, elapsedMs: undefined as never, confidence: 'unexpected' as never,
+    })
+    expect(Number.isFinite(updated.theta)).toBe(true)
+    expect(Number.isFinite(updated.avgTimeMs)).toBe(true)
+    expect(Number.isFinite(updated.dueAt ? Date.parse(updated.dueAt) : NaN)).toBe(true)
+  })
+
   it('raises a section baseline after sustained success at one level', () => {
     const evidence = Array.from({ length: 10 }, (_, index) => ({ ...attempt(index !== 9, 2), id: `a-${index}` }))
     expect(sectionTargetDifficulty(evidence, 'math')).toBe(3)
