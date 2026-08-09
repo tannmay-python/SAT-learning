@@ -1,0 +1,10 @@
+{
+  "id": "learner",
+  "name": "tannmay",
+  "targetScore": 1600,
+  "dailyMinutes": 60,
+  "theme": "light",
+  "aiModel": "gemini-3.6-flash-high",
+  "onboardingComplete": true,
+  "testDate": "2026-08-22"
+}

@@ -173,13 +173,19 @@ export function planReadingBlueprint(
   seenQuestionIds: Set<string>,
   directives: SkillDirective[],
   sectionTarget: Difficulty,
+  skillQuota?: Record<string, number>,
 ): QuestionBlueprint[] {
   const reading = questions.filter((question) => question.section === 'rw')
   const skillUses = new Map<string, number>()
   const chosenIds = new Set<string>()
   const result: QuestionBlueprint[] = []
-  for (let index = 0; index < count; index += 1) {
-    const candidates = reading.filter((question) => !chosenIds.has(question.id))
+  const forcedSkills = skillQuota
+    ? Object.entries(skillQuota).flatMap(([skillId, quota]) => Array.from({ length: quota }, () => skillId))
+    : []
+  const total = forcedSkills.length || count
+  for (let index = 0; index < total; index += 1) {
+    const forcedSkillId = forcedSkills[index]
+    const candidates = reading.filter((question) => !chosenIds.has(question.id) && (!forcedSkillId || question.skillId === forcedSkillId))
     const next = [...candidates].sort((a, b) => {
       const score = (question: Question) => selectionPriority(question, states, seenQuestionIds, new Date(), directives, sectionTarget) - (skillUses.get(question.skillId) ?? 0) * 0.18
       return score(b) - score(a)

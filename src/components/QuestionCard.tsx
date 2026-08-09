@@ -1,5 +1,5 @@
 import { useId, useState } from 'react'
-import { ArrowRight, Brain, CheckCircle, Lightbulb, XCircle } from '@phosphor-icons/react'
+import { ArrowRight, Brain, CheckCircle, Lightbulb, X, XCircle } from '@phosphor-icons/react'
 import { Link } from 'wouter'
 import type { AttemptAnalysis, Confidence, DataPlot, Question } from '../types'
 import { displayAnswer, isCorrectResponse } from '../engine/questions'
@@ -29,8 +29,24 @@ function QuestionPlot({ plot }: { plot: DataPlot }) {
   const x = (value: number) => 48 + (value - minX) / Math.max(1, maxX - minX) * 330
   const y = (value: number) => 172 - (value - minY) / Math.max(1, maxY - minY) * 138
   const linePoints = [...plot.points].sort((a, b) => a.x - b.x).map((point) => `${x(point.x)},${y(point.y)}`).join(' ')
-  const ticks = [...new Set(xs)].sort((a, b) => a - b)
-  return <figure className="question-plot"><figcaption>{plot.caption}</figcaption><svg viewBox="0 0 420 210" role="img" aria-label={plot.caption}><line x1="48" y1="172" x2="390" y2="172" /><line x1="48" y1="172" x2="48" y2="18" />{plot.kind === 'line' && <polyline points={linePoints} />}{plot.points.map((point, index) => <circle key={`${point.x}-${point.y}-${index}`} cx={x(point.x)} cy={y(point.y)} r="4" />)}{ticks.length <= 8 && ticks.map((tick) => <g key={tick}><line x1={x(tick)} y1="172" x2={x(tick)} y2="177" /><text x={x(tick)} y="191" textAnchor="middle">{tick}</text></g>)}{plot.xLabel && <text x="220" y="207" textAnchor="middle">{plot.xLabel}</text>}{plot.yLabel && <text x="13" y="95" textAnchor="middle" transform="rotate(-90 13 95)">{plot.yLabel}</text>}</svg></figure>
+  const xTicks = [...new Set(xs)].sort((a, b) => a - b)
+  const yTicks = Array.from({ length: 4 }, (_, index) => minY + ((maxY - minY) * index) / 3)
+  return <figure className="question-plot"><figcaption>{plot.caption}</figcaption><svg viewBox="0 0 420 210" role="img" aria-label={plot.caption}>
+    <g className="plot-axis" aria-hidden="true"><line x1="48" y1="172" x2="390" y2="172" /><line x1="48" y1="172" x2="48" y2="18" /></g>
+    {yTicks.map((tick) => <g className="plot-y-tick" key={`y-${tick}`}><line x1="43" y1={y(tick)} x2="48" y2={y(tick)} /><text x="39" y={y(tick) + 3} textAnchor="end">{Number.isInteger(tick) ? tick : tick.toFixed(1)}</text></g>)}
+    {plot.kind === 'line' && <polyline points={linePoints} />}
+    {plot.points.map((point, index) => <circle key={`${point.x}-${point.y}-${index}`} cx={x(point.x)} cy={y(point.y)} r="4" />)}
+    {xTicks.length <= 8 && xTicks.map((tick) => <g key={`x-${tick}`}><line x1={x(tick)} y1="172" x2={x(tick)} y2="177" /><text x={x(tick)} y="191" textAnchor="middle">{tick}</text></g>)}
+    {plot.xLabel && <text className="plot-axis-label" x="220" y="207" textAnchor="middle">{plot.xLabel}</text>}
+    {plot.yLabel && <text className="plot-axis-label" x="13" y="95" textAnchor="middle" transform="rotate(-90 13 95)">{plot.yLabel}</text>}
+  </svg></figure>
+}
+
+function markedStimulus(text: string, underlinedText?: string) {
+  if (!underlinedText) return text
+  const start = text.indexOf(underlinedText)
+  if (start < 0) return text
+  return <>{text.slice(0, start)}<span className="question-underlined">{underlinedText}</span>{text.slice(start + underlinedText.length)}</>
 }
 
 export function QuestionCard({ question, response, onResponse, confidence, onConfidence, submitted, analysis, aiAvailable = false, onAnalyzeRequest, compact = false, showConfidence = true, showMeta = true }: Props) {
@@ -41,6 +57,8 @@ export function QuestionCard({ question, response, onResponse, confidence, onCon
   const [justification, setJustification] = useState('')
   const [analysisPending, setAnalysisPending] = useState(false)
   const [analysisError, setAnalysisError] = useState('')
+  const [poeOpen, setPoeOpen] = useState(false)
+  const [eliminatedChoices, setEliminatedChoices] = useState<Set<string>>(new Set())
 
   const requestAnalysis = async () => {
     if (!onAnalyzeRequest || justification.trim().length < 8) return
@@ -48,6 +66,17 @@ export function QuestionCard({ question, response, onResponse, confidence, onCon
     try { await onAnalyzeRequest(justification.trim()) }
     catch (error) { setAnalysisError(error instanceof Error ? error.message : 'Gemini could not analyse this answer.') }
     finally { setAnalysisPending(false) }
+  }
+
+  const toggleEliminated = (choiceId: string) => {
+    if (submitted) return
+    setEliminatedChoices((current) => {
+      const next = new Set(current)
+      if (next.has(choiceId)) next.delete(choiceId)
+      else next.add(choiceId)
+      return next
+    })
+    if (response === choiceId) onResponse('')
   }
 
   return (
@@ -59,8 +88,8 @@ export function QuestionCard({ question, response, onResponse, confidence, onCon
       </header>}
 
       <div className="question-content">
-        {question.stimulus && <div className="stimulus">{question.stimulus.split('\n').map((line, index) => <p key={index}>{line}</p>)}</div>}
-        {question.secondaryStimulus && <div className="stimulus secondary"><strong>Text 2</strong>{question.secondaryStimulus.replace(/^Text 2:\s*/, '')}</div>}
+        {question.stimulus && <div className="stimulus">{question.stimulus.split('\n').map((line, index) => <p key={index}>{markedStimulus(line, question.underlinedText)}</p>)}</div>}
+        {question.secondaryStimulus && <div className="stimulus secondary"><strong>Text 2</strong>{markedStimulus(question.secondaryStimulus.replace(/^Text 2:\s*/, ''), question.underlinedText)}</div>}
         {question.table && (
           <div className="table-wrap"><table><caption>{question.table.caption}</caption><thead><tr>{question.table.headers.map((header) => <th key={header}>{header}</th>)}</tr></thead><tbody>{question.table.rows.map((row, rowIndex) => <tr key={rowIndex}>{row.map((cell, cellIndex) => <td key={cellIndex}>{cell}</td>)}</tr>)}</tbody></table></div>
         )}
@@ -69,13 +98,18 @@ export function QuestionCard({ question, response, onResponse, confidence, onCon
       </div>
 
       {question.format === 'multiple-choice' ? (
-        <div className="choice-list" role="radiogroup" aria-label="Answer choices">
+        <div className="choice-area">
+          {!submitted && <div className="choice-tools"><button type="button" className={`poe-button ${poeOpen ? 'active' : ''}`} aria-pressed={poeOpen} onClick={() => setPoeOpen((value) => !value)}><X size={15} weight="bold" />{poeOpen ? 'PoE on' : 'Process of elimination'}</button><small>{poeOpen ? 'Select an answer choice to cross it out. Select it again to restore it.' : 'Cross out choices you know cannot be correct.'}</small></div>}
+          <div className="choice-list" role="radiogroup" aria-label="Answer choices">
           {question.choices?.map((choice) => {
             const selected = response === choice.id
             const isAnswer = submitted && choice.id === question.answer
             const isWrong = submitted && selected && choice.id !== question.answer
-            return <button key={choice.id} role="radio" aria-checked={selected} disabled={submitted} className={`choice ${selected ? 'selected' : ''} ${isAnswer ? 'correct' : ''} ${isWrong ? 'wrong' : ''}`} onClick={() => onResponse(choice.id)}><span>{choice.id}</span><p>{choice.text}</p>{isAnswer && <CheckCircle size={20} weight="fill" />}{isWrong && <XCircle size={20} weight="fill" />}</button>
+            const eliminated = eliminatedChoices.has(choice.id)
+            const choiceText = choice.text.trim() ? choice.text : 'No punctuation'
+            return <div className="choice-row" key={choice.id}><button type="button" role="radio" aria-checked={selected} disabled={submitted || eliminated} className={`choice ${selected ? 'selected' : ''} ${isAnswer ? 'correct' : ''} ${isWrong ? 'wrong' : ''} ${eliminated ? 'eliminated' : ''}`} onClick={() => onResponse(choice.id)}><span>{choice.id}</span><p className={choice.text.trim() ? undefined : 'choice-no-punctuation'}>{choiceText}</p>{isAnswer && <CheckCircle size={20} weight="fill" />}{isWrong && <XCircle size={20} weight="fill" />}{eliminated && <X size={18} weight="bold" />}</button>{!submitted && poeOpen && <button type="button" className={`choice-poe ${eliminated ? 'active' : ''}`} aria-label={`${eliminated ? 'Restore' : 'Eliminate'} choice ${choice.id}`} aria-pressed={eliminated} onClick={() => toggleEliminated(choice.id)}><X size={14} weight="bold" /><span>{eliminated ? 'Restore' : 'Eliminate'}</span></button>}</div>
           })}
+          </div>
         </div>
       ) : (
         <label className="spr-field" htmlFor={inputId}><span>Your answer</span><input id={inputId} inputMode="decimal" value={response} disabled={submitted} onChange={(event) => onResponse(event.target.value)} placeholder="Enter an integer, decimal, or fraction" /><small>For example: 7, 2.5, or 3/4</small></label>
@@ -83,7 +117,7 @@ export function QuestionCard({ question, response, onResponse, confidence, onCon
 
       {!submitted && showConfidence && (
         <fieldset className="confidence-picker">
-          <legend><span>Confidence</span><small>Optional — used only if you select it</small></legend>
+          <legend><span>Confidence</span><small>Optional. Used only if you select it.</small></legend>
           {([
             ['guess', 'Pure guess'],
             ['low', 'Low'],

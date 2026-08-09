@@ -12,6 +12,10 @@ export interface ScorePoint {
   math?: number
 }
 
+export interface PredictionPoint extends ScorePoint {
+  kind: 'mock' | 'current' | 'projection' | 'target'
+}
+
 export interface GoalProgress {
   targetScore?: number
   testDate?: string
@@ -26,15 +30,22 @@ export interface GoalProgress {
   /** Linear extrapolation of the trend to the test date. Null without a trend or a date. */
   projectedScore: number | null
   onTrackMargin: number | null
+  /** The points shown in the learner-facing predicted-score chart. */
+  predictionTrack: {
+    actual: PredictionPoint[]
+    current: PredictionPoint
+    projection: PredictionPoint | null
+    target: PredictionPoint | null
+  }
 }
 
 /**
- * Pace math is intentionally simple and linear -- extrapolating two or three
- * mock scores is a rough signal, not a model. It exists to answer one
- * question honestly: at the current rate of change, does the gap to target
- * close before the test date, or not. `null` fields mean "not enough
- * evidence yet," which is itself the correct thing to show a learner with
- * one or zero mocks rather than a confident-looking number.
+ * Pace math is intentionally modest. Current calibration is skill-weighted,
+ * with completed full mocks used as a small calibration anchor. The trend is
+ * a least-squares line through all completed mock checkpoints, not just the
+ * first and last values. `null` fields mean "not enough evidence yet," which
+ * is itself the correct thing to show a learner with one or zero mocks rather
+ * than a confident-looking number.
  */
 export function computeGoalProgress(
   settings: LearnerSettings,
@@ -44,7 +55,7 @@ export function computeGoalProgress(
 ): GoalProgress {
   const rwSkills = [...skillById.values()].filter((skill) => skill.section === 'rw').map((skill) => skill.id)
   const mathSkills = [...skillById.values()].filter((skill) => skill.section === 'math').map((skill) => skill.id)
-  const currentEstimate = practiceScoreEstimate(sectionTheta(skillStates, rwSkills), sectionTheta(skillStates, mathSkills))
+  const liveEstimate = practiceScoreEstimate(sectionTheta(skillStates, rwSkills), sectionTheta(skillStates, mathSkills))
 
   const mockHistory: ScorePoint[] = sessions
     .filter((session): session is SessionRecord & { completedAt: string; estimatedScore: number } =>
@@ -52,12 +63,35 @@ export function computeGoalProgress(
     .sort((a, b) => a.completedAt.localeCompare(b.completedAt))
     .map((session) => ({ date: session.completedAt, total: session.estimatedScore, rw: session.rwScore, math: session.mathScore }))
 
+  const nearestTen = (value: number) => Math.round(value / 10) * 10
+  const latestMock = mockHistory[mockHistory.length - 1]
+  const mockWeight = mockHistory.length ? Math.min(0.42, 0.2 + Math.max(0, mockHistory.length - 1) * 0.08) : 0
+  const blendWithCheckpoint = (live: number, checkpoint: number | undefined) => checkpoint === undefined ? live : nearestTen(live * (1 - mockWeight) + checkpoint * mockWeight)
+  const currentEstimate = {
+    ...liveEstimate,
+    rw: blendWithCheckpoint(liveEstimate.rw, latestMock?.rw),
+    math: blendWithCheckpoint(liveEstimate.math, latestMock?.math),
+  }
+  currentEstimate.total = currentEstimate.rw + currentEstimate.math
+
+  const evidenceRadius = (skillIds: string[]) => {
+    const selected = skillStates.filter((state) => skillIds.includes(state.skillId) && state.attempts > 0)
+    const attemptsObserved = selected.reduce((sum, state) => sum + state.attempts, 0)
+    const coverage = selected.length / Math.max(1, skillIds.length)
+    const checkpointConfidence = Math.min(18, mockHistory.length * 6)
+    return Math.max(42, Math.min(120, Math.round(128 - Math.sqrt(attemptsObserved) * 6 - coverage * 24 - checkpointConfidence)))
+  }
+  currentEstimate.confidenceRadius = Math.round((evidenceRadius(rwSkills) + evidenceRadius(mathSkills)) / 2)
+
   let weeklyTrend: number | null = null
   if (mockHistory.length >= 2) {
-    const first = mockHistory[0]
-    const last = mockHistory[mockHistory.length - 1]
-    const weeks = Math.max(1 / 7, (new Date(last.date).getTime() - new Date(first.date).getTime()) / (7 * DAY_MS))
-    weeklyTrend = Math.round((last.total - first.total) / weeks)
+    const firstDate = new Date(mockHistory[0].date).getTime()
+    const points = mockHistory.map((point) => ({ x: (new Date(point.date).getTime() - firstDate) / DAY_MS, y: point.total }))
+    const meanX = points.reduce((sum, point) => sum + point.x, 0) / points.length
+    const meanY = points.reduce((sum, point) => sum + point.y, 0) / points.length
+    const denominator = points.reduce((sum, point) => sum + (point.x - meanX) ** 2, 0)
+    const slopePerDay = denominator ? points.reduce((sum, point) => sum + (point.x - meanX) * (point.y - meanY), 0) / denominator : 0
+    weeklyTrend = Math.round(slopePerDay * 7)
   }
 
   const daysRemaining = settings.testDate
@@ -74,5 +108,14 @@ export function computeGoalProgress(
   const gapToGoal = settings.targetScore ? settings.targetScore - currentEstimate.total : undefined
   const onTrackMargin = projectedScore !== null && settings.targetScore ? projectedScore - settings.targetScore : null
 
-  return { targetScore: settings.targetScore, testDate: settings.testDate, daysRemaining, currentEstimate, gapToGoal, mockHistory, weeklyTrend, projectedScore, onTrackMargin }
+  const actual = mockHistory.map((point) => ({ ...point, kind: 'mock' as const }))
+  const currentPoint: PredictionPoint = { date: now.toISOString(), total: currentEstimate.total, rw: currentEstimate.rw, math: currentEstimate.math, kind: 'current' }
+  const projection = projectedScore !== null && settings.testDate
+    ? { date: new Date(settings.testDate).toISOString(), total: projectedScore, kind: 'projection' as const }
+    : null
+  const target = settings.targetScore
+    ? { date: settings.testDate ? new Date(settings.testDate).toISOString() : now.toISOString(), total: settings.targetScore, kind: 'target' as const }
+    : null
+
+  return { targetScore: settings.targetScore, testDate: settings.testDate, daysRemaining, currentEstimate, gapToGoal, mockHistory, weeklyTrend, projectedScore, onTrackMargin, predictionTrack: { actual, current: currentPoint, projection, target } }
 }

@@ -1,0 +1,933 @@
+{
+  "confidenceCalibration": [
+    {
+      "claim": "Learner demonstrates high confidence and speed on standard grammar rules and basic algebraic operations, but experiences minor confidence miscalibration on complex function transformations and signed inequality divisions where rushing leads to errors.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-functions-178626349932",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-inequalities-178626349934",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-a6653d21-e8ca-4bbc-a402-111931de3817"
+      ]
+    }
+  ],
+  "errorTaxonomy": [
+    {
+      "count": 2,
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-functions-178626349932",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-functions-178626350062"
+      ],
+      "label": "Function Transformation & Intermediate Evaluation Error",
+      "mechanism": "Failing to correctly execute horizontal/vertical shift composition g(x) = f(x+h) + k or stopping at an intermediate step when evaluating g(0)."
+    },
+    {
+      "count": 1,
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-inequalities-178626349934"
+      ],
+      "label": "Inequality Direction Inversion Error",
+      "mechanism": "Neglecting to flip the inequality sign when dividing both sides by a negative coefficient."
+    },
+    {
+      "count": 1,
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-equivalent-expressions-178626350067"
+      ],
+      "label": "Algebraic Polynomial Expansion Error",
+      "mechanism": "Arithmetic error in calculating the linear coefficient b when expanding non-monic binomial products multiplied by a scalar factor and subtracted."
+    },
+    {
+      "count": 1,
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-a6653d21-e8ca-4bbc-a402-111931de3817"
+      ],
+      "label": "Passage Trend Reversal Error",
+      "mechanism": "Selecting an answer choice that claims a reduction in a biological emission when the text explicitly states an increase under environmental stress."
+    },
+    {
+      "count": 1,
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-aa8c3391-548f-4a71-8ee1-cd4f22ebe37d"
+      ],
+      "label": "Vocabulary Tone & Utility Misalignment",
+      "mechanism": "Selecting 'tentative' (uncertainty) rather than 'pragmatic' (practical trade-off) in a passage describing trade-offs between computational speed and accuracy."
+    }
+  ],
+  "executiveSummary": "The learner completed a full-length mock SAT session Across this work the recorded date to the recorded date. Out of 90 total questions across Reading & Writing and Math (both on the higher difficulty adaptive route), the learner answered 84 correctly (93.3% overall accuracy), achieving an estimated total score of 1500 (Reading & Writing: 770, Math: 730). Performance in Reading & Writing was exceptional (52/54, 96.3%), while Math demonstrated strong foundational mastery with key targeted error patterns in composite function transformations, signed inequality directions, and multi-step polynomial expansion.",
+  "learnerModel": {
+    "coachingStyle": "Direct, evidence-bound, and analytical. Focus on step-by-step verification of function transformations, explicit sign-flip checks in inequalities, and precise text tracking in scientific passages.",
+    "hypotheses": [
+      {
+        "claim": "The learner has near-mastery of Standard English Conventions, Rhetorical Synthesis, Transitions, and Inferences in Reading & Writing, but can occasionally misread directional shifts in dense scientific passages.",
+        "confidence": "strong",
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-a6653d21-e8ca-4bbc-a402-111931de3817",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-aa8c3391-548f-4a71-8ee1-cd4f22ebe37d"
+        ]
+      },
+      {
+        "claim": "In Math, the primary impediment to a 750+ score is procedural carelessness on multi-step function shifts g(x) = f(x + a) + b and negative inequality operations, rather than conceptual gaps.",
+        "confidence": "strong",
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-functions-178626349932",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-functions-178626350062",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-inequalities-178626349934",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-equivalent-expressions-178626350067"
+        ]
+      }
+    ],
+    "nextSession": "Focus on Math hard-level function transformations g(x) = f(x+h)+k, inequality division drills, and fast polynomial expansion checks, followed by 5 advanced Words in Context / Central Ideas passages.",
+    "priorities": [
+      {
+        "claim": "Master linear function transformation evaluation g(x) = f(x+h) + k without stopping at intermediate values or misapplying slope shifts.",
+        "confidence": "strong",
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-functions-178626349932",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-functions-178626350062"
+        ]
+      },
+      {
+        "claim": "Enforce mandatory inequality sign-reversal checks whenever dividing or multiplying by negative constants.",
+        "confidence": "strong",
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-inequalities-178626349934"
+        ]
+      },
+      {
+        "claim": "Double-check mental arithmetic during 3-step polynomial expansions ax(bx+c) - dx.",
+        "confidence": "moderate",
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-equivalent-expressions-178626350067"
+        ]
+      }
+    ],
+    "skillDirectives": [
+      {
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-functions-178626349932",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-functions-178626350062"
+        ],
+        "priority": 1,
+        "reason": "Accuracy of 33.3% (1/3) on linear function transformations indicates a critical procedural gap in evaluating g(0) = f(0+h) + k.",
+        "skillId": "linear-functions",
+        "targetDifficulty": 5
+      },
+      {
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-inequalities-178626349934"
+        ],
+        "priority": 0.9,
+        "reason": "50% accuracy on linear inequalities due to missing sign flip when dividing by negative numbers.",
+        "skillId": "linear-inequalities",
+        "targetDifficulty": 5
+      },
+      {
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-equivalent-expressions-178626350067"
+        ],
+        "priority": 0.8,
+        "reason": "75% accuracy (3/4) on equivalent expressions due to a timed expansion arithmetic error on difficulty 5 item.",
+        "skillId": "equivalent-expressions",
+        "targetDifficulty": 5
+      },
+      {
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-a6653d21-e8ca-4bbc-a402-111931de3817"
+        ],
+        "priority": 0.7,
+        "reason": "75% accuracy (3/4) on central ideas due to misreading text directional claims (increase vs decrease).",
+        "skillId": "central-ideas-details",
+        "targetDifficulty": 5
+      },
+      {
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-aa8c3391-548f-4a71-8ee1-cd4f22ebe37d"
+        ],
+        "priority": 0.6,
+        "reason": "87.5% accuracy (7/8) on words in context, missing tone precision on trade-off vocabulary ('pragmatic' vs 'tentative').",
+        "skillId": "words-in-context",
+        "targetDifficulty": 5
+      }
+    ],
+    "strengths": [
+      {
+        "claim": "Flawless execution across Standard English Conventions (Boundaries: 7/7, Form/Structure/Sense: 7/7), Expression of Ideas (Transitions: 6/6, Rhetorical Synthesis: 5/5), and Complex Inferences (4/4).",
+        "confidence": "strong",
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-bnd-03",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-bnd-05",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-20351d32-fa84-4e7e-a462-802e2b5440d5",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-de41316c-9b07-4757-95f5-c1abbd4a0907",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-0f3274fc-c6c0-456e-89e2-5fdd3d8d9268",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-170d7529-2440-4193-8d39-a97e42992df6",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-bf04f34d-151b-4d8d-ade6-e35a281e3716"
+        ]
+      },
+      {
+        "claim": "Solid command of Geometry & Trigonometry (Lines/Angles/Triangles: 2/2, Right Triangle Trig: 2/2, Area/Volume: 2/2, Circles: 1/1) and Advanced Math systems (Systems Linear/Nonlinear: 7/7 combined).",
+        "confidence": "strong",
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-lines-angles-triangles-178626350079",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-right-triangle-trig-178626350080",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-area-volume-178626350078",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-circles-178626350081",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-systems-linear-equations-178626350066",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-systems-nonlinear-178626350074"
+        ]
+      }
+    ],
+    "summary": "Learner model updated following completion of adaptive mock this set. Overall score of 1500 (RW 770, Math 730) reflects elite RW analytical capabilities and robust Math problem-solving skills, with specific mechanical execution vulnerabilities in composite functions and signed inequalities."
+  },
+  "limitations": [
+    "Session evaluated a single full adaptive mock test (90 items).",
+    "No student reasoning notes were recorded in the event stream for qualitative thought-process verification."
+  ],
+  "misconceptionPatterns": [
+    {
+      "claim": "Confusing function input transformations f(x+h) with direct outputs or failing to apply vertical offsets post-evaluation.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-functions-178626349932",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-functions-178626350062"
+      ]
+    },
+    {
+      "claim": "Omitting the mandatory inequality direction flip when multiplying or dividing inequalities by negative numbers.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-inequalities-178626349934"
+      ]
+    },
+    {
+      "claim": "Overlooking directional verbs in scientific texts (e.g. increase vs decrease in emissions), leading to reversal traps.",
+      "confidence": "moderate",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-a6653d21-e8ca-4bbc-a402-111931de3817"
+      ]
+    }
+  ],
+  "pacingAndDecisions": [
+    {
+      "claim": "Pacing in Reading & Writing was exceptionally fast and efficient, averaging 32.5 seconds per item on difficulty 5 items, allowing comprehensive review time.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-762a255a-1ff3-471e-b2e2-f0a8efd49cbb",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-9697c196-ec17-482d-b974-72bafede456a",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-20351d32-fa84-4e7e-a462-802e2b5440d5"
+      ]
+    },
+    {
+      "claim": "In Math, fast execution on standard items (<15s) enabled deep engagement with hard items, though occasional rushed execution on difficulty 5 items led to calculation slips.",
+      "confidence": "moderate",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-equivalent-expressions-178626350067",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-functions-178626350062"
+      ]
+    }
+  ],
+  "recommendedMix": "70% Math (focused on linear function transformations, inequality algebraic manipulations, and non-monic polynomial expansions) / 30% Reading & Writing (focused on high-density scientific Central Ideas and precision vocabulary trade-offs).",
+  "sectionBreakdown": [
+    {
+      "section": "Reading and Writing",
+      "accuracySummary": "52/54 correct (96%)",
+      "pacingSummary": "36s average against a 67s authored target",
+      "findings": [
+        {
+          "claim": "Demonstrated near-flawless performance across all Standard English Conventions, Transitions, Rhetorical Synthesis, and Inferences skills.",
+          "confidence": "strong",
+          "evidenceIds": [
+            "1182ff5b-8c8f-4732-9085-8d0b81531f55-bnd-03",
+            "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-de41316c-9b07-4757-95f5-c1abbd4a0907",
+            "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-0f3274fc-c6c0-456e-89e2-5fdd3d8d9268",
+            "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-170d7529-2440-4193-8d39-a97e42992df6"
+          ]
+        },
+        {
+          "claim": "Only 2 errors in RW, both on difficulty 5 items involving subtle tone selection (Words in Context) and directional claim reading in scientific texts (Central Ideas).",
+          "confidence": "strong",
+          "evidenceIds": [
+            "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-aa8c3391-548f-4a71-8ee1-cd4f22ebe37d",
+            "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-a6653d21-e8ca-4bbc-a402-111931de3817"
+          ]
+        }
+      ],
+      "recommendedFocus": "Maintain current verbal strategies while practicing active annotations for directional claims (increase/decrease) in scientific reading."
+    },
+    {
+      "section": "Math",
+      "accuracySummary": "40/44 correct (91%)",
+      "pacingSummary": "20s average against a 113s authored target",
+      "findings": [
+        {
+          "claim": "Perfect scores achieved in Geometry/Trig (7/7) and Problem Solving & Data Analysis (6/6).",
+          "confidence": "strong",
+          "evidenceIds": [
+            "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-lines-angles-triangles-178626350079",
+            "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-right-triangle-trig-178626350080",
+            "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-area-volume-178626350078",
+            "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-sampling-margin-error-178626350076"
+          ]
+        },
+        {
+          "claim": "Vulnerabilities observed in linear function transformations g(x)=f(x+h)+k (1/3 correct), signed linear inequality solving (1/2 correct), and expansion arithmetic under time constraints (3/4 correct).",
+          "confidence": "strong",
+          "evidenceIds": [
+            "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-functions-178626349932",
+            "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-functions-178626350062",
+            "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-inequalities-178626349934",
+            "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-equivalent-expressions-178626350067"
+          ]
+        }
+      ],
+      "recommendedFocus": "Implement a two-pass verification routine for function transformation questions g(x) = f(x+h) + k and negative inequality divisions."
+    }
+  ],
+  "sevenDayPlan": [
+    {
+      "day": "Day 1: Function Transformations Core Mastery",
+      "minutes": 45,
+      "successCheck": "Achieve 100% accuracy on 10 targeted function transformation questions g(x) = f(x+h) + k.",
+      "work": "Review transformation mechanics for g(x) = f(x+h) + k. Drill 10 hard linear and quadratic function shift questions, explicitly writing out f(x+h) before applying k."
+    },
+    {
+      "day": "Day 2: Signed Inequalities & Inequality Systems",
+      "minutes": 35,
+      "successCheck": "Solve 8 consecutive negative-coefficient inequalities without missing sign reversals.",
+      "work": "Practice linear inequalities with negative coefficients and inequality system point testing. Focus on mandatory sign-flip checks during negative division."
+    },
+    {
+      "day": "Day 3: Multi-Step Algebraic Expansions & Verification",
+      "minutes": 40,
+      "successCheck": "Correctly calculate linear coefficients in 10 polynomial expansion items under timed conditions (90s per item).",
+      "work": "Drill multi-term polynomial expansions involving scalar multipliers 3(ax+b)(cx+d) - ex. Practice rapid double-checking of linear coefficients b."
+    },
+    {
+      "day": "Day 4: Reading Scientific Passages & Directional Tracking",
+      "minutes": 45,
+      "successCheck": "Identify central claims in 6 high-difficulty scientific passages with 100% accuracy, marking directional keywords (increase/decrease/suppress).",
+      "work": "Practice reading dense scientific passages (biology/chemistry). Focus on identifying directional claims and avoiding reversal choices in Central Ideas questions."
+    },
+    {
+      "day": "Day 5: Vocabulary Precision & Functional Tone Drills",
+      "minutes": 30,
+      "successCheck": "Complete 12 difficulty-5 Words in Context items with zero off-target or overclaim trap selections.",
+      "work": "Review high-utility academic vocabulary (pragmatic, tentative, superfluous, insular, supplant). Drill Words in Context items focusing on tone and functional fit."
+    },
+    {
+      "day": "Day 6: Targeted Math Mixed Hard-Set Sprint",
+      "minutes": 50,
+      "successCheck": "Score 18/20 or better on a mixed hard-level Math set (Difficulty 4-5).",
+      "work": "Complete a timed set of 20 difficulty 4-5 Math questions combining Linear Functions, Equivalent Expressions, Systems, and Geometry."
+    },
+    {
+      "day": "Day 7: Full Adaptive Module Simulation & Review",
+      "minutes": 60,
+      "successCheck": "Achieve 100% accuracy on function transformations and signed inequalities during timed re-test.",
+      "work": "Re-test the 6 missed items from this set followed by a mini-mock set of 15 RW and 15 Math questions."
+    }
+  ],
+  "skillBreakdown": [
+    {
+      "skillId": "words-in-context",
+      "correct": 7,
+      "total": 8,
+      "averageSeconds": 40,
+      "diagnosis": "Excellent vocabulary accuracy (87.5%), with 1 error on selecting 'tentative' instead of 'pragmatic' in a trade-off context.",
+      "nextDifficulty": 5,
+      "action": "Review vocabulary nuance for trade-offs vs uncertainty ('pragmatic' vs 'tentative').",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-00990460-3e33-434e-a80d-0ad7a95673a0",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-762a255a-1ff3-471e-b2e2-f0a8efd49cbb",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-9697c196-ec17-482d-b974-72bafede456a",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-aa8c3391-548f-4a71-8ee1-cd4f22ebe37d",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-7641bca5-6f9e-4ddb-8107-c8fcb8243eca",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-fc6073f1-b516-47ad-ba03-6846eaf62558",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-2af5fdf4-a023-4e52-a76c-921ae3485d6d",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-6ae04abc-b141-49ab-8a3b-5a4acbb0da0e"
+      ],
+      "confidence": "strong"
+    },
+    {
+      "skillId": "text-structure-purpose",
+      "correct": 6,
+      "total": 6,
+      "averageSeconds": 33,
+      "diagnosis": "Flawless execution across all difficulty 5 text structure and purpose items.",
+      "nextDifficulty": 5,
+      "action": "Maintain current analytical approach for passage structure and purpose.",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-783ea645-b50a-4d90-a9ab-1910a8091743",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-70fc149b-e1c9-42e0-945d-2fba0ca0f40f",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-75517a99-c4d4-42ca-93ed-a3a83536186b",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-b54a5240-8356-47b5-be03-1153106e27ff",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-b0c6f63d-187d-433f-b18e-f73caa5b6ed2",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-eec0e5d0-c3f7-46cd-b26d-8520f64d41e1"
+      ],
+      "confidence": "strong"
+    },
+    {
+      "skillId": "cross-text-connections",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 0,
+      "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+      "nextDifficulty": 5,
+      "action": "Collect another varied item before changing difficulty.",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-2fa1bb11-1cb5-48fb-91d5-518b3ee5a540"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "central-ideas-details",
+      "correct": 3,
+      "total": 4,
+      "averageSeconds": 56,
+      "diagnosis": "Solid overall understanding (75%), with 1 reversal error misreading monoterpene emission increase as a decrease.",
+      "nextDifficulty": 5,
+      "action": "Annotate directional shifts (increase/decrease) in scientific text to avoid reversal traps.",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-36e6d39d-05dc-4b57-8c5e-ad5ff8352636",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-a6653d21-e8ca-4bbc-a402-111931de3817",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-cf8dd117-aa14-4ccc-8ee1-7eef7fcbf91f",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-053f3bd5-7f04-4fea-a36a-8daf5cd87e8e"
+      ],
+      "confidence": "moderate"
+    },
+    {
+      "skillId": "command-evidence-textual",
+      "correct": 3,
+      "total": 3,
+      "averageSeconds": 84,
+      "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+      "nextDifficulty": 5,
+      "action": "Collect another varied item before changing difficulty.",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-51760db0-24c1-4dbe-8ccc-6b54b0d901e5",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-7cddbc9c-c19d-4f32-b82f-3a40afa92dc4",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-e2d64bca-c7fd-4e23-b8c3-86239855dd62"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "command-evidence-quantitative",
+      "correct": 3,
+      "total": 3,
+      "averageSeconds": 62,
+      "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+      "nextDifficulty": 5,
+      "action": "Collect another varied item before changing difficulty.",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-9c9a768b-8870-48aa-a85a-78ef978e681e",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-2e9fd689-29bd-4f3f-82aa-a487f1c07b1a",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-347b1e8a-e18e-4899-ac01-870cb8013128"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "inferences",
+      "correct": 4,
+      "total": 4,
+      "averageSeconds": 47,
+      "diagnosis": "100% accuracy on difficulty 5 inference questions.",
+      "nextDifficulty": 5,
+      "action": "Maintain logical deduction strategy for complex inferences.",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-b85b3fd0-f0f3-4ca9-ac5a-a3d018946224",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-691aaede-a3be-4489-bff7-bf5d0ec7bb0b",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-85b05499-b81f-4235-a721-3538efe93b08",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-bf04f34d-151b-4d8d-ade6-e35a281e3716"
+      ],
+      "confidence": "strong"
+    },
+    {
+      "skillId": "boundaries",
+      "correct": 7,
+      "total": 7,
+      "averageSeconds": 19,
+      "diagnosis": "Flawless punctuation boundary control across colons, semicolons, and commas.",
+      "nextDifficulty": 5,
+      "action": "Maintain fast clause boundary punctuation rules.",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-bnd-03",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-bnd-05",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-20351d32-fa84-4e7e-a462-802e2b5440d5",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-bnd-11",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-bnd-09",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-agent-a-rw-167",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-agent-a-rw-176"
+      ],
+      "confidence": "strong"
+    },
+    {
+      "skillId": "form-structure-sense",
+      "correct": 7,
+      "total": 7,
+      "averageSeconds": 24,
+      "diagnosis": "100% accuracy on subject-verb agreement, verb complements, and parallelism.",
+      "nextDifficulty": 5,
+      "action": "Maintain current grammatical agreement and verb form strategies.",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-de41316c-9b07-4757-95f5-c1abbd4a0907",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-4e82ae50-92da-4ad6-a0f4-f67563e625fa",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-380843d7-4967-497f-9459-740cfb5b1405",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-0d3d28a7-61cd-43eb-a255-5f3b823989e5",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-4a92e35b-a0d9-4f51-a152-c8725135947d",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-82f34b22-be16-4185-ab7d-682033f333dc",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-8e15a31f-3743-4367-8b0a-17736937ef47"
+      ],
+      "confidence": "strong"
+    },
+    {
+      "skillId": "transitions",
+      "correct": 6,
+      "total": 6,
+      "averageSeconds": 15,
+      "diagnosis": "100% accuracy on logical transition selection.",
+      "nextDifficulty": 5,
+      "action": "Maintain rapid transition logic identification.",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-0f3274fc-c6c0-456e-89e2-5fdd3d8d9268",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-e59edf8d-e3d4-4441-9f75-de380ad1fa59",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-c53eed88-af2a-4244-b8df-4ffd5269d9ae",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-27c3197d-f3f7-4a55-ab7f-55a7aa640804",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-71878ebe-db30-43f1-8c5a-d252446a7194",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-c345779c-f275-412c-96f7-7d48ada075f3"
+      ],
+      "confidence": "strong"
+    },
+    {
+      "skillId": "rhetorical-synthesis",
+      "correct": 5,
+      "total": 5,
+      "averageSeconds": 39,
+      "diagnosis": "100% accuracy on goal-driven rhetorical synthesis questions.",
+      "nextDifficulty": 5,
+      "action": "Maintain note integration strategy.",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-170d7529-2440-4193-8d39-a97e42992df6",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-48858600-9374-401c-8198-8a4583fa23dc",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-80e1adad-8cf5-4e0c-8b05-30f4e8e73725",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-d3f63828-cbf6-4b48-94d3-9ac73c8fe1c6",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-50717194-976f-45e8-a81f-a2e55aad9311"
+      ],
+      "confidence": "strong"
+    },
+    {
+      "skillId": "lines-angles-triangles",
+      "correct": 2,
+      "total": 2,
+      "averageSeconds": 28,
+      "diagnosis": "100% accuracy on triangle angle sums and similar triangle scale factors.",
+      "nextDifficulty": 5,
+      "action": "Maintain speed on basic geometric angle sums and similar triangles.",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-lines-angles-triangles-178626349950",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-lines-angles-triangles-178626350079"
+      ],
+      "confidence": "strong"
+    },
+    {
+      "skillId": "ratios-rates-units",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 0,
+      "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+      "nextDifficulty": 1,
+      "action": "Collect another varied item before changing difficulty.",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-ratios-rates-units-178626349945"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "linear-equations-one-variable",
+      "correct": 3,
+      "total": 3,
+      "averageSeconds": 3,
+      "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+      "nextDifficulty": 1,
+      "action": "Collect another varied item before changing difficulty.",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-equations-one-variable-178626349930",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-equations-one-variable-178626349935",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-equations-one-variable-178626350060"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "nonlinear-functions",
+      "correct": 4,
+      "total": 4,
+      "averageSeconds": 15,
+      "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+      "nextDifficulty": 1,
+      "action": "Collect another varied item before changing difficulty.",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-nonlinear-functions-178626349940",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-nonlinear-functions-178626349944",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-nonlinear-functions-178626350073",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-nonlinear-functions-178626350069"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "nonlinear-equations",
+      "correct": 4,
+      "total": 4,
+      "averageSeconds": 8,
+      "diagnosis": "100% accuracy on factoring quadratics and solving radical equations with extraneous solution checks.",
+      "nextDifficulty": 5,
+      "action": "Maintain factoring and radical equation solving workflows.",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-nonlinear-equations-178626349943",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-nonlinear-equations-178626349939",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-nonlinear-equations-178626350068",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-nonlinear-equations-178626350072"
+      ],
+      "confidence": "strong"
+    },
+    {
+      "skillId": "equivalent-expressions",
+      "correct": 3,
+      "total": 4,
+      "averageSeconds": 23,
+      "diagnosis": "75% accuracy (3/4). Made 1 expansion calculation error under time pressure on a difficulty 5 scalar product item.",
+      "nextDifficulty": 5,
+      "action": "Implement explicit arithmetic confirmation step when calculating linear coefficients from product expansions.",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-equivalent-expressions-178626349938",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-equivalent-expressions-178626349942",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-equivalent-expressions-178626350071",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-equivalent-expressions-178626350067"
+      ],
+      "confidence": "strong"
+    },
+    {
+      "skillId": "probability",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 8,
+      "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+      "nextDifficulty": 2,
+      "action": "Collect another varied item before changing difficulty.",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-probability-178626349948"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "systems-linear-equations",
+      "correct": 4,
+      "total": 4,
+      "averageSeconds": 17,
+      "diagnosis": "100% accuracy on linear systems including standard elimination and parameter matching for infinite solutions.",
+      "nextDifficulty": 5,
+      "action": "Maintain elimination/substitution methods and infinite solution criteria (4k=24).",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-systems-linear-equations-178626349933",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-systems-linear-equations-178626349937",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-systems-linear-equations-178626350066",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-systems-linear-equations-178626350063"
+      ],
+      "confidence": "strong"
+    },
+    {
+      "skillId": "linear-equations-two-variables",
+      "correct": 3,
+      "total": 3,
+      "averageSeconds": 19,
+      "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+      "nextDifficulty": 3,
+      "action": "Collect another varied item before changing difficulty.",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-equations-two-variables-178626349931",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-equations-two-variables-178626350065",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-equations-two-variables-178626350061"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "percentages",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 0,
+      "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+      "nextDifficulty": 3,
+      "action": "Collect another varied item before changing difficulty.",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-percentages-178626349946"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "right-triangle-trig",
+      "correct": 2,
+      "total": 2,
+      "averageSeconds": 24,
+      "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+      "nextDifficulty": 3,
+      "action": "Collect another varied item before changing difficulty.",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-right-triangle-trig-178626349951",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-right-triangle-trig-178626350080"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "systems-nonlinear",
+      "correct": 3,
+      "total": 3,
+      "averageSeconds": 13,
+      "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+      "nextDifficulty": 3,
+      "action": "Collect another varied item before changing difficulty.",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-systems-nonlinear-178626349941",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-systems-nonlinear-178626350070",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-systems-nonlinear-178626350074"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "linear-functions",
+      "correct": 1,
+      "total": 3,
+      "averageSeconds": 45,
+      "diagnosis": "33.3% accuracy (1/3). Failed both difficulty 5 transformation questions by misapplying vertical/horizontal shifts and stopping at intermediate values.",
+      "nextDifficulty": 4,
+      "action": "Practice function transformations g(x) = f(x+h) + k explicitly writing f(x) before shifting.",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-functions-178626349936",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-functions-178626349932",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-functions-178626350062"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "area-volume",
+      "correct": 2,
+      "total": 2,
+      "averageSeconds": 53,
+      "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+      "nextDifficulty": 4,
+      "action": "Collect another varied item before changing difficulty.",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-area-volume-178626349949",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-area-volume-178626350078"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "linear-inequalities",
+      "correct": 1,
+      "total": 2,
+      "averageSeconds": 41,
+      "diagnosis": "50% accuracy (1/2). Missed sign reversal when dividing by negative coefficient -12.",
+      "nextDifficulty": 4,
+      "action": "Enforce mandatory check: flip inequality direction whenever dividing by negative coefficients.",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-inequalities-178626349934",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-inequalities-178626350064"
+      ],
+      "confidence": "moderate"
+    },
+    {
+      "skillId": "one-variable-data",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 9,
+      "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+      "nextDifficulty": 5,
+      "action": "Collect another varied item before changing difficulty.",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-one-variable-data-178626349947"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "two-variable-data",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 19,
+      "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+      "nextDifficulty": 3,
+      "action": "Collect another varied item before changing difficulty.",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-two-variable-data-178626350075"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "sampling-margin-error",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 0,
+      "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+      "nextDifficulty": 4,
+      "action": "Collect another varied item before changing difficulty.",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-sampling-margin-error-178626350076"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "circles",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 47,
+      "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+      "nextDifficulty": 4,
+      "action": "Collect another varied item before changing difficulty.",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-circles-178626350081"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "statistical-claims",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 0,
+      "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+      "nextDifficulty": 5,
+      "action": "Collect another varied item before changing difficulty.",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-statistical-claims-178626350077"
+      ],
+      "confidence": "tentative"
+    }
+  ],
+  "strengths": [
+    {
+      "claim": "Near-perfect Reading & Writing mastery (52/54, 96.3%), featuring 100% accuracy on Standard English Conventions (14/14), Expression of Ideas (11/11), and Inferences (4/4).",
+      "confidence": "strong",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-bnd-03",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-de41316c-9b07-4757-95f5-c1abbd4a0907",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-0f3274fc-c6c0-456e-89e2-5fdd3d8d9268",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-170d7529-2440-4193-8d39-a97e42992df6",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-bf04f34d-151b-4d8d-ade6-e35a281e3716"
+      ]
+    },
+    {
+      "claim": "Total mastery of Geometry & Trigonometry (7/7) and Problem Solving & Data Analysis (6/6), with zero errors across area/volume, right triangles, circles, rates, statistics, and sampling.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-lines-angles-triangles-178626350079",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-right-triangle-trig-178626350080",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-area-volume-178626350078",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-circles-178626350081",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-statistical-claims-178626350077"
+      ]
+    }
+  ],
+  "studyPriorities": [
+    {
+      "action": "Practice evaluating function transformations g(x) = f(x+h) + k by writing down f(x) explicitly before substituting (x+h) and evaluating g(0).",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-functions-178626349932",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-functions-178626350062"
+      ],
+      "reason": "Accuracy of 33.3% (1/3) on linear-functions transformation items represents the largest single point drag in Math.",
+      "skillId": "linear-functions"
+    },
+    {
+      "action": "Enforce a mandatory check rule to flip inequality signs whenever dividing or multiplying by negative quantities.",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-inequalities-178626349934"
+      ],
+      "reason": "50% accuracy on linear-inequalities caused by omitting inequality direction flip when dividing -12x > 0.",
+      "skillId": "linear-inequalities"
+    },
+    {
+      "action": "Double-check linear term coefficient arithmetic in 3-step polynomial expansions a(bx+c)(dx+e) - fx.",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-equivalent-expressions-178626350067"
+      ],
+      "reason": "Timed execution error on difficulty 5 equivalent expressions item (entered 147 instead of 57).",
+      "skillId": "equivalent-expressions"
+    },
+    {
+      "action": "Annotate directional words (increase, decrease, protect, suppress) when tracking complex scientific passage claims.",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-a6653d21-e8ca-4bbc-a402-111931de3817"
+      ],
+      "reason": "Fell for a reversal trap on difficulty 5 central ideas item by selecting a choice claiming emissions decreased during drought.",
+      "skillId": "central-ideas-details"
+    },
+    {
+      "action": "Distinguish between practical trade-off vocabulary ('pragmatic') and uncertainty vocabulary ('tentative') in technical contexts.",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-aa8c3391-548f-4a71-8ee1-cd4f22ebe37d"
+      ],
+      "reason": "Off-target error selecting 'tentative' when describing practical trade-off models delivering sufficient accuracy.",
+      "skillId": "words-in-context"
+    }
+  ],
+  "title": "Set review: 92 of 98 correct",
+  "transferAndRetention": [
+    {
+      "claim": "Learner shows strong retention and transfer of standard punctuation rules across different difficulty levels (Difficulty 2 to 5 boundaries items all answered correctly).",
+      "confidence": "strong",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-bnd-03",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-bnd-05",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-bnd-11",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-bnd-09",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-agent-a-rw-167"
+      ]
+    }
+  ],
+  "weaknesses": [
+    {
+      "claim": "Procedural breakdown on function transformation evaluation g(x) = f(x + h) + k, resulting in 2 incorrect items (1/3 accuracy on linear-functions).",
+      "confidence": "strong",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-functions-178626349932",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-functions-178626350062"
+      ]
+    },
+    {
+      "claim": "Inequality direction flip omission when dividing linear inequalities by negative numbers (50% accuracy on linear-inequalities).",
+      "confidence": "strong",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-inequalities-178626349934"
+      ]
+    },
+    {
+      "claim": "Arithmetic expansion error under time pressure on multi-step equivalent expressions items (75% accuracy on equivalent-expressions).",
+      "confidence": "moderate",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-equivalent-expressions-178626350067"
+      ]
+    }
+  ],
+  "whatChanged": [
+    {
+      "claim": "Reading & Writing performance solidified at the 770 level (96.3% accuracy), demonstrating elite command of complex rhetorical structures, inferences, and Standard English conventions.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-783ea645-b50a-4d90-a9ab-1910a8091743",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-51760db0-24c1-4dbe-8ccc-6b54b0d901e5",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-bf04f34d-151b-4d8d-ade6-e35a281e3716"
+      ]
+    },
+    {
+      "claim": "Math score reached 730 (88.9% accuracy), establishing strong mastery across Geometry, Systems, and Data Analysis, but revealing specific operational vulnerabilities in function transformations and signed inequality rules.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-lines-angles-triangles-178626350079",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-systems-linear-equations-178626350066",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-functions-178626349932",
+        "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-inequalities-178626349934"
+      ]
+    }
+  ],
+  "id": "1182ff5b-8c8f-4732-9085-8d0b81531f55",
+  "type": "session",
+  "period": "2026-08-09T08:18:17.198Z to 2026-08-09T09:45:15.811Z",
+  "createdAt": "2026-08-09T09:48:45.685Z",
+  "model": "gemini-3.6-flash-high",
+  "answerCount": 98
+}

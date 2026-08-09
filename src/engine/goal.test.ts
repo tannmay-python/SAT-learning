@@ -18,6 +18,9 @@ describe('goal progress', () => {
     expect(progress.mockHistory).toHaveLength(0)
     expect(progress.weeklyTrend).toBeNull()
     expect(progress.projectedScore).toBeNull()
+    expect(progress.predictionTrack.actual).toHaveLength(0)
+    expect(progress.predictionTrack.current.total).toBe(progress.currentEstimate.total)
+    expect(progress.predictionTrack.target?.total).toBe(1600)
     expect(progress.daysRemaining).toBe(31)
     expect(progress.gapToGoal).toBe(1600 - progress.currentEstimate.total)
   })
@@ -35,6 +38,8 @@ describe('goal progress', () => {
     expect(progress.projectedScore!).toBeGreaterThanOrEqual(1300)
     expect(progress.projectedScore!).toBeLessThanOrEqual(1600)
     expect(progress.onTrackMargin).toBe(progress.projectedScore! - 1600)
+    expect(progress.predictionTrack.actual).toHaveLength(2)
+    expect(progress.predictionTrack.projection?.total).toBe(progress.projectedScore)
   })
 
   it('ignores non-mock and incomplete sessions when building history', () => {

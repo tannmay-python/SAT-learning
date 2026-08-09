@@ -1,0 +1,531 @@
+{
+  "id": "2026-W32",
+  "type": "weekly",
+  "title": "Weekly SAT Learning Report (Period Ending 2026-08-06)",
+  "period": "Seven days ending 2026-08-06",
+  "createdAt": "2026-08-06T20:55:57.013Z",
+  "executiveSummary": "During the 7-day period ending 2026-08-06, the learner completed 1 diagnostic session (cf15003d-c6f5-438c-bf0f-fdb24d8a5841) comprising 12 items (11 Reading & Writing, 1 Math). The learner achieved 100% accuracy (12/12) with rapid pacing averaging 17s per item (well below the target average of 60s). While baseline competence at Difficulty Level 2 is clear across all tested skills, significant under-confidence was recorded, with 7 of 12 items marked as 'unsure' (6) or 'guessing' (1). Because each skill has only 1 attempt in a single session, skills cannot yet be classified as fluent, mastered, or retained. Immediate escalation to Difficulty Level 3 and expansion of Math skill coverage are recommended.",
+  "model": "gemini-3.6-flash-high",
+  "sectionBreakdown": [
+    {
+      "section": "Reading and Writing",
+      "accuracySummary": "11/11 correct (100%)",
+      "pacingSummary": "17s average against a 55s authored target",
+      "findings": [
+        {
+          "claim": "100% accuracy across Craft & Structure, Information & Ideas, Standard English Conventions, and Expression of Ideas at Level 2.",
+          "confidence": "strong",
+          "evidenceIds": [
+            "b0871dfe-876f-4905-b8f0-03d28605cf22",
+            "1c016f32-1ead-4639-8a12-e39ddb61e9f5",
+            "cfc4d0de-f00b-4334-a9be-2162017ef9d4",
+            "b28bb33a-d355-411c-bc2d-dc8628c21ecf",
+            "14b4a224-c084-45b0-a2e0-cabc174c5472",
+            "68c30d85-e830-4d3e-b7ab-47fa7cde398c",
+            "cdaa0a56-a8d7-4688-bbee-661c639b8e95",
+            "64aa09a3-c406-456f-995a-9a2234fd35e0",
+            "97c86e56-58df-410b-84aa-d675f6a0eaba",
+            "88d6db9e-6545-4d13-9127-d7a1f64eec70",
+            "d282c074-8954-43fa-bca3-fd4ee6eacf3e"
+          ]
+        },
+        {
+          "claim": "Pacing is well within target times, ranging from 7s (words-in-context) to 30s (command-evidence-quantitative).",
+          "confidence": "strong",
+          "evidenceIds": [
+            "b0871dfe-876f-4905-b8f0-03d28605cf22",
+            "68c30d85-e830-4d3e-b7ab-47fa7cde398c"
+          ]
+        }
+      ],
+      "recommendedFocus": "Escalate items to Level 3 difficulty; focus on validating standard grammar rules (boundaries, modifier placement) to convert tentative choices into confident mastery."
+    },
+    {
+      "section": "Math",
+      "accuracySummary": "1/1 correct (100%)",
+      "pacingSummary": "10s average against a 114s authored target",
+      "findings": [
+        {
+          "claim": "Demonstrated accurate arithmetic and inverse operations on a 1-step/2-step linear equation (3x + 7 = 46) in 10 seconds.",
+          "confidence": "tentative",
+          "evidenceIds": [
+            "0f1269e1-405a-4f00-b38f-e5c86f16f23b"
+          ]
+        }
+      ],
+      "recommendedFocus": "Broaden Math testing across linear systems, quadratic equations, functions, and geometry at Difficulty Levels 2 and 3."
+    }
+  ],
+  "skillBreakdown": [
+    {
+      "skillId": "words-in-context",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 7,
+      "diagnosis": "Flawless contextual choice of 'reinterpreted' in 7s.",
+      "nextDifficulty": 3,
+      "action": "Advance to Level 3 vocabulary items with subtle secondary definitions.",
+      "evidenceIds": [
+        "b0871dfe-876f-4905-b8f0-03d28605cf22"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "text-structure-purpose",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 10,
+      "diagnosis": "Correctly identified sentence function (challenging assumption) in 10s, but reported 'unsure'.",
+      "nextDifficulty": 3,
+      "action": "Provide Level 3 passage function questions to consolidate structural analysis confidence.",
+      "evidenceIds": [
+        "1c016f32-1ead-4639-8a12-e39ddb61e9f5"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "cross-text-connections",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 24,
+      "diagnosis": "Correctly synthesized two texts regarding stream restoration benefits in 24s.",
+      "nextDifficulty": 3,
+      "action": "Test Level 3 paired-passage items requiring nuanced perspective synthesis.",
+      "evidenceIds": [
+        "cfc4d0de-f00b-4334-a9be-2162017ef9d4"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "central-ideas-details",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 16,
+      "diagnosis": "Accurately extracted Mensah's conclusion on rice husk ash additive range in 16s.",
+      "nextDifficulty": 3,
+      "action": "Escalate to Level 3 dense scientific stimuli.",
+      "evidenceIds": [
+        "b28bb33a-d355-411c-bc2d-dc8628c21ecf"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "command-evidence-textual",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 16,
+      "diagnosis": "Selected direct experimental support for bird nesting box grip in 16s, though felt 'unsure'.",
+      "nextDifficulty": 3,
+      "action": "Introduce Level 3 hypothesis-testing items with competing plausible options.",
+      "evidenceIds": [
+        "14b4a224-c084-45b0-a2e0-cabc174c5472"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "command-evidence-quantitative",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 30,
+      "diagnosis": "Selected data point proving highest survival in partial shade in 30s; felt 'unsure'.",
+      "nextDifficulty": 3,
+      "action": "Present Level 3 multi-variable chart and table synthesis questions.",
+      "evidenceIds": [
+        "68c30d85-e830-4d3e-b7ab-47fa7cde398c"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "inferences",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 27,
+      "diagnosis": "Correctly inferred return box location link to overdue book reduction in 27s; marked 'unsure'.",
+      "nextDifficulty": 3,
+      "action": "Practice Level 3 subtle inferential reasoning items.",
+      "evidenceIds": [
+        "cdaa0a56-a8d7-4688-bbee-661c639b8e95"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "boundaries",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 18,
+      "diagnosis": "Correctly applied semicolon and transition punctuation (; therefore,) in 18s, but marked 'guessing'.",
+      "nextDifficulty": 3,
+      "action": "Explicitly teach clause boundary punctuation rules to convert guesses into confident knowledge.",
+      "evidenceIds": [
+        "64aa09a3-c406-456f-995a-9a2234fd35e0"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "form-structure-sense",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 17,
+      "diagnosis": "Correctly aligned opening introductory modifier with subject ('the conservators') in 17s; marked 'unsure'.",
+      "nextDifficulty": 3,
+      "action": "Review misplaced and dangling modifier rules using Level 3 complex sentences.",
+      "evidenceIds": [
+        "97c86e56-58df-410b-84aa-d675f6a0eaba"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "rhetorical-synthesis",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 16,
+      "diagnosis": "Effortlessly combined research background and key finding into one sentence in 16s.",
+      "nextDifficulty": 3,
+      "action": "Challenge with Level 3 bullet synthesis tasks having complex goal constraints.",
+      "evidenceIds": [
+        "88d6db9e-6545-4d13-9127-d7a1f64eec70"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "transitions",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 9,
+      "diagnosis": "Identified cause-and-effect transition ('Consequently') in 9s; marked 'unsure'.",
+      "nextDifficulty": 3,
+      "action": "Reinforce transition category logic (cause/effect, contrast, addition, exemplification).",
+      "evidenceIds": [
+        "d282c074-8954-43fa-bca3-fd4ee6eacf3e"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "linear-equations-one-variable",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 10,
+      "diagnosis": "Solved 3x + 7 = 46 accurately in 10s with high self-reported confidence.",
+      "nextDifficulty": 3,
+      "action": "Expand to Level 3 linear equations, word problems, and systems of equations.",
+      "evidenceIds": [
+        "0f1269e1-405a-4f00-b38f-e5c86f16f23b"
+      ],
+      "confidence": "tentative"
+    }
+  ],
+  "errorTaxonomy": [],
+  "studyPriorities": [
+    {
+      "action": "Practice Level 3 sentence boundary items with semicolon, colon, and comma splice traps, explicitly identifying independent vs dependent clauses.",
+      "evidenceIds": [
+        "64aa09a3-c406-456f-995a-9a2234fd35e0"
+      ],
+      "reason": "Learner marked 'guessing' on boundary item despite correct execution.",
+      "skillId": "boundaries"
+    },
+    {
+      "action": "Review modifier placement and subject-verb agreement rules with Level 3 complex sentences.",
+      "evidenceIds": [
+        "97c86e56-58df-410b-84aa-d675f6a0eaba"
+      ],
+      "reason": "Learner marked 'unsure' on dangling modifier item.",
+      "skillId": "form-structure-sense"
+    },
+    {
+      "action": "Expand Math practice to multi-step linear equations, systems, and linear word problems at Level 3.",
+      "evidenceIds": [
+        "0f1269e1-405a-4f00-b38f-e5c86f16f23b"
+      ],
+      "reason": "Only 1 Math question evaluated; need broader coverage to establish Math baseline.",
+      "skillId": "linear-equations-one-variable"
+    },
+    {
+      "action": "Drill Level 3 graph and table analysis items requiring multi-variable comparisons.",
+      "evidenceIds": [
+        "68c30d85-e830-4d3e-b7ab-47fa7cde398c"
+      ],
+      "reason": "Item had longest completion time (30s) and 'unsure' confidence tag.",
+      "skillId": "command-evidence-quantitative"
+    }
+  ],
+  "sevenDayPlan": [
+    {
+      "day": "Day 1",
+      "minutes": 30,
+      "successCheck": "Explain the grammatical rule behind punctuation choice with 100% confidence.",
+      "work": "Targeted lesson & drill on Sentence Boundaries & Modifier Placement rules at Level 3."
+    },
+    {
+      "day": "Day 2",
+      "minutes": 30,
+      "successCheck": "Maintain >90% accuracy while keeping pacing under 60s per item.",
+      "work": "Math Expansion drill: 10 Level 3 items covering Linear Equations, Linear Inequalities, and Systems of Equations."
+    },
+    {
+      "day": "Day 3",
+      "minutes": 25,
+      "successCheck": "Complete 10 Level 3 items within target time (55s) and reduce 'unsure' tags by half.",
+      "work": "Mixed Reading & Writing drill (Craft & Structure + Information & Ideas) at Level 3 difficulty."
+    },
+    {
+      "day": "Day 4",
+      "minutes": 20,
+      "successCheck": "Correctly identify error types in 5 targeted rule verification questions.",
+      "work": "Spaced recall & rule validation: Review boundaries, modifier rules, and quantitative evidence synthesis."
+    },
+    {
+      "day": "Day 5",
+      "minutes": 35,
+      "successCheck": "Solve multi-variable quantitative items accurately within 45s.",
+      "work": "Math Problem Solving & Data Analysis drill: Table/chart synthesis and linear model word problems."
+    },
+    {
+      "day": "Day 6",
+      "minutes": 30,
+      "successCheck": "Achieve >= 85% accuracy across Level 3 items with active confidence tagging.",
+      "work": "Mixed RW & Math Level 3 timed practice set (15 items)."
+    },
+    {
+      "day": "Day 7",
+      "minutes": 20,
+      "successCheck": "Zero unverified guesses on Standard English and Inference items.",
+      "work": "Weekly review, miscalibration audit, and goal setting for Level 3 adaptive set."
+    }
+  ],
+  "recommendedMix": "70% Level 3 Reading & Writing (focusing on Standard English rules and dense Inference/Quantitative Evidence) and 30% Level 3 Math (expanding from linear equations to linear systems, word problems, and functions).",
+  "limitations": [
+    "All evidence derives from a single diagnostic session (cf15003d-c6f5-438c-bf0f-fdb24d8a5841) conducted on 2026-08-06.",
+    "Sample size per skill is N=1, preventing definitive assessment of skill mastery, stability, or transfer.",
+    "Math domain is severely under-sampled (1 algebra question only), leaving non-linear algebra, problem solving, geometry, and trigonometry unassessed.",
+    "No multi-session longitudinal data exists to evaluate retention over time."
+  ],
+  "confidenceCalibration": [
+    {
+      "claim": "Under-confidence gap: 58% of correct answers (7/12) were completed with 'unsure' or 'guessing' confidence tags despite 100% accuracy.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "64aa09a3-c406-456f-995a-9a2234fd35e0",
+        "1c016f32-1ead-4639-8a12-e39ddb61e9f5",
+        "14b4a224-c084-45b0-a2e0-cabc174c5472",
+        "68c30d85-e830-4d3e-b7ab-47fa7cde398c",
+        "cdaa0a56-a8d7-4688-bbee-661c639b8e95",
+        "97c86e56-58df-410b-84aa-d675f6a0eaba",
+        "d282c074-8954-43fa-bca3-fd4ee6eacf3e"
+      ]
+    },
+    {
+      "claim": "Learner's rapid completion times (9s-18s on grammar/transitions) suggest strong intuitive mastery, but lack of rule awareness drives self-doubt.",
+      "confidence": "moderate",
+      "evidenceIds": [
+        "64aa09a3-c406-456f-995a-9a2234fd35e0",
+        "97c86e56-58df-410b-84aa-d675f6a0eaba",
+        "d282c074-8954-43fa-bca3-fd4ee6eacf3e"
+      ]
+    }
+  ],
+  "learnerModel": {
+    "coachingStyle": "Validate fast intuitive rule applications, challenge under-confidence with immediate proof of accuracy, and push to Difficulty 3/4 items.",
+    "hypotheses": [
+      {
+        "claim": "Learner possesses high implicit language and algebraic fluency at Difficulty 2, but second-guesses formal grammar and inference rules.",
+        "confidence": "moderate",
+        "evidenceIds": [
+          "64aa09a3-c406-456f-995a-9a2234fd35e0",
+          "97c86e56-58df-410b-84aa-d675f6a0eaba",
+          "cdaa0a56-a8d7-4688-bbee-661c639b8e95"
+        ]
+      }
+    ],
+    "nextSession": "Administer a 15-item Level 3 adaptive calibration set focusing on Reading & Writing and expanded Math domains.",
+    "priorities": [
+      {
+        "claim": "Escalate difficulty from Level 2 to Level 3 across all demonstrated skills to identify true capability boundaries.",
+        "confidence": "strong",
+        "evidenceIds": [
+          "cf15003d-c6f5-438c-bf0f-fdb24d8a5841"
+        ]
+      },
+      {
+        "claim": "Address confidence miscalibration in sentence boundaries, modifiers, and inferences.",
+        "confidence": "strong",
+        "evidenceIds": [
+          "64aa09a3-c406-456f-995a-9a2234fd35e0",
+          "97c86e56-58df-410b-84aa-d675f6a0eaba",
+          "cdaa0a56-a8d7-4688-bbee-661c639b8e95"
+        ]
+      }
+    ],
+    "skillDirectives": [
+      {
+        "evidenceIds": [
+          "64aa09a3-c406-456f-995a-9a2234fd35e0"
+        ],
+        "priority": 0.95,
+        "reason": "Learner marked 'guessing' despite correct execution; needs Level 3 boundary items with complex clauses to build self-trust.",
+        "skillId": "boundaries",
+        "targetDifficulty": 3
+      },
+      {
+        "evidenceIds": [
+          "97c86e56-58df-410b-84aa-d675f6a0eaba"
+        ],
+        "priority": 0.85,
+        "reason": "Learner marked 'unsure' on modifier placement; test Level 3 items with obscure subject modifier positioning.",
+        "skillId": "form-structure-sense",
+        "targetDifficulty": 3
+      },
+      {
+        "evidenceIds": [
+          "68c30d85-e830-4d3e-b7ab-47fa7cde398c"
+        ],
+        "priority": 0.75,
+        "reason": "Highest elapsed time (30s); advance to Level 3 multi-variable chart and table synthesis.",
+        "skillId": "command-evidence-quantitative",
+        "targetDifficulty": 3
+      },
+      {
+        "evidenceIds": [
+          "0f1269e1-405a-4f00-b38f-e5c86f16f23b"
+        ],
+        "priority": 0.65,
+        "reason": "Only 1 math item evaluated; expand math breadth to Level 3 linear equations and systems.",
+        "skillId": "linear-equations-one-variable",
+        "targetDifficulty": 3
+      }
+    ],
+    "strengths": [
+      {
+        "claim": "Flawless baseline accuracy (12/12) across diverse RW and Math skills at difficulty level 2.",
+        "confidence": "strong",
+        "evidenceIds": [
+          "cf15003d-c6f5-438c-bf0f-fdb24d8a5841"
+        ]
+      }
+    ],
+    "summary": "The learner demonstrated exceptional baseline accuracy (100%) and rapid pacing (17s avg) on difficulty level 2 items across 11 Reading & Writing skills and 1 Math skill. However, significant under-confidence was observed in grammar boundaries and structural inferences. Escalation to Level 3 items is required to determine true mastery limits."
+  },
+  "misconceptionPatterns": [
+    {
+      "claim": "Rule-blind self-doubt: Learner correctly handles complex punctuation (; transition,) and modifier alignment, but labels their decision as 'guessing' or 'unsure'.",
+      "confidence": "moderate",
+      "evidenceIds": [
+        "64aa09a3-c406-456f-995a-9a2234fd35e0",
+        "97c86e56-58df-410b-84aa-d675f6a0eaba"
+      ]
+    }
+  ],
+  "pacingAndDecisions": [
+    {
+      "claim": "Pacing across all 12 items is exceptionally fast, averaging 17s overall (RW avg 17s vs 55s target; Math avg 10s vs 114s target).",
+      "confidence": "strong",
+      "evidenceIds": [
+        "cf15003d-c6f5-438c-bf0f-fdb24d8a5841"
+      ]
+    },
+    {
+      "claim": "Longest time spent was on data interpretation (30s) and text inferences (27s), which is appropriate given stimulus complexity.",
+      "confidence": "moderate",
+      "evidenceIds": [
+        "68c30d85-e830-4d3e-b7ab-47fa7cde398c",
+        "cdaa0a56-a8d7-4688-bbee-661c639b8e95"
+      ]
+    }
+  ],
+  "strengths": [
+    {
+      "claim": "Perfect Level 2 baseline accuracy (11/11 RW, 1/1 Math) with rapid execution.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "cf15003d-c6f5-438c-bf0f-fdb24d8a5841"
+      ]
+    },
+    {
+      "claim": "Strong intuitive command of vocabulary in context and transition logic, completing items in under 10 seconds with correct choices.",
+      "confidence": "moderate",
+      "evidenceIds": [
+        "b0871dfe-876f-4905-b8f0-03d28605cf22",
+        "d282c074-8954-43fa-bca3-fd4ee6eacf3e"
+      ]
+    },
+    {
+      "claim": "Efficient linear equation solving in Math (10s elapsed vs 114s target).",
+      "confidence": "tentative",
+      "evidenceIds": [
+        "0f1269e1-405a-4f00-b38f-e5c86f16f23b"
+      ]
+    }
+  ],
+  "toolAction": "Finalizing report",
+  "toolSummary": "Finalizing weekly SAT report",
+  "transferAndRetention": [
+    {
+      "claim": "Retention cannot be evaluated yet as all data originates from a single session on 2026-08-06 with no subsequent spaced recall testing.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "cf15003d-c6f5-438c-bf0f-fdb24d8a5841"
+      ]
+    },
+    {
+      "claim": "Transfer across distinct item forms cannot be confirmed because each skill was evaluated on exactly one item (N=1).",
+      "confidence": "strong",
+      "evidenceIds": [
+        "cf15003d-c6f5-438c-bf0f-fdb24d8a5841"
+      ]
+    }
+  ],
+  "weaknesses": [
+    {
+      "claim": "Under-confidence and hesitancy on formal Standard English conventions (boundaries, modifier placement) and analytical reading items.",
+      "confidence": "moderate",
+      "evidenceIds": [
+        "64aa09a3-c406-456f-995a-9a2234fd35e0",
+        "97c86e56-58df-410b-84aa-d675f6a0eaba"
+      ]
+    },
+    {
+      "claim": "Higher relative latency on data synthesis and complex text connection items (24s-30s).",
+      "confidence": "tentative",
+      "evidenceIds": [
+        "68c30d85-e830-4d3e-b7ab-47fa7cde398c",
+        "cfc4d0de-f00b-4334-a9be-2162017ef9d4"
+      ]
+    },
+    {
+      "claim": "Unsampled Math domains (only 1 algebra item tested, leaving advanced math, problem solving, and geometry completely unassessed).",
+      "confidence": "strong",
+      "evidenceIds": [
+        "cf15003d-c6f5-438c-bf0f-fdb24d8a5841"
+      ]
+    }
+  ],
+  "whatChanged": [
+    {
+      "claim": "Completed inaugural diagnostic session with 100% accuracy across 12 Level 2 items.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "cf15003d-c6f5-438c-bf0f-fdb24d8a5841"
+      ]
+    },
+    {
+      "claim": "Established fast baseline pacing, averaging 17 seconds per item compared to target averages of 55s (RW) and 114s (Math).",
+      "confidence": "strong",
+      "evidenceIds": [
+        "cf15003d-c6f5-438c-bf0f-fdb24d8a5841"
+      ]
+    },
+    {
+      "claim": "Identified under-confidence calibration pattern where 58% (7/12) of correct responses were flagged as unsure or guessing.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "64aa09a3-c406-456f-995a-9a2234fd35e0",
+        "97c86e56-58df-410b-84aa-d675f6a0eaba",
+        "cdaa0a56-a8d7-4688-bbee-661c639b8e95",
+        "1c016f32-1ead-4639-8a12-e39ddb61e9f5",
+        "14b4a224-c084-45b0-a2e0-cabc174c5472",
+        "68c30d85-e830-4d3e-b7ab-47fa7cde398c",
+        "d282c074-8954-43fa-bca3-fd4ee6eacf3e"
+      ]
+    }
+  ]
+}

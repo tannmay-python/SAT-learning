@@ -35,6 +35,13 @@ XHTML = "{http://www.w3.org/1999/xhtml}"
 
 TESTS = [4, 5, 6, 7, 8, 9, 10, 11]
 
+# Test 4 uses an embedded text style whose underline is not emitted as a
+# vector rectangle by Poppler. Keep the one known geometry exception explicit;
+# the other underlined forms are recovered from PDF geometry below.
+UNDERLINE_FALLBACKS = {
+    (4, "rw", 2, 9): "Female cuckoos have been seen quickly laying eggs in the nests of other bird species when those birds are out looking for food.",
+}
+
 # ---------------------------------------------------------------------------
 # geometry
 # ---------------------------------------------------------------------------
@@ -184,15 +191,61 @@ def _pdf_bbox(pdf: Path) -> Path:
     return out
 
 
+def _pdf_underlines(pdf: Path, page_number: int) -> list[tuple[float, float, float]]:
+    """Return thin horizontal rectangles used as underlines on one PDF page.
+
+    `pdftotext` preserves the words but not the decoration. Poppler's SVG
+    renderer exposes the underline as a very short filled rectangle, which is
+    enough to map it back onto the word geometry below.
+    """
+    WORK.mkdir(parents=True, exist_ok=True)
+    out = WORK / f"{pdf.stem}-page-{page_number}.svg"
+    if not out.exists() or out.stat().st_size == 0:
+        subprocess.run(
+            ["pdftocairo", "-f", str(page_number), "-l", str(page_number), "-svg", str(pdf), str(out)],
+            check=True,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+    try:
+        svg = out.read_text(errors="ignore")
+    except OSError:
+        return []
+    body = svg.split("</defs>", 1)[-1]
+    underlines: list[tuple[float, float, float]] = []
+    for tag in re.findall(r"<path\b[^>]*>", body):
+        d_match = re.search(r'\bd="([^"]+)"', tag)
+        if not d_match:
+            continue
+        values = [float(value) for value in re.findall(r"-?\d+(?:\.\d+)?", d_match.group(1))]
+        if len(values) < 8:
+            continue
+        xs = values[0::2]
+        ys = values[1::2]
+        x0, x1 = min(xs), max(xs)
+        y0, y1 = min(ys), max(ys)
+        if x1 - x0 >= 12 and 0 < y1 - y0 <= 0.8:
+            underlines.append((x0, x1, (y0 + y1) / 2))
+    return underlines
+
+
 def pdf_lines(pdf: Path) -> list[list[dict]]:
     """Per page, the text lines with their bounding boxes, in reading order."""
     root = ET.parse(_pdf_bbox(pdf)).getroot()
     pages = []
-    for page in root.iter(XHTML + "page"):
+    for page_number, page in enumerate(root.iter(XHTML + "page"), start=1):
         lines = []
         for line in page.iter(XHTML + "line"):
-            words = [(w.text or "").strip() for w in line.iter(XHTML + "word")]
-            text = norm(" ".join(w for w in words if w))
+            words = [
+                {
+                    "text": norm(w.text or ""),
+                    "x0": float(w.get("xMin")),
+                    "x1": float(w.get("xMax")),
+                }
+                for w in line.iter(XHTML + "word")
+                if (w.text or "").strip()
+            ]
+            text = norm(" ".join(word["text"] for word in words if word["text"]))
             if not text:
                 continue
             lines.append(
@@ -200,10 +253,24 @@ def pdf_lines(pdf: Path) -> list[list[dict]]:
                     "x0": float(line.get("xMin")),
                     "x1": float(line.get("xMax")),
                     "y": float(line.get("yMin")),
+                    "y1": float(line.get("yMax")),
                     "h": float(line.get("yMax")) - float(line.get("yMin")),
                     "text": text,
+                    "words": words,
                 }
             )
+        if any("underlined" in line["text"].lower() for line in lines):
+            for x0, x1, y in _pdf_underlines(pdf, page_number):
+                for line in lines:
+                    if abs(y - line["y1"]) > 1.8:
+                        continue
+                    selected = [
+                        word["text"]
+                        for word in line["words"]
+                        if word["x1"] > x0 + 0.5 and word["x0"] < x1 - 0.5
+                    ]
+                    if selected:
+                        line["underlined_text"] = norm(" ".join(selected))
         pages.append(lines)
     return pages
 
@@ -347,6 +414,7 @@ def parse_item(item: dict, section: str) -> dict:
         "stimulus": stim,
         "stem": norm(" ".join(stem)),
         "choices": [(cid, norm(" ".join(parts))) for cid, parts in choices],
+        "underlined": norm(" ".join(ln.get("underlined_text", "") for ln in item["lines"] if ln.get("underlined_text"))),
     }
 
 
@@ -830,6 +898,9 @@ def build(test: int, rejects: list[dict]) -> list[dict]:
             record["id"] = f"official-t{test}-{section}{module}-q{num}"
             if stimulus:
                 record["stimulus"] = stimulus
+            underlined = s["item"].get("underlined") or UNDERLINE_FALLBACKS.get((test, section, module, num))
+            if underlined:
+                record["underlinedText"] = underlined
             if secondary:
                 record["secondaryStimulus"] = secondary
             if s["choices"]:

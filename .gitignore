@@ -6,14 +6,16 @@ tmp
 *.log
 .DS_Store
 
-# Local SAT source material and learner memory
-SAT Mocks/
-data/active/
-data/events/
-data/questions/
-data/profile/
-data/reports/
+# Versioned SAT source material, question bank, and learner database
+# SAT Mocks/
+# data/active/
+# data/events/
+# data/questions/
+# data/profile/
+# data/reports/
 
 # Test and tooling output
 coverage/
 .vite/
+__pycache__/
+*.pyc

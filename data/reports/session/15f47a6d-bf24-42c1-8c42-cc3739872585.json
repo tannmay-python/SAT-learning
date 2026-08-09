@@ -1,0 +1,617 @@
+{
+  "confidenceCalibration": [
+    {
+      "claim": "Confidence ratings were extremely accurate, with 9 \"certain\" ratings and 1 \"high\" rating all yielding correct responses.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "0767d629-0a00-4829-87d2-313c7ef061b4",
+        "4f8b4a40-6efe-423e-be37-7ff08b9a3990",
+        "d8727341-31a3-4b8b-8d2c-5926b97d5cd2",
+        "d1fe2f38-3402-4cd9-93b2-44834afe4b65",
+        "c75fa5d8-231d-4983-8fd2-442d442e8d57",
+        "cdb2e7bb-9bcc-4b12-9a58-c63f7bb15815",
+        "310c4611-12e2-4b33-b780-f5211eb7d9b6",
+        "e6eb3dfc-af7c-46cd-a20c-25c8f12a35a6",
+        "9caf6971-cabb-49f9-92e1-71fec77dab0a",
+        "9bf7a918-f8d0-4b86-9805-c7fe24cce2e0"
+      ]
+    },
+    {
+      "claim": "Five items lacked explicit confidence ratings and were excluded from calibration analysis without assuming defaults.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "130f3b7c-6bb5-4c96-ab9f-c06e6f57c89d",
+        "e31381b5-f220-4c97-ba7d-227e6da82afd",
+        "7bbe438e-f816-4dee-9a7a-2c5628684c02",
+        "6ba69724-35c9-4b1c-8bd5-8b3f38a9e410",
+        "0da98ac5-070a-4964-a20b-12c98681cdc0"
+      ]
+    }
+  ],
+  "errorTaxonomy": [],
+  "executiveSummary": "You achieved a perfect 15-for-15 score across Level 3 adaptive items in both Reading & Writing and Math. Your execution was remarkably fast, averaging 34 seconds per question against an 87-second target budget. Mechanics and syntax rules were handled almost instantly, while complex evidence and spatial geometry questions were completed cleanly well within time limits.",
+  "learnerModel": {
+    "coachingStyle": "Acknowledge outstanding accuracy and speed; transition learner to high-difficulty mixed sets while focusing on mental shortcuts for multi-step geometry and dense quantitative analysis.",
+    "hypotheses": [
+      {
+        "claim": "Learner exhibits high accuracy and swift decision-making across Level 3 Math and Reading/Writing concepts when presented in adaptive practice.",
+        "confidence": "strong",
+        "evidenceIds": [
+          "0767d629-0a00-4829-87d2-313c7ef061b4",
+          "130f3b7c-6bb5-4c96-ab9f-c06e6f57c89d",
+          "4f8b4a40-6efe-423e-be37-7ff08b9a3990",
+          "e31381b5-f220-4c97-ba7d-227e6da82afd",
+          "d8727341-31a3-4b8b-8d2c-5926b97d5cd2",
+          "d1fe2f38-3402-4cd9-93b2-44834afe4b65",
+          "c75fa5d8-231d-4983-8fd2-442d442e8d57",
+          "cdb2e7bb-9bcc-4b12-9a58-c63f7bb15815",
+          "7bbe438e-f816-4dee-9a7a-2c5628684c02",
+          "310c4611-12e2-4b33-b780-f5211eb7d9b6",
+          "6ba69724-35c9-4b1c-8bd5-8b3f38a9e410",
+          "e6eb3dfc-af7c-46cd-a20c-25c8f12a35a6",
+          "0da98ac5-070a-4964-a20b-12c98681cdc0",
+          "9caf6971-cabb-49f9-92e1-71fec77dab0a",
+          "9bf7a918-f8d0-4b86-9805-c7fe24cce2e0"
+        ]
+      }
+    ],
+    "nextSession": "Administer a 15-item mixed adaptive set comprised of Level 3 hard items, focusing on 3D measurement, multi-variable quantitative evidence, and complex inferences.",
+    "priorities": [
+      {
+        "claim": "Sustain Level 3 accuracy while optimizing execution speed on 3D geometry and word-problem translation.",
+        "confidence": "strong",
+        "evidenceIds": [
+          "0767d629-0a00-4829-87d2-313c7ef061b4",
+          "6ba69724-35c9-4b1c-8bd5-8b3f38a9e410"
+        ]
+      },
+      {
+        "claim": "Confirm long-term retention of Level 3 skills across multiple distinct problem formats in subsequent sessions.",
+        "confidence": "moderate",
+        "evidenceIds": [
+          "130f3b7c-6bb5-4c96-ab9f-c06e6f57c89d",
+          "d1fe2f38-3402-4cd9-93b2-44834afe4b65",
+          "cdb2e7bb-9bcc-4b12-9a58-c63f7bb15815"
+        ]
+      }
+    ],
+    "skillDirectives": [
+      {
+        "evidenceIds": [
+          "0767d629-0a00-4829-87d2-313c7ef061b4"
+        ],
+        "priority": 0.9,
+        "reason": "Target 3D geometry calculation speed optimization.",
+        "skillId": "area-volume",
+        "targetDifficulty": 3
+      },
+      {
+        "evidenceIds": [
+          "6ba69724-35c9-4b1c-8bd5-8b3f38a9e410"
+        ],
+        "priority": 0.85,
+        "reason": "Refine elimination strategies for algebraic word problems.",
+        "skillId": "systems-linear-equations",
+        "targetDifficulty": 3
+      },
+      {
+        "evidenceIds": [
+          "9caf6971-cabb-49f9-92e1-71fec77dab0a"
+        ],
+        "priority": 0.8,
+        "reason": "Maintain precision on complex data tables.",
+        "skillId": "command-evidence-quantitative",
+        "targetDifficulty": 3
+      },
+      {
+        "evidenceIds": [
+          "cdb2e7bb-9bcc-4b12-9a58-c63f7bb15815"
+        ],
+        "priority": 0.75,
+        "reason": "Practice dense scientific passage logic.",
+        "skillId": "inferences",
+        "targetDifficulty": 3
+      },
+      {
+        "evidenceIds": [
+          "7bbe438e-f816-4dee-9a7a-2c5628684c02"
+        ],
+        "priority": 0.7,
+        "reason": "Escalate to line-curve tangency questions.",
+        "skillId": "systems-nonlinear",
+        "targetDifficulty": 3
+      }
+    ],
+    "strengths": [
+      {
+        "claim": "Flawless accuracy (15/15, 100%) on Level 3 items with an average response time of 34 seconds, far beating target times.",
+        "confidence": "strong",
+        "evidenceIds": [
+          "0767d629-0a00-4829-87d2-313c7ef061b4",
+          "130f3b7c-6bb5-4c96-ab9f-c06e6f57c89d",
+          "4f8b4a40-6efe-423e-be37-7ff08b9a3990",
+          "e31381b5-f220-4c97-ba7d-227e6da82afd",
+          "d8727341-31a3-4b8b-8d2c-5926b97d5cd2",
+          "d1fe2f38-3402-4cd9-93b2-44834afe4b65",
+          "c75fa5d8-231d-4983-8fd2-442d442e8d57",
+          "cdb2e7bb-9bcc-4b12-9a58-c63f7bb15815",
+          "7bbe438e-f816-4dee-9a7a-2c5628684c02",
+          "310c4611-12e2-4b33-b780-f5211eb7d9b6",
+          "6ba69724-35c9-4b1c-8bd5-8b3f38a9e410",
+          "e6eb3dfc-af7c-46cd-a20c-25c8f12a35a6",
+          "0da98ac5-070a-4964-a20b-12c98681cdc0",
+          "9caf6971-cabb-49f9-92e1-71fec77dab0a",
+          "9bf7a918-f8d0-4b86-9805-c7fe24cce2e0"
+        ]
+      }
+    ],
+    "summary": "The learner delivered a perfect 15/15 performance across Level 3 items in both Reading/Writing and Math, taking an average of 34 seconds per item against an 87-second target budget. All Level 3 skills demonstrated tentative high capability; next steps involve re-testing across varied problem formats to confirm multi-session retention."
+  },
+  "limitations": [
+    "Each of the 15 skills was tested on a single item in this set; full mastery requires repeated success across varied item forms.",
+    "Long-term retention across time intervals cannot be evaluated within a single completed practice set."
+  ],
+  "misconceptionPatterns": [],
+  "pacingAndDecisions": [
+    {
+      "claim": "Pacing was exceptionally swift across both modules, averaging 27 seconds per item in Reading & Writing and 41 seconds per item in Math.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "0767d629-0a00-4829-87d2-313c7ef061b4",
+        "130f3b7c-6bb5-4c96-ab9f-c06e6f57c89d",
+        "4f8b4a40-6efe-423e-be37-7ff08b9a3990",
+        "e31381b5-f220-4c97-ba7d-227e6da82afd",
+        "d8727341-31a3-4b8b-8d2c-5926b97d5cd2",
+        "d1fe2f38-3402-4cd9-93b2-44834afe4b65",
+        "c75fa5d8-231d-4983-8fd2-442d442e8d57",
+        "cdb2e7bb-9bcc-4b12-9a58-c63f7bb15815",
+        "7bbe438e-f816-4dee-9a7a-2c5628684c02",
+        "310c4611-12e2-4b33-b780-f5211eb7d9b6",
+        "6ba69724-35c9-4b1c-8bd5-8b3f38a9e410",
+        "e6eb3dfc-af7c-46cd-a20c-25c8f12a35a6",
+        "0da98ac5-070a-4964-a20b-12c98681cdc0",
+        "9caf6971-cabb-49f9-92e1-71fec77dab0a",
+        "9bf7a918-f8d0-4b86-9805-c7fe24cce2e0"
+      ]
+    },
+    {
+      "claim": "Time allocation appropriately scaled with question complexity, spending more time on multi-step geometry and data evaluation while completing grammar rules almost instantly.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "0767d629-0a00-4829-87d2-313c7ef061b4",
+        "6ba69724-35c9-4b1c-8bd5-8b3f38a9e410",
+        "9caf6971-cabb-49f9-92e1-71fec77dab0a",
+        "130f3b7c-6bb5-4c96-ab9f-c06e6f57c89d"
+      ]
+    }
+  ],
+  "recommendedMix": "60% Level 3 Hard Math / 40% Level 3 Reading & Writing mixed practice.",
+  "sectionBreakdown": [
+    {
+      "section": "Reading and Writing",
+      "accuracySummary": "7/7 correct (100%)",
+      "pacingSummary": "27s average against a 73s authored target",
+      "findings": [
+        {
+          "claim": "Rapid execution on sentence boundaries, modifiers, and transitions, paired with careful text evaluation for quantitative and textual evidence questions.",
+          "confidence": "strong",
+          "evidenceIds": [
+            "130f3b7c-6bb5-4c96-ab9f-c06e6f57c89d",
+            "e31381b5-f220-4c97-ba7d-227e6da82afd",
+            "d1fe2f38-3402-4cd9-93b2-44834afe4b65",
+            "cdb2e7bb-9bcc-4b12-9a58-c63f7bb15815",
+            "310c4611-12e2-4b33-b780-f5211eb7d9b6",
+            "e6eb3dfc-af7c-46cd-a20c-25c8f12a35a6",
+            "9caf6971-cabb-49f9-92e1-71fec77dab0a"
+          ]
+        }
+      ],
+      "recommendedFocus": "Maintain momentum while testing longer multi-paragraph passages and complex scientific table interpretations."
+    },
+    {
+      "section": "Math",
+      "accuracySummary": "8/8 correct (100%)",
+      "pacingSummary": "41s average against a 100s authored target",
+      "findings": [
+        {
+          "claim": "Swift algebraic manipulation and geometric reasoning across Level 3 concepts.",
+          "confidence": "strong",
+          "evidenceIds": [
+            "0767d629-0a00-4829-87d2-313c7ef061b4",
+            "4f8b4a40-6efe-423e-be37-7ff08b9a3990",
+            "d8727341-31a3-4b8b-8d2c-5926b97d5cd2",
+            "c75fa5d8-231d-4983-8fd2-442d442e8d57",
+            "7bbe438e-f816-4dee-9a7a-2c5628684c02",
+            "6ba69724-35c9-4b1c-8bd5-8b3f38a9e410",
+            "0da98ac5-070a-4964-a20b-12c98681cdc0",
+            "9bf7a918-f8d0-4b86-9805-c7fe24cce2e0"
+          ]
+        }
+      ],
+      "recommendedFocus": "Practice mental shortcuts for 3D measurement formulas to align spatial geometry speed with coordinate geometry pace."
+    }
+  ],
+  "sevenDayPlan": [
+    {
+      "day": "Day 1",
+      "minutes": 25,
+      "successCheck": "Complete 5 Level 3 area-volume items in under 60s each with 100% accuracy.",
+      "work": "Focused review of 3D geometry formulas and volume/surface area shortcuts."
+    },
+    {
+      "day": "Day 2",
+      "minutes": 20,
+      "successCheck": "Achieve 100% accuracy on 8 standard English Level 3 items.",
+      "work": "Drill advanced sentence boundaries and dangling modifier constructions."
+    },
+    {
+      "day": "Day 3",
+      "minutes": 25,
+      "successCheck": "Solve 6 systems problems averaging under 40s per item.",
+      "work": "Mixed practice on linear and nonlinear systems of equations."
+    },
+    {
+      "day": "Day 4",
+      "minutes": 30,
+      "successCheck": "Correctly analyze 5 complex research tables without misinterpreting variable trends.",
+      "work": "Quantitative evidence and data table interpretation practice."
+    },
+    {
+      "day": "Day 5",
+      "minutes": 20,
+      "successCheck": "Answer 6 geometry items with 100% accuracy.",
+      "work": "Spaced recall drill covering circle equations, sector areas, and trigonometry triples."
+    },
+    {
+      "day": "Day 6",
+      "minutes": 30,
+      "successCheck": "Finish within 12 minutes with 90%+ accuracy.",
+      "work": "Timed mixed Reading and Writing mini-module (12 Level 3 items)."
+    },
+    {
+      "day": "Day 7",
+      "minutes": 35,
+      "successCheck": "Maintain 90%+ accuracy while keeping average time per item under 45 seconds.",
+      "work": "Full adaptive 15-item review set at Difficulty Level 3."
+    }
+  ],
+  "skillBreakdown": [
+    {
+      "skillId": "area-volume",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 81,
+      "diagnosis": "Correct calculation of 3D prism dimensions using volume formula; pacing close to target.",
+      "nextDifficulty": 3,
+      "action": "Practice fast-factor mental division for 3D geometry problems to reduce calculation time.",
+      "evidenceIds": [
+        "0767d629-0a00-4829-87d2-313c7ef061b4"
+      ],
+      "confidence": "strong"
+    },
+    {
+      "skillId": "boundaries",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 9,
+      "diagnosis": "Instant recognition of independent clause boundary requiring terminal punctuation.",
+      "nextDifficulty": 3,
+      "action": "Maintain rapid clause identification on complex compound-complex sentence structures.",
+      "evidenceIds": [
+        "130f3b7c-6bb5-4c96-ab9f-c06e6f57c89d"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "lines-angles-triangles",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 27,
+      "diagnosis": "Immediate application of exterior angle theorem.",
+      "nextDifficulty": 3,
+      "action": "Extend to multi-shape angle puzzles and parallel line transversal proofs.",
+      "evidenceIds": [
+        "4f8b4a40-6efe-423e-be37-7ff08b9a3990"
+      ],
+      "confidence": "strong"
+    },
+    {
+      "skillId": "text-structure-purpose",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 44,
+      "diagnosis": "Accurately extracted underlying argument structure from academic art history passage.",
+      "nextDifficulty": 3,
+      "action": "Continue practicing main-purpose identification on dense humanities texts.",
+      "evidenceIds": [
+        "e31381b5-f220-4c97-ba7d-227e6da82afd"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "right-triangle-trig",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 39,
+      "diagnosis": "Rapid identification of Pythagorean triple scaling.",
+      "nextDifficulty": 3,
+      "action": "Challenge with multi-step trigonometric ratios and non-standard right triangles.",
+      "evidenceIds": [
+        "d8727341-31a3-4b8b-8d2c-5926b97d5cd2"
+      ],
+      "confidence": "strong"
+    },
+    {
+      "skillId": "command-evidence-textual",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 29,
+      "diagnosis": "Directly matched hypothesis on pricing framing with retention data.",
+      "nextDifficulty": 3,
+      "action": "Test subtle distinction evidence items with competing plausible options.",
+      "evidenceIds": [
+        "d1fe2f38-3402-4cd9-93b2-44834afe4b65"
+      ],
+      "confidence": "strong"
+    },
+    {
+      "skillId": "circles",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 52,
+      "diagnosis": "Correct sector area calculation and pi-scaling.",
+      "nextDifficulty": 3,
+      "action": "Solve combined arc-length and circle equation transformation problems.",
+      "evidenceIds": [
+        "c75fa5d8-231d-4983-8fd2-442d442e8d57"
+      ],
+      "confidence": "strong"
+    },
+    {
+      "skillId": "inferences",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 37,
+      "diagnosis": "Logical synthesis of dual-zone mangrove carbon burial dynamics.",
+      "nextDifficulty": 3,
+      "action": "Practice multi-variable ecological and scientific inference items.",
+      "evidenceIds": [
+        "cdb2e7bb-9bcc-4b12-9a58-c63f7bb15815"
+      ],
+      "confidence": "strong"
+    },
+    {
+      "skillId": "systems-nonlinear",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 27,
+      "diagnosis": "Quick evaluation of parabola vertex relative to horizontal line.",
+      "nextDifficulty": 3,
+      "action": "Advance to line-parabola tangency and circle-line intersection count problems.",
+      "evidenceIds": [
+        "7bbe438e-f816-4dee-9a7a-2c5628684c02"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "form-structure-sense",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 11,
+      "diagnosis": "Swift resolution of dangling modifier by placing proper subject after introductory phrase.",
+      "nextDifficulty": 3,
+      "action": "Maintain modifier alignment speed on longer introductory participial clauses.",
+      "evidenceIds": [
+        "310c4611-12e2-4b33-b780-f5211eb7d9b6"
+      ],
+      "confidence": "strong"
+    },
+    {
+      "skillId": "systems-linear-equations",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 57,
+      "diagnosis": "Accurate translation and solution of ticket total and revenue word problem.",
+      "nextDifficulty": 3,
+      "action": "Work on direct elimination strategies for two-variable linear systems.",
+      "evidenceIds": [
+        "6ba69724-35c9-4b1c-8bd5-8b3f38a9e410"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "transitions",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 13,
+      "diagnosis": "Flawless detection of contrasting language strategies in bilingual study.",
+      "nextDifficulty": 3,
+      "action": "Drill subtle transition pairs like indeed vs in fact or nevertheless vs regardless.",
+      "evidenceIds": [
+        "e6eb3dfc-af7c-46cd-a20c-25c8f12a35a6"
+      ],
+      "confidence": "strong"
+    },
+    {
+      "skillId": "linear-equations-two-variables",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 20,
+      "diagnosis": "Fast coordinate substitution into standard form linear equation.",
+      "nextDifficulty": 3,
+      "action": "Practice slope-intercept form conversions and context-based intercept interpretations.",
+      "evidenceIds": [
+        "0da98ac5-070a-4964-a20b-12c98681cdc0"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "command-evidence-quantitative",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 44,
+      "diagnosis": "Precise evaluation of counter-hypothesis data in urban heat island study table.",
+      "nextDifficulty": 3,
+      "action": "Practice multi-column data synthesis under tighter time targets.",
+      "evidenceIds": [
+        "9caf6971-cabb-49f9-92e1-71fec77dab0a"
+      ],
+      "confidence": "strong"
+    },
+    {
+      "skillId": "nonlinear-equations",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 21,
+      "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+      "nextDifficulty": 3,
+      "action": "Collect another varied item before changing difficulty.",
+      "evidenceIds": [
+        "9bf7a918-f8d0-4b86-9805-c7fe24cce2e0"
+      ],
+      "confidence": "tentative"
+    }
+  ],
+  "strengths": [
+    {
+      "claim": "100% overall accuracy across 15 Level 3 adaptive items in Math and Reading & Writing.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "0767d629-0a00-4829-87d2-313c7ef061b4",
+        "130f3b7c-6bb5-4c96-ab9f-c06e6f57c89d",
+        "4f8b4a40-6efe-423e-be37-7ff08b9a3990",
+        "e31381b5-f220-4c97-ba7d-227e6da82afd",
+        "d8727341-31a3-4b8b-8d2c-5926b97d5cd2",
+        "d1fe2f38-3402-4cd9-93b2-44834afe4b65",
+        "c75fa5d8-231d-4983-8fd2-442d442e8d57",
+        "cdb2e7bb-9bcc-4b12-9a58-c63f7bb15815",
+        "7bbe438e-f816-4dee-9a7a-2c5628684c02",
+        "310c4611-12e2-4b33-b780-f5211eb7d9b6",
+        "6ba69724-35c9-4b1c-8bd5-8b3f38a9e410",
+        "e6eb3dfc-af7c-46cd-a20c-25c8f12a35a6",
+        "0da98ac5-070a-4964-a20b-12c98681cdc0",
+        "9caf6971-cabb-49f9-92e1-71fec77dab0a",
+        "9bf7a918-f8d0-4b86-9805-c7fe24cce2e0"
+      ]
+    },
+    {
+      "claim": "Rapid completion speed, spending an average of only 34 seconds per item (beating the target budget by 53 seconds).",
+      "confidence": "strong",
+      "evidenceIds": [
+        "0767d629-0a00-4829-87d2-313c7ef061b4",
+        "130f3b7c-6bb5-4c96-ab9f-c06e6f57c89d",
+        "4f8b4a40-6efe-423e-be37-7ff08b9a3990",
+        "e31381b5-f220-4c97-ba7d-227e6da82afd",
+        "d8727341-31a3-4b8b-8d2c-5926b97d5cd2",
+        "d1fe2f38-3402-4cd9-93b2-44834afe4b65",
+        "c75fa5d8-231d-4983-8fd2-442d442e8d57",
+        "cdb2e7bb-9bcc-4b12-9a58-c63f7bb15815",
+        "7bbe438e-f816-4dee-9a7a-2c5628684c02",
+        "310c4611-12e2-4b33-b780-f5211eb7d9b6",
+        "6ba69724-35c9-4b1c-8bd5-8b3f38a9e410",
+        "e6eb3dfc-af7c-46cd-a20c-25c8f12a35a6",
+        "0da98ac5-070a-4964-a20b-12c98681cdc0",
+        "9caf6971-cabb-49f9-92e1-71fec77dab0a",
+        "9bf7a918-f8d0-4b86-9805-c7fe24cce2e0"
+      ]
+    }
+  ],
+  "studyPriorities": [
+    {
+      "action": "Refine 3D geometry mental calculations",
+      "evidenceIds": [
+        "0767d629-0a00-4829-87d2-313c7ef061b4"
+      ],
+      "reason": "Highest elapsed time (81s) among math questions.",
+      "skillId": "area-volume"
+    },
+    {
+      "action": "Practice elimination shortcuts for two-variable word problems",
+      "evidenceIds": [
+        "6ba69724-35c9-4b1c-8bd5-8b3f38a9e410"
+      ],
+      "reason": "Took 57s, which is well within budget but could be optimized further.",
+      "skillId": "systems-linear-equations"
+    },
+    {
+      "action": "Drill complex multi-variable data table interpretations",
+      "evidenceIds": [
+        "9caf6971-cabb-49f9-92e1-71fec77dab0a"
+      ],
+      "reason": "Ensure high accuracy is maintained under tighter time constraints.",
+      "skillId": "command-evidence-quantitative"
+    }
+  ],
+  "title": "Set review: 15 of 15 correct",
+  "transferAndRetention": [
+    {
+      "claim": "Demonstrated successful tentative transfer of lower-level math concepts to Level 3 variants within this single practice session.",
+      "confidence": "tentative",
+      "evidenceIds": [
+        "7bbe438e-f816-4dee-9a7a-2c5628684c02",
+        "6ba69724-35c9-4b1c-8bd5-8b3f38a9e410",
+        "0da98ac5-070a-4964-a20b-12c98681cdc0",
+        "9bf7a918-f8d0-4b86-9805-c7fe24cce2e0"
+      ]
+    },
+    {
+      "claim": "Evaluating multi-day retention requires testing across future sessions, as each skill was evaluated on one attempt in this set.",
+      "confidence": "tentative",
+      "evidenceIds": [
+        "0767d629-0a00-4829-87d2-313c7ef061b4",
+        "130f3b7c-6bb5-4c96-ab9f-c06e6f57c89d",
+        "4f8b4a40-6efe-423e-be37-7ff08b9a3990",
+        "e31381b5-f220-4c97-ba7d-227e6da82afd",
+        "d8727341-31a3-4b8b-8d2c-5926b97d5cd2",
+        "d1fe2f38-3402-4cd9-93b2-44834afe4b65",
+        "c75fa5d8-231d-4983-8fd2-442d442e8d57",
+        "cdb2e7bb-9bcc-4b12-9a58-c63f7bb15815",
+        "7bbe438e-f816-4dee-9a7a-2c5628684c02",
+        "310c4611-12e2-4b33-b780-f5211eb7d9b6",
+        "6ba69724-35c9-4b1c-8bd5-8b3f38a9e410",
+        "e6eb3dfc-af7c-46cd-a20c-25c8f12a35a6",
+        "0da98ac5-070a-4964-a20b-12c98681cdc0",
+        "9caf6971-cabb-49f9-92e1-71fec77dab0a",
+        "9bf7a918-f8d0-4b86-9805-c7fe24cce2e0"
+      ]
+    }
+  ],
+  "weaknesses": [
+    {
+      "claim": "No incorrect answers were committed; however, three-dimensional geometry required near-budget time, indicating potential for higher efficiency.",
+      "confidence": "tentative",
+      "evidenceIds": [
+        "0767d629-0a00-4829-87d2-313c7ef061b4"
+      ]
+    }
+  ],
+  "whatChanged": [
+    {
+      "claim": "Successfully demonstrated 100% accuracy on Level 3 Math and Reading/Writing items, resolving previous difficulty bounds.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "0767d629-0a00-4829-87d2-313c7ef061b4",
+        "130f3b7c-6bb5-4c96-ab9f-c06e6f57c89d",
+        "4f8b4a40-6efe-423e-be37-7ff08b9a3990",
+        "e31381b5-f220-4c97-ba7d-227e6da82afd",
+        "d8727341-31a3-4b8b-8d2c-5926b97d5cd2",
+        "d1fe2f38-3402-4cd9-93b2-44834afe4b65",
+        "c75fa5d8-231d-4983-8fd2-442d442e8d57",
+        "cdb2e7bb-9bcc-4b12-9a58-c63f7bb15815",
+        "7bbe438e-f816-4dee-9a7a-2c5628684c02",
+        "310c4611-12e2-4b33-b780-f5211eb7d9b6",
+        "6ba69724-35c9-4b1c-8bd5-8b3f38a9e410",
+        "e6eb3dfc-af7c-46cd-a20c-25c8f12a35a6",
+        "0da98ac5-070a-4964-a20b-12c98681cdc0",
+        "9caf6971-cabb-49f9-92e1-71fec77dab0a",
+        "9bf7a918-f8d0-4b86-9805-c7fe24cce2e0"
+      ]
+    }
+  ],
+  "id": "15f47a6d-bf24-42c1-8c42-cc3739872585",
+  "type": "session",
+  "period": "2026-08-07T10:51:13.514Z to 2026-08-07T11:03:25.582Z",
+  "createdAt": "2026-08-07T11:04:26.176Z",
+  "model": "gemini-3.6-flash-high",
+  "answerCount": 15
+}

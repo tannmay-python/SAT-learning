@@ -1,0 +1,674 @@
+{
+  "confidenceCalibration": [
+    {
+      "claim": "High confidence ('certain') was accurately calibrated on 4 out of 5 rated items, but masked 1 fast-paced vocabulary misread.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "47c03205-3daa-41d6-a694-924fa4d6e7c5",
+        "2ace3b42-20e1-4eb7-b838-0ac38d317cee",
+        "c8628ace-cc18-4c64-98d5-c8e7da4bd225",
+        "e5019821-3d77-45fd-96b4-b0e6d6c38626",
+        "a71d3720-883a-4d93-8f61-46acb5220aa1"
+      ]
+    },
+    {
+      "claim": "Low confidence ratings ('low' and 'guess') reflected genuine underlying hesitation despite producing correct answers on 2 of 3 items.",
+      "confidence": "moderate",
+      "evidenceIds": [
+        "92bb4575-94e4-4169-8c6f-2b40b2123122",
+        "6761d052-626b-447b-bf56-fd662701ecf2",
+        "61aaf0f2-72f9-4d46-9b41-46a527180c23"
+      ]
+    },
+    {
+      "claim": "Confidence ratings were voluntary and omitted on 12 of 20 items; calibration analysis is strictly restricted to the 8 explicit ratings.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "daf6dd68-aae5-46cb-bc7a-eb857f07dfa7",
+        "0cf987a8-4305-41ed-807f-20ebc495e4eb",
+        "836d3eec-a333-4bde-982d-9be3f1334f70",
+        "dec13e14-055d-4bc4-8e2b-e6042170bbf0",
+        "88288811-fce2-48e0-bec0-27cc7904405a",
+        "1c5700ef-7703-4dbc-bdca-4037b050d949",
+        "9c4906e0-d59d-4df4-afa4-4532342998e5",
+        "6082aa2f-211c-44ed-bc94-314f39079071",
+        "26845dd4-82da-4b39-9794-e3bfc04531a3",
+        "2c25b455-7393-44a7-a9c5-b1a72e0bfded",
+        "c74a7a0c-f7d3-4e88-9631-502e28969e35",
+        "15ee23e5-a89f-4b2e-922a-aeff8021c076"
+      ]
+    }
+  ],
+  "errorTaxonomy": [
+    {
+      "count": 1,
+      "evidenceIds": [
+        "a71d3720-883a-4d93-8f61-46acb5220aa1"
+      ],
+      "label": "Vocabulary Antonym Misread",
+      "mechanism": "text/condition misread"
+    },
+    {
+      "count": 1,
+      "evidenceIds": [
+        "836d3eec-a333-4bde-982d-9be3f1334f70"
+      ],
+      "label": "Statistical Shift Invariance",
+      "mechanism": "concept gap"
+    },
+    {
+      "count": 1,
+      "evidenceIds": [
+        "2c25b455-7393-44a7-a9c5-b1a72e0bfded"
+      ],
+      "label": "Volumetric Scale Factor Setup",
+      "mechanism": "setup/model selection"
+    },
+    {
+      "count": 1,
+      "evidenceIds": [
+        "61aaf0f2-72f9-4d46-9b41-46a527180c23"
+      ],
+      "label": "Textual Evidence Mechanism Alignment",
+      "mechanism": "text/condition misread"
+    }
+  ],
+  "executiveSummary": "In this 20-item Level 5 adaptive practice set, you achieved an overall accuracy of 80% (16/20 correct) with an average solving pace of 34 seconds per item, significantly faster than the 102-second target pace. Performance was balanced across both domain sections: Reading & Writing scored 80% (8/10 correct, 34s average vs 79s target) and Math scored 80% (8/10 correct, 34s average vs 125s target). Your target score is 1600 with 13 days remaining before the exam. Your current estimated score is 1150 (590 Reading & Writing, 560 Math), leaving a gap of 450 points to reach your goal. Because no completed full practice tests are available in your history, a weekly score trend and multi-mock projection cannot be calculated. Notably, Math represents 240 points (53.3%) of your total point gap, making high-difficulty Math concepts your highest-leverage area for point gains. Across both sections, errors stemmed from fast-paced misreads and setup oversights rather than fundamental conceptual gaps, with immediate intra-session recovery demonstrated on parallel retry items.",
+  "learnerModel": {
+    "coachingStyle": "Encourage high-speed problem solving while instilling mandatory 3-second setup verification routines to eliminate rapid-pacing traps.",
+    "hypotheses": [
+      {
+        "claim": "Learner possesses strong baseline quantitative and verbal mechanics, but tends to rush through prompt specifics due to fast pacing.",
+        "confidence": "strong",
+        "evidenceIds": [
+          "a71d3720-883a-4d93-8f61-46acb5220aa1",
+          "836d3eec-a333-4bde-982d-9be3f1334f70",
+          "2c25b455-7393-44a7-a9c5-b1a72e0bfded",
+          "61aaf0f2-72f9-4d46-9b41-46a527180c23"
+        ]
+      },
+      {
+        "claim": "Learner rapidly incorporates feedback and self-corrects concepts when presented with immediate parallel item variants.",
+        "confidence": "strong",
+        "evidenceIds": [
+          "836d3eec-a333-4bde-982d-9be3f1334f70",
+          "dec13e14-055d-4bc4-8e2b-e6042170bbf0",
+          "2c25b455-7393-44a7-a9c5-b1a72e0bfded",
+          "c74a7a0c-f7d3-4e88-9631-502e28969e35"
+        ]
+      }
+    ],
+    "nextSession": "Administer a Level 5 targeted set featuring 5 volumetric scale and data distribution items, 5 textual evidence and high-tier vocabulary items, and 5 advanced algebra problems.",
+    "priorities": [
+      {
+        "claim": "Master multi-dimensional scale factors (area k², volume k³) and statistical distribution invariant properties.",
+        "confidence": "strong",
+        "evidenceIds": [
+          "2c25b455-7393-44a7-a9c5-b1a72e0bfded",
+          "836d3eec-a333-4bde-982d-9be3f1334f70"
+        ]
+      },
+      {
+        "claim": "Implement a brief verification check on vocabulary antonyms and textual evidence mechanisms to prevent rapid-pacing errors.",
+        "confidence": "strong",
+        "evidenceIds": [
+          "a71d3720-883a-4d93-8f61-46acb5220aa1",
+          "61aaf0f2-72f9-4d46-9b41-46a527180c23"
+        ]
+      }
+    ],
+    "skillDirectives": [
+      {
+        "evidenceIds": [
+          "2c25b455-7393-44a7-a9c5-b1a72e0bfded",
+          "c74a7a0c-f7d3-4e88-9631-502e28969e35"
+        ],
+        "priority": 0.95,
+        "reason": "Target volumetric scale factor setups to address the larger Math point gap.",
+        "skillId": "ratios-rates-units",
+        "targetDifficulty": 5
+      },
+      {
+        "evidenceIds": [
+          "836d3eec-a333-4bde-982d-9be3f1334f70",
+          "dec13e14-055d-4bc4-8e2b-e6042170bbf0"
+        ],
+        "priority": 0.9,
+        "reason": "Solidify scalar shift properties on data distributions.",
+        "skillId": "one-variable-data",
+        "targetDifficulty": 5
+      },
+      {
+        "evidenceIds": [
+          "61aaf0f2-72f9-4d46-9b41-46a527180c23",
+          "15ee23e5-a89f-4b2e-922a-aeff8021c076"
+        ],
+        "priority": 0.85,
+        "reason": "Refine evidence alignment to match exact claim mechanisms.",
+        "skillId": "command-evidence-textual",
+        "targetDifficulty": 5
+      },
+      {
+        "evidenceIds": [
+          "a71d3720-883a-4d93-8f61-46acb5220aa1"
+        ],
+        "priority": 0.8,
+        "reason": "Eliminate vocabulary antonym traps under rapid pacing.",
+        "skillId": "words-in-context",
+        "targetDifficulty": 5
+      },
+      {
+        "evidenceIds": [
+          "6761d052-626b-447b-bf56-fd662701ecf2"
+        ],
+        "priority": 0.75,
+        "reason": "Reinforce punctuation boundary rules to build explicit confidence.",
+        "skillId": "boundaries",
+        "targetDifficulty": 5
+      }
+    ],
+    "strengths": [
+      {
+        "claim": "Strong accuracy (80%) on Level 5 adaptive items with rapid pacing across both sections.",
+        "confidence": "strong",
+        "evidenceIds": [
+          "41fe74be-5aa9-424e-b0b5-280af3f0a205"
+        ]
+      },
+      {
+        "claim": "Flawless execution on Level 5 linear equations, inequalities, binomial expansions, and exponential decay models.",
+        "confidence": "strong",
+        "evidenceIds": [
+          "47c03205-3daa-41d6-a694-924fa4d6e7c5",
+          "c8628ace-cc18-4c64-98d5-c8e7da4bd225",
+          "e5019821-3d77-45fd-96b4-b0e6d6c38626",
+          "26845dd4-82da-4b39-9794-e3bfc04531a3"
+        ]
+      }
+    ],
+    "summary": "The learner demonstrated solid Level 5 performance with 80% overall accuracy (16/20) and exceptional speed (34s average vs 102s budget) across Reading & Writing (8/10) and Math (8/10). Errors were driven by fast-paced vocabulary antonym misreads, initial 3D scale factor setups, and statistical shift invariant assumptions, all followed by immediate intra-session concept recovery on follow-up items. To close the 450-point gap to the 1600 goal in the 13 days remaining, practice will focus slightly more on Math (which represents 240 points of the gap)."
+  },
+  "limitations": [
+    "This report is based on a single 20-item Level 5 adaptive practice set.",
+    "Only 8 of 20 answer events included voluntary confidence ratings; 12 items lacked confidence data.",
+    "No completed full-length practice tests exist in the record, preventing calculation of a weekly score trend or multi-mock projection.",
+    "Intra-session recovery was observed on repeated concepts, but multi-session retention has not yet been established."
+  ],
+  "misconceptionPatterns": [
+    {
+      "claim": "Initial confusion regarding statistical shift properties, assuming uniform scalar addition alters data set range.",
+      "confidence": "moderate",
+      "evidenceIds": [
+        "836d3eec-a333-4bde-982d-9be3f1334f70"
+      ]
+    },
+    {
+      "claim": "Applying linear scale factors directly to volumetric calculations rather than cubing the linear factor.",
+      "confidence": "moderate",
+      "evidenceIds": [
+        "2c25b455-7393-44a7-a9c5-b1a72e0bfded"
+      ]
+    }
+  ],
+  "pacingAndDecisions": [
+    {
+      "claim": "Pacing was exceptionally fast, averaging 34 seconds per item across both sections (target: 102s), leaving substantial unused time that could be deployed for answer verification.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "41fe74be-5aa9-424e-b0b5-280af3f0a205"
+      ]
+    },
+    {
+      "claim": "Rapid execution (14s-24s) directly contributed to 2 of the 4 missed items by skipping careful prompt verification.",
+      "confidence": "moderate",
+      "evidenceIds": [
+        "a71d3720-883a-4d93-8f61-46acb5220aa1",
+        "836d3eec-a333-4bde-982d-9be3f1334f70"
+      ]
+    }
+  ],
+  "recommendedMix": "55% Math / 45% Reading & Writing. This distribution gives heavier weight to Math because Math represents 240 points (53.3%) of your total 450-point gap toward your 1600 goal, compared to 210 points for Reading & Writing.",
+  "sectionBreakdown": [
+    {
+      "section": "Reading and Writing",
+      "accuracySummary": "8/10 correct (80%)",
+      "pacingSummary": "34s average against a 79s authored target",
+      "findings": [
+        {
+          "claim": "Excellent synthesis and passage structure analysis on Level 5 craft and structure items.",
+          "confidence": "strong",
+          "evidenceIds": [
+            "2ace3b42-20e1-4eb7-b838-0ac38d317cee",
+            "daf6dd68-aae5-46cb-bc7a-eb857f07dfa7",
+            "6082aa2f-211c-44ed-bc94-314f39079071"
+          ]
+        },
+        {
+          "claim": "Errors occurred on vocabulary antonym distractor traps and textual evidence evaluation.",
+          "confidence": "moderate",
+          "evidenceIds": [
+            "a71d3720-883a-4d93-8f61-46acb5220aa1",
+            "61aaf0f2-72f9-4d46-9b41-46a527180c23"
+          ]
+        }
+      ],
+      "recommendedFocus": "Practice cautious elimination on high-level vocabulary choices and verify direct mechanism alignment on textual evidence questions."
+    },
+    {
+      "section": "Math",
+      "accuracySummary": "8/10 correct (80%)",
+      "pacingSummary": "34s average against a 125s authored target",
+      "findings": [
+        {
+          "claim": "Flawless performance on Level 5 algebra, linear inequalities, and polynomial manipulations.",
+          "confidence": "strong",
+          "evidenceIds": [
+            "47c03205-3daa-41d6-a694-924fa4d6e7c5",
+            "c8628ace-cc18-4c64-98d5-c8e7da4bd225",
+            "e5019821-3d77-45fd-96b4-b0e6d6c38626",
+            "26845dd4-82da-4b39-9794-e3bfc04531a3"
+          ]
+        },
+        {
+          "claim": "Errors were caused by initial misapplication of statistical shift rules and 3D scale factor setups, both corrected immediately on retry.",
+          "confidence": "strong",
+          "evidenceIds": [
+            "836d3eec-a333-4bde-982d-9be3f1334f70",
+            "dec13e14-055d-4bc4-8e2b-e6042170bbf0",
+            "2c25b455-7393-44a7-a9c5-b1a72e0bfded",
+            "c74a7a0c-f7d3-4e88-9631-502e28969e35"
+          ]
+        }
+      ],
+      "recommendedFocus": "Solidify 3D scale factor setups (cube of linear ratio) and invariant properties of statistical distributions."
+    }
+  ],
+  "sevenDayPlan": [
+    {
+      "day": "Day 1",
+      "minutes": 30,
+      "successCheck": "Solve 5 consecutive volumetric scale problems using k³ setup without error.",
+      "work": "Targeted Math scale factors and 3D volume ratios drill at Level 5."
+    },
+    {
+      "day": "Day 2",
+      "minutes": 30,
+      "successCheck": "Correctly classify center vs spread changes across 6 data shift questions.",
+      "work": "Data distribution properties lesson on scalar transformations, mean, median, range, and standard deviation."
+    },
+    {
+      "day": "Day 3",
+      "minutes": 35,
+      "successCheck": "Achieve 100% accuracy on 6 Level 5 textual command of evidence items.",
+      "work": "Reading & Writing textual evidence matching drill focusing on mechanism alignment vs distractor claims."
+    },
+    {
+      "day": "Day 4",
+      "minutes": 30,
+      "successCheck": "Eliminate antonym traps across 8 vocabulary items.",
+      "work": "Level 5 vocabulary in context practice with forced 5-second context verification step."
+    },
+    {
+      "day": "Day 5",
+      "minutes": 45,
+      "successCheck": "Maintain 85%+ accuracy while pacing at under 60 seconds per item.",
+      "work": "Mixed Level 5 Math section drill weighted toward geometry, ratios, and function transformations."
+    },
+    {
+      "day": "Day 6",
+      "minutes": 45,
+      "successCheck": "Maintain 85%+ accuracy while pacing at under 45 seconds per item.",
+      "work": "Mixed Level 5 Reading & Writing section drill covering craft, structure, and standard English conventions."
+    },
+    {
+      "day": "Day 7",
+      "minutes": 60,
+      "successCheck": "Complete both modules, generate score estimate, and establish formal weekly point trend.",
+      "work": "Full-length adaptive practice test module to establish baseline weekly trend and test progress."
+    }
+  ],
+  "skillBreakdown": [
+    {
+      "skillId": "linear-equations-one-variable",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 11,
+      "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+      "nextDifficulty": 5,
+      "action": "Collect another varied item before changing difficulty.",
+      "evidenceIds": [
+        "47c03205-3daa-41d6-a694-924fa4d6e7c5"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "cross-text-connections",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 34,
+      "diagnosis": "Accurately synthesized perspective conflict between material origin and centralized administration.",
+      "nextDifficulty": 5,
+      "action": "Continue evaluating structural logical relationships across texts.",
+      "evidenceIds": [
+        "2ace3b42-20e1-4eb7-b838-0ac38d317cee"
+      ],
+      "confidence": "strong"
+    },
+    {
+      "skillId": "linear-inequalities",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 61,
+      "diagnosis": "Verified solution bounds across linear inequality system.",
+      "nextDifficulty": 5,
+      "action": "Keep testing boundary coordinates efficiently.",
+      "evidenceIds": [
+        "c8628ace-cc18-4c64-98d5-c8e7da4bd225"
+      ],
+      "confidence": "strong"
+    },
+    {
+      "skillId": "rhetorical-synthesis",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 90,
+      "diagnosis": "Synthesized notes accurately to emphasize specific research finding.",
+      "nextDifficulty": 5,
+      "action": "Maintain strict focus on prompt directives.",
+      "evidenceIds": [
+        "daf6dd68-aae5-46cb-bc7a-eb857f07dfa7"
+      ],
+      "confidence": "moderate"
+    },
+    {
+      "skillId": "equivalent-expressions",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 59,
+      "diagnosis": "Expanded binomial product and tracked single variable coefficient correctly.",
+      "nextDifficulty": 5,
+      "action": "Continue careful distribution of negative signs and coefficients.",
+      "evidenceIds": [
+        "e5019821-3d77-45fd-96b4-b0e6d6c38626"
+      ],
+      "confidence": "strong"
+    },
+    {
+      "skillId": "words-in-context",
+      "correct": 2,
+      "total": 3,
+      "averageSeconds": 15,
+      "diagnosis": "Selected antonym distractor 'segregate' on one item due to rapid pacing; succeeded on remaining two context items.",
+      "nextDifficulty": 5,
+      "action": "Pause for 5 seconds to double-check context contrast words before selecting options.",
+      "evidenceIds": [
+        "a71d3720-883a-4d93-8f61-46acb5220aa1",
+        "0cf987a8-4305-41ed-807f-20ebc495e4eb",
+        "9c4906e0-d59d-4df4-afa4-4532342998e5"
+      ],
+      "confidence": "moderate"
+    },
+    {
+      "skillId": "one-variable-data",
+      "correct": 1,
+      "total": 2,
+      "averageSeconds": 16,
+      "diagnosis": "Initially assumed scalar addition changes range, but immediately corrected understanding on follow-up item.",
+      "nextDifficulty": 5,
+      "action": "Reinforce that constant addition shifts center (median/mean) but leaves spread (range/IQR/SD) invariant.",
+      "evidenceIds": [
+        "836d3eec-a333-4bde-982d-9be3f1334f70",
+        "dec13e14-055d-4bc4-8e2b-e6042170bbf0"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "central-ideas-details",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 40,
+      "diagnosis": "Accurately identified passage main idea contrasting historical assumptions with empirical evidence.",
+      "nextDifficulty": 5,
+      "action": "Sustain focus on main thesis versus supporting context.",
+      "evidenceIds": [
+        "88288811-fce2-48e0-bec0-27cc7904405a"
+      ],
+      "confidence": "strong"
+    },
+    {
+      "skillId": "two-variable-data",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 39,
+      "diagnosis": "Calculated linear rate of change correctly from coordinate pairs.",
+      "nextDifficulty": 5,
+      "action": "Maintain rapid slope calculation from data tables.",
+      "evidenceIds": [
+        "1c5700ef-7703-4dbc-bdca-4037b050d949"
+      ],
+      "confidence": "strong"
+    },
+    {
+      "skillId": "linear-functions",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 46,
+      "diagnosis": "Evaluated composite function transformation correctly despite self-reporting low certainty.",
+      "nextDifficulty": 5,
+      "action": "Build confidence in multi-step function evaluation rules.",
+      "evidenceIds": [
+        "92bb4575-94e4-4169-8c6f-2b40b2123122"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "text-structure-purpose",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 47,
+      "diagnosis": "Tracked narrative shift from traditional theory to archival challenge and revised conclusion.",
+      "nextDifficulty": 5,
+      "action": "Continue mapping overall passage logic.",
+      "evidenceIds": [
+        "6082aa2f-211c-44ed-bc94-314f39079071"
+      ],
+      "confidence": "strong"
+    },
+    {
+      "skillId": "nonlinear-functions",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 27,
+      "diagnosis": "Interpreted exponential decay base to determine annual percentage reduction.",
+      "nextDifficulty": 5,
+      "action": "Sustain fast conversion between growth/decay factors and percentage changes.",
+      "evidenceIds": [
+        "26845dd4-82da-4b39-9794-e3bfc04531a3"
+      ],
+      "confidence": "strong"
+    },
+    {
+      "skillId": "boundaries",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 20,
+      "diagnosis": "Correctly selected semicolon to join two independent clauses without coordinating conjunction.",
+      "nextDifficulty": 5,
+      "action": "Solidify punctuation boundary rules to boost self-assessed certainty.",
+      "evidenceIds": [
+        "6761d052-626b-447b-bf56-fd662701ecf2"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "ratios-rates-units",
+      "correct": 1,
+      "total": 2,
+      "averageSeconds": 33,
+      "diagnosis": "Applied 1D scale factor to volume on first item; correctly cubed scale factor on immediate follow-up item.",
+      "nextDifficulty": 5,
+      "action": "Explicitly write out scale factor powers (area = k², volume = k³) before computing.",
+      "evidenceIds": [
+        "2c25b455-7393-44a7-a9c5-b1a72e0bfded",
+        "c74a7a0c-f7d3-4e88-9631-502e28969e35"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "command-evidence-textual",
+      "correct": 1,
+      "total": 2,
+      "averageSeconds": 30,
+      "diagnosis": "Chose exaggerated comparative income claim on first item; correctly selected direct voucher evidence on second item.",
+      "nextDifficulty": 5,
+      "action": "Ensure selected evidence matches the precise mechanism described in the claim.",
+      "evidenceIds": [
+        "61aaf0f2-72f9-4d46-9b41-46a527180c23",
+        "15ee23e5-a89f-4b2e-922a-aeff8021c076"
+      ],
+      "confidence": "tentative"
+    }
+  ],
+  "strengths": [
+    {
+      "claim": "High accuracy (80%) on Level 5 adaptive items with rapid pacing across both sections.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "41fe74be-5aa9-424e-b0b5-280af3f0a205"
+      ]
+    },
+    {
+      "claim": "Flawless execution on Level 5 linear equations, inequalities, binomial expansions, and exponential decay models.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "47c03205-3daa-41d6-a694-924fa4d6e7c5",
+        "c8628ace-cc18-4c64-98d5-c8e7da4bd225",
+        "e5019821-3d77-45fd-96b4-b0e6d6c38626",
+        "26845dd4-82da-4b39-9794-e3bfc04531a3"
+      ]
+    },
+    {
+      "claim": "Strong performance on complex Reading & Writing craft, structure, and rhetorical synthesis items at Level 5 difficulty.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "2ace3b42-20e1-4eb7-b838-0ac38d317cee",
+        "daf6dd68-aae5-46cb-bc7a-eb857f07dfa7",
+        "88288811-fce2-48e0-bec0-27cc7904405a",
+        "6082aa2f-211c-44ed-bc94-314f39079071"
+      ]
+    }
+  ],
+  "studyPriorities": [
+    {
+      "action": "Practice 3D scale factor transformations and volumetric unit conversions.",
+      "evidenceIds": [
+        "2c25b455-7393-44a7-a9c5-b1a72e0bfded",
+        "c74a7a0c-f7d3-4e88-9631-502e28969e35"
+      ],
+      "reason": "Math accounts for 240 points (53.3%) of your total 450-point score gap to reaching 1600.",
+      "skillId": "ratios-rates-units"
+    },
+    {
+      "action": "Drill distribution shift invariant properties (mean/median shift vs range/IQR constancy).",
+      "evidenceIds": [
+        "836d3eec-a333-4bde-982d-9be3f1334f70",
+        "dec13e14-055d-4bc4-8e2b-e6042170bbf0"
+      ],
+      "reason": "Math represents the larger portion of your score deficit, requiring zero-error execution on data analysis.",
+      "skillId": "one-variable-data"
+    },
+    {
+      "action": "Practice matching explicit logical mechanisms in text evidence options to claim statements.",
+      "evidenceIds": [
+        "61aaf0f2-72f9-4d46-9b41-46a527180c23",
+        "15ee23e5-a89f-4b2e-922a-aeff8021c076"
+      ],
+      "reason": "Reading & Writing accounts for 210 points of the remaining gap to goal.",
+      "skillId": "command-evidence-textual"
+    },
+    {
+      "action": "Apply brief context verification pausing on high-difficulty vocabulary items.",
+      "evidenceIds": [
+        "a71d3720-883a-4d93-8f61-46acb5220aa1"
+      ],
+      "reason": "Prevents rapid-pacing antonym trap errors on Level 5 Reading & Writing questions.",
+      "skillId": "words-in-context"
+    }
+  ],
+  "title": "Set review: 16 of 20 correct",
+  "transferAndRetention": [
+    {
+      "claim": "Demonstrated strong intra-session concept recovery on repeated item patterns, but multi-session retention and cross-context transfer remain tentative pending future testing.",
+      "confidence": "tentative",
+      "evidenceIds": [
+        "836d3eec-a333-4bde-982d-9be3f1334f70",
+        "dec13e14-055d-4bc4-8e2b-e6042170bbf0",
+        "2c25b455-7393-44a7-a9c5-b1a72e0bfded",
+        "c74a7a0c-f7d3-4e88-9631-502e28969e35"
+      ]
+    }
+  ],
+  "weaknesses": [
+    {
+      "claim": "Susceptible to vocabulary distractor traps (antonyms) when answering high-confidence items extremely rapidly.",
+      "confidence": "moderate",
+      "evidenceIds": [
+        "a71d3720-883a-4d93-8f61-46acb5220aa1"
+      ]
+    },
+    {
+      "claim": "Occasional initial setup oversights on multi-dimensional scaling factors in geometry and ratio problems.",
+      "confidence": "moderate",
+      "evidenceIds": [
+        "2c25b455-7393-44a7-a9c5-b1a72e0bfded"
+      ]
+    },
+    {
+      "claim": "Vulnerability to choosing exaggerated comparative claims over direct causal mechanism evidence in textual command of evidence questions.",
+      "confidence": "moderate",
+      "evidenceIds": [
+        "61aaf0f2-72f9-4d46-9b41-46a527180c23"
+      ]
+    }
+  ],
+  "whatChanged": [
+    {
+      "claim": "Accuracy on Level 5 problem-solving and vocabulary items reached 80% across both sections while maintaining an execution pace nearly three times faster than time budgets.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "47c03205-3daa-41d6-a694-924fa4d6e7c5",
+        "2ace3b42-20e1-4eb7-b838-0ac38d317cee",
+        "c8628ace-cc18-4c64-98d5-c8e7da4bd225",
+        "daf6dd68-aae5-46cb-bc7a-eb857f07dfa7",
+        "e5019821-3d77-45fd-96b4-b0e6d6c38626",
+        "0cf987a8-4305-41ed-807f-20ebc495e4eb",
+        "dec13e14-055d-4bc4-8e2b-e6042170bbf0",
+        "88288811-fce2-48e0-bec0-27cc7904405a",
+        "1c5700ef-7703-4dbc-bdca-4037b050d949",
+        "9c4906e0-d59d-4df4-afa4-4532342998e5",
+        "92bb4575-94e4-4169-8c6f-2b40b2123122",
+        "6082aa2f-211c-44ed-bc94-314f39079071",
+        "26845dd4-82da-4b39-9794-e3bfc04531a3",
+        "6761d052-626b-447b-bf56-fd662701ecf2",
+        "c74a7a0c-f7d3-4e88-9631-502e28969e35",
+        "15ee23e5-a89f-4b2e-922a-aeff8021c076"
+      ]
+    },
+    {
+      "claim": "Demonstrated immediate intra-session self-correction on missed concepts when presented with direct follow-up questions.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "836d3eec-a333-4bde-982d-9be3f1334f70",
+        "dec13e14-055d-4bc4-8e2b-e6042170bbf0",
+        "2c25b455-7393-44a7-a9c5-b1a72e0bfded",
+        "c74a7a0c-f7d3-4e88-9631-502e28969e35"
+      ]
+    }
+  ],
+  "id": "41fe74be-5aa9-424e-b0b5-280af3f0a205",
+  "type": "session",
+  "period": "2026-08-09T06:10:51.278Z to 2026-08-09T06:25:46.057Z",
+  "createdAt": "2026-08-09T06:26:41.446Z",
+  "model": "gemini-3.6-flash-high",
+  "answerCount": 20
+}

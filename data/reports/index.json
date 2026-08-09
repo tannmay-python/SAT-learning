@@ -1,0 +1,2588 @@
+[
+  {
+    "id": "cf15003d-c6f5-438c-bf0f-fdb24d8a5841",
+    "type": "session",
+    "title": "SAT Session Learning Report & Learner Model Update (Session cf15003d-c6f5-438c-bf0f-fdb24d8a5841)",
+    "period": "2026-08-06T20:50:56.351Z to 2026-08-06T20:54:43.872Z",
+    "createdAt": "2026-08-06T20:55:25.813Z",
+    "executiveSummary": "During the initial diagnostic session (cf15003d-c6f5-438c-bf0f-fdb24d8a5841), the learner achieved a perfect score of 12/12 (100% accuracy) across 11 Reading and Writing items and 1 Math item, all at difficulty level 2. Total session elapsed time was 3 minutes and 47 seconds, with an overall average pacing of 17 seconds per item (well below the target average of 60 seconds). A primary psychological pattern emerged: under-confidence. Despite zero errors, the learner flagged 7 out of 12 items as 'unsure' (6) or 'guessing' (1). Because all items were tested at difficulty level 2 with a single question per skill in one session, no skill can yet be classified as fully mastered, fluent, or retained. The primary recommendation is to escalate difficulty to Level 3 while reinforcing rule-based confidence self-trust.",
+    "model": "gemini-3.6-flash-high",
+    "sectionBreakdown": [
+      {
+        "section": "Reading and Writing",
+        "accuracySummary": "11/11 correct (100%)",
+        "pacingSummary": "17s average against a 55s authored target",
+        "findings": [
+          {
+            "claim": "Demonstrated strong command across Craft & Structure, Information & Ideas, Standard English Conventions, and Expression of Ideas.",
+            "confidence": "strong",
+            "evidenceIds": [
+              "b0871dfe-876f-4905-b8f0-03d28605cf22",
+              "1c016f32-1ead-4639-8a12-e39ddb61e9f5",
+              "cfc4d0de-f00b-4334-a9be-2162017ef9d4",
+              "b28bb33a-d355-411c-bc2d-dc8628c21ecf",
+              "14b4a224-c084-45b0-a2e0-cabc174c5472",
+              "68c30d85-e830-4d3e-b7ab-47fa7cde398c",
+              "cdaa0a56-a8d7-4688-bbee-661c639b8e95",
+              "64aa09a3-c406-456f-995a-9a2234fd35e0",
+              "97c86e56-58df-410b-84aa-d675f6a0eaba",
+              "88d6db9e-6545-4d13-9127-d7a1f64eec70",
+              "d282c074-8954-43fa-bca3-fd4ee6eacf3e"
+            ]
+          },
+          {
+            "claim": "Marked 6 of 11 RW items as 'unsure' and 1 as 'guessing' despite answering all 11 correctly.",
+            "confidence": "strong",
+            "evidenceIds": [
+              "1c016f32-1ead-4639-8a12-e39ddb61e9f5",
+              "14b4a224-c084-45b0-a2e0-cabc174c5472",
+              "68c30d85-e830-4d3e-b7ab-47fa7cde398c",
+              "cdaa0a56-a8d7-4688-bbee-661c639b8e95",
+              "64aa09a3-c406-456f-995a-9a2234fd35e0",
+              "97c86e56-58df-410b-84aa-d675f6a0eaba",
+              "d282c074-8954-43fa-bca3-fd4ee6eacf3e"
+            ]
+          }
+        ],
+        "recommendedFocus": "Increase item difficulty to Level 3 and focus on explicit grammar rule justification to align confidence with performance."
+      },
+      {
+        "section": "Math",
+        "accuracySummary": "1/1 correct (100%)",
+        "pacingSummary": "10s average against a 114s authored target",
+        "findings": [
+          {
+            "claim": "Solved 3x + 7 = 46 correctly yielding x = 13 in 10 seconds.",
+            "confidence": "strong",
+            "evidenceIds": [
+              "0f1269e1-405a-4f00-b38f-e5c86f16f23b"
+            ]
+          }
+        ],
+        "recommendedFocus": "Expand math testing to additional domains (Advanced Math, Problem Solving, Geometry) and higher difficulty levels (Level 3-4)."
+      }
+    ],
+    "skillBreakdown": [
+      {
+        "skillId": "words-in-context",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 7,
+        "diagnosis": "Accurate contextual definition selection; extremely rapid execution (7s).",
+        "nextDifficulty": 3,
+        "action": "Advance to Level 3 items testing nuanced secondary definitions in academic contexts.",
+        "evidenceIds": [
+          "b0871dfe-876f-4905-b8f0-03d28605cf22"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "text-structure-purpose",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 10,
+        "diagnosis": "Correct functional role identification despite self-reported 'unsure' state.",
+        "nextDifficulty": 3,
+        "action": "Expose to Level 3 dual-sentence functional analysis items and reinforce self-trust.",
+        "evidenceIds": [
+          "1c016f32-1ead-4639-8a12-e39ddb61e9f5"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "cross-text-connections",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 24,
+        "diagnosis": "Accurate comparative claim synthesis between dual texts within 24s.",
+        "nextDifficulty": 3,
+        "action": "Progress to Level 3 items involving subtle perspective shifts and conflicting methodologies.",
+        "evidenceIds": [
+          "cfc4d0de-f00b-4334-a9be-2162017ef9d4"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "central-ideas-details",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 16,
+        "diagnosis": "Accurate premise retrieval and conclusion matching.",
+        "nextDifficulty": 3,
+        "action": "Test with Level 3 dense scientific and social science passages.",
+        "evidenceIds": [
+          "b28bb33a-d355-411c-bc2d-dc8628c21ecf"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "command-evidence-textual",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 16,
+        "diagnosis": "Correct selection of direct empirical evidence supporting research claim; marked 'unsure'.",
+        "nextDifficulty": 3,
+        "action": "Provide Level 3 hypothesis-testing scenarios with distractor choices that partially overlap.",
+        "evidenceIds": [
+          "14b4a224-c084-45b0-a2e0-cabc174c5472"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "command-evidence-quantitative",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 30,
+        "diagnosis": "Successful quantitative comparison; extra time (30s) reflected careful data verification.",
+        "nextDifficulty": 3,
+        "action": "Practice Level 3 multi-variable chart and table data synthesis items.",
+        "evidenceIds": [
+          "68c30d85-e830-4d3e-b7ab-47fa7cde398c"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "inferences",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 27,
+        "diagnosis": "Accurate logical deduction from stated premises; marked 'unsure'.",
+        "nextDifficulty": 3,
+        "action": "Challenge with Level 3 complex conditional inferences and implicit logic.",
+        "evidenceIds": [
+          "cdaa0a56-a8d7-4688-bbee-661c639b8e95"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "boundaries",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 18,
+        "diagnosis": "Correctly applied semicolon and conjunctive adverb punctuation, but flagged as 'guessing'.",
+        "nextDifficulty": 3,
+        "action": "Practice Level 3 sentence boundary items with parenthetical insertions to build rule confidence.",
+        "evidenceIds": [
+          "64aa09a3-c406-456f-995a-9a2234fd35e0"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "form-structure-sense",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 17,
+        "diagnosis": "Accurate dangling modifier resolution; marked 'unsure'.",
+        "nextDifficulty": 3,
+        "action": "Advance to Level 3 items with complex introductory modifiers and subject placement.",
+        "evidenceIds": [
+          "97c86e56-58df-410b-84aa-d675f6a0eaba"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "rhetorical-synthesis",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 16,
+        "diagnosis": "Rapid, precise synthesis of bulleted notes satisfying dual rhetorical constraints.",
+        "nextDifficulty": 3,
+        "action": "Test with Level 3 rhetorical synthesis prompts requiring selective omission of extra notes.",
+        "evidenceIds": [
+          "88d6db9e-6545-4d13-9127-d7a1f64eec70"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "transitions",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 9,
+        "diagnosis": "Swift identification of cause-and-effect transition relationship (9s); marked 'unsure'.",
+        "nextDifficulty": 3,
+        "action": "Challenge with Level 3 subtle contrastive or illustrative transition words.",
+        "evidenceIds": [
+          "d282c074-8954-43fa-bca3-fd4ee6eacf3e"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "linear-equations-one-variable",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 10,
+        "diagnosis": "Swift single-variable linear algebraic isolation (10s vs 114s target).",
+        "nextDifficulty": 3,
+        "action": "Advance to Level 3 multi-step linear equations, systems of equations, and word problems.",
+        "evidenceIds": [
+          "0f1269e1-405a-4f00-b38f-e5c86f16f23b"
+        ],
+        "confidence": "tentative"
+      }
+    ],
+    "errorTaxonomy": [],
+    "studyPriorities": [
+      {
+        "action": "Expose learner to Level 3 sentence boundary questions featuring semicolons, colons, and dashes; require explicit rule justification to resolve self-doubt.",
+        "evidenceIds": [
+          "64aa09a3-c406-456f-995a-9a2234fd35e0"
+        ],
+        "reason": "Learner flagged this correctly answered punctuation item as 'guessing'.",
+        "skillId": "boundaries"
+      },
+      {
+        "action": "Practice identifying dangling modifiers and complex subject agreement at Level 3.",
+        "evidenceIds": [
+          "97c86e56-58df-410b-84aa-d675f6a0eaba"
+        ],
+        "reason": "Learner marked modifier placement item as 'unsure' despite executing in 17s.",
+        "skillId": "form-structure-sense"
+      },
+      {
+        "action": "Work through multi-variable graphs and tables to build speed and confidence in data-driven claims.",
+        "evidenceIds": [
+          "68c30d85-e830-4d3e-b7ab-47fa7cde398c"
+        ],
+        "reason": "Item required highest time investment (30s) and was self-reported as 'unsure'.",
+        "skillId": "command-evidence-quantitative"
+      },
+      {
+        "action": "Expand math assessment to multi-step equations, linear systems, and functions at Level 3.",
+        "evidenceIds": [
+          "0f1269e1-405a-4f00-b38f-e5c86f16f23b"
+        ],
+        "reason": "Only 1 math question was present in the diagnostic session; broader coverage needed.",
+        "skillId": "linear-equations-one-variable"
+      }
+    ],
+    "sevenDayPlan": [
+      {
+        "day": "Day 1",
+        "minutes": 25,
+        "successCheck": "Score >= 80% accuracy on Level 3 punctuation and modifier rules with 0 'guessing' flags.",
+        "work": "Targeted Lesson & Practice: Standard English Conventions (Boundaries & Form/Structure/Sense) at Difficulty 3. Focus on explicit rule articulation before selection."
+      },
+      {
+        "day": "Day 2",
+        "minutes": 30,
+        "successCheck": "Correctly identify supportive data points in < 45s per question.",
+        "work": "Targeted Practice: Quantitative Evidence & Inferences at Difficulty 3. Work through complex multi-variable tables and charts."
+      },
+      {
+        "day": "Day 3",
+        "minutes": 30,
+        "successCheck": "Maintain accuracy above 85% with confidence ratings matching actual correctness.",
+        "work": "Spaced Recall & Mixed Practice: 10 Level 3 RW items (Craft & Structure + Information & Ideas). Track confidence calibration."
+      },
+      {
+        "day": "Day 4",
+        "minutes": 25,
+        "successCheck": "Solve single-variable and multi-variable linear systems in < 45s per item with 100% accuracy.",
+        "work": "Math Foundation Expansion: Linear Equations, Systems, and Functions at Difficulty 2-3 (10 items)."
+      },
+      {
+        "day": "Day 5",
+        "minutes": 35,
+        "successCheck": "Complete set within 15 minutes with score >= 85%.",
+        "work": "Timed Mini-Section: 15-item mixed RW set (Level 3) under strict timing (12 minutes)."
+      },
+      {
+        "day": "Day 6",
+        "minutes": 20,
+        "successCheck": "Articulate explicit reason for each correct answer choice on flagged items.",
+        "work": "Review & Self-Calibration Audit: Re-evaluate items marked 'unsure' from previous days."
+      },
+      {
+        "day": "Day 7",
+        "minutes": 40,
+        "successCheck": "Demonstrate stable accuracy (>= 85%) across 20 items spanning Level 3 RW and Math.",
+        "work": "Full Adaptive Calibration Diagnostic: 20 mixed items across all RW domains and Math (Level 3)."
+      }
+    ],
+    "recommendedMix": "70% Reading & Writing (Level 3 Harder Items) / 30% Math (Level 2-3 Multi-Domain)",
+    "limitations": [
+      "Single session observation (cf15003d-c6f5-438c-bf0f-fdb24d8a5841) covering only 12 items.",
+      "Only 1 item tested per skill; retention and multi-form transfer cannot be verified yet (requires >= 3 attempts across >= 2 sessions).",
+      "All items were at difficulty level 2; ceiling effect prevents assessing performance on high-difficulty (Level 3-4) questions.",
+      "Math domain representation is limited to a single linear equation item (0f1269e1-405a-4f00-b38f-e5c86f16f23b)."
+    ],
+    "path": "/Users/tannmaybaid/Desktop/Claude Projects/SAT-learning/data/reports/session/cf15003d-c6f5-438c-bf0f-fdb24d8a5841.md",
+    "jsonPath": "/Users/tannmaybaid/Desktop/Claude Projects/SAT-learning/data/reports/session/cf15003d-c6f5-438c-bf0f-fdb24d8a5841.json"
+  },
+  {
+    "id": "2026-W32",
+    "type": "weekly",
+    "title": "Weekly SAT Learning Report (Period Ending 2026-08-06)",
+    "period": "Seven days ending 2026-08-06",
+    "createdAt": "2026-08-06T20:55:57.013Z",
+    "executiveSummary": "During the 7-day period ending 2026-08-06, the learner completed 1 diagnostic session (cf15003d-c6f5-438c-bf0f-fdb24d8a5841) comprising 12 items (11 Reading & Writing, 1 Math). The learner achieved 100% accuracy (12/12) with rapid pacing averaging 17s per item (well below the target average of 60s). While baseline competence at Difficulty Level 2 is clear across all tested skills, significant under-confidence was recorded, with 7 of 12 items marked as 'unsure' (6) or 'guessing' (1). Because each skill has only 1 attempt in a single session, skills cannot yet be classified as fluent, mastered, or retained. Immediate escalation to Difficulty Level 3 and expansion of Math skill coverage are recommended.",
+    "model": "gemini-3.6-flash-high",
+    "sectionBreakdown": [
+      {
+        "section": "Reading and Writing",
+        "accuracySummary": "11/11 correct (100%)",
+        "pacingSummary": "17s average against a 55s authored target",
+        "findings": [
+          {
+            "claim": "100% accuracy across Craft & Structure, Information & Ideas, Standard English Conventions, and Expression of Ideas at Level 2.",
+            "confidence": "strong",
+            "evidenceIds": [
+              "b0871dfe-876f-4905-b8f0-03d28605cf22",
+              "1c016f32-1ead-4639-8a12-e39ddb61e9f5",
+              "cfc4d0de-f00b-4334-a9be-2162017ef9d4",
+              "b28bb33a-d355-411c-bc2d-dc8628c21ecf",
+              "14b4a224-c084-45b0-a2e0-cabc174c5472",
+              "68c30d85-e830-4d3e-b7ab-47fa7cde398c",
+              "cdaa0a56-a8d7-4688-bbee-661c639b8e95",
+              "64aa09a3-c406-456f-995a-9a2234fd35e0",
+              "97c86e56-58df-410b-84aa-d675f6a0eaba",
+              "88d6db9e-6545-4d13-9127-d7a1f64eec70",
+              "d282c074-8954-43fa-bca3-fd4ee6eacf3e"
+            ]
+          },
+          {
+            "claim": "Pacing is well within target times, ranging from 7s (words-in-context) to 30s (command-evidence-quantitative).",
+            "confidence": "strong",
+            "evidenceIds": [
+              "b0871dfe-876f-4905-b8f0-03d28605cf22",
+              "68c30d85-e830-4d3e-b7ab-47fa7cde398c"
+            ]
+          }
+        ],
+        "recommendedFocus": "Escalate items to Level 3 difficulty; focus on validating standard grammar rules (boundaries, modifier placement) to convert tentative choices into confident mastery."
+      },
+      {
+        "section": "Math",
+        "accuracySummary": "1/1 correct (100%)",
+        "pacingSummary": "10s average against a 114s authored target",
+        "findings": [
+          {
+            "claim": "Demonstrated accurate arithmetic and inverse operations on a 1-step/2-step linear equation (3x + 7 = 46) in 10 seconds.",
+            "confidence": "tentative",
+            "evidenceIds": [
+              "0f1269e1-405a-4f00-b38f-e5c86f16f23b"
+            ]
+          }
+        ],
+        "recommendedFocus": "Broaden Math testing across linear systems, quadratic equations, functions, and geometry at Difficulty Levels 2 and 3."
+      }
+    ],
+    "skillBreakdown": [
+      {
+        "skillId": "words-in-context",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 7,
+        "diagnosis": "Flawless contextual choice of 'reinterpreted' in 7s.",
+        "nextDifficulty": 3,
+        "action": "Advance to Level 3 vocabulary items with subtle secondary definitions.",
+        "evidenceIds": [
+          "b0871dfe-876f-4905-b8f0-03d28605cf22"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "text-structure-purpose",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 10,
+        "diagnosis": "Correctly identified sentence function (challenging assumption) in 10s, but reported 'unsure'.",
+        "nextDifficulty": 3,
+        "action": "Provide Level 3 passage function questions to consolidate structural analysis confidence.",
+        "evidenceIds": [
+          "1c016f32-1ead-4639-8a12-e39ddb61e9f5"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "cross-text-connections",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 24,
+        "diagnosis": "Correctly synthesized two texts regarding stream restoration benefits in 24s.",
+        "nextDifficulty": 3,
+        "action": "Test Level 3 paired-passage items requiring nuanced perspective synthesis.",
+        "evidenceIds": [
+          "cfc4d0de-f00b-4334-a9be-2162017ef9d4"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "central-ideas-details",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 16,
+        "diagnosis": "Accurately extracted Mensah's conclusion on rice husk ash additive range in 16s.",
+        "nextDifficulty": 3,
+        "action": "Escalate to Level 3 dense scientific stimuli.",
+        "evidenceIds": [
+          "b28bb33a-d355-411c-bc2d-dc8628c21ecf"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "command-evidence-textual",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 16,
+        "diagnosis": "Selected direct experimental support for bird nesting box grip in 16s, though felt 'unsure'.",
+        "nextDifficulty": 3,
+        "action": "Introduce Level 3 hypothesis-testing items with competing plausible options.",
+        "evidenceIds": [
+          "14b4a224-c084-45b0-a2e0-cabc174c5472"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "command-evidence-quantitative",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 30,
+        "diagnosis": "Selected data point proving highest survival in partial shade in 30s; felt 'unsure'.",
+        "nextDifficulty": 3,
+        "action": "Present Level 3 multi-variable chart and table synthesis questions.",
+        "evidenceIds": [
+          "68c30d85-e830-4d3e-b7ab-47fa7cde398c"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "inferences",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 27,
+        "diagnosis": "Correctly inferred return box location link to overdue book reduction in 27s; marked 'unsure'.",
+        "nextDifficulty": 3,
+        "action": "Practice Level 3 subtle inferential reasoning items.",
+        "evidenceIds": [
+          "cdaa0a56-a8d7-4688-bbee-661c639b8e95"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "boundaries",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 18,
+        "diagnosis": "Correctly applied semicolon and transition punctuation (; therefore,) in 18s, but marked 'guessing'.",
+        "nextDifficulty": 3,
+        "action": "Explicitly teach clause boundary punctuation rules to convert guesses into confident knowledge.",
+        "evidenceIds": [
+          "64aa09a3-c406-456f-995a-9a2234fd35e0"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "form-structure-sense",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 17,
+        "diagnosis": "Correctly aligned opening introductory modifier with subject ('the conservators') in 17s; marked 'unsure'.",
+        "nextDifficulty": 3,
+        "action": "Review misplaced and dangling modifier rules using Level 3 complex sentences.",
+        "evidenceIds": [
+          "97c86e56-58df-410b-84aa-d675f6a0eaba"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "rhetorical-synthesis",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 16,
+        "diagnosis": "Effortlessly combined research background and key finding into one sentence in 16s.",
+        "nextDifficulty": 3,
+        "action": "Challenge with Level 3 bullet synthesis tasks having complex goal constraints.",
+        "evidenceIds": [
+          "88d6db9e-6545-4d13-9127-d7a1f64eec70"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "transitions",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 9,
+        "diagnosis": "Identified cause-and-effect transition ('Consequently') in 9s; marked 'unsure'.",
+        "nextDifficulty": 3,
+        "action": "Reinforce transition category logic (cause/effect, contrast, addition, exemplification).",
+        "evidenceIds": [
+          "d282c074-8954-43fa-bca3-fd4ee6eacf3e"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "linear-equations-one-variable",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 10,
+        "diagnosis": "Solved 3x + 7 = 46 accurately in 10s with high self-reported confidence.",
+        "nextDifficulty": 3,
+        "action": "Expand to Level 3 linear equations, word problems, and systems of equations.",
+        "evidenceIds": [
+          "0f1269e1-405a-4f00-b38f-e5c86f16f23b"
+        ],
+        "confidence": "tentative"
+      }
+    ],
+    "errorTaxonomy": [],
+    "studyPriorities": [
+      {
+        "action": "Practice Level 3 sentence boundary items with semicolon, colon, and comma splice traps, explicitly identifying independent vs dependent clauses.",
+        "evidenceIds": [
+          "64aa09a3-c406-456f-995a-9a2234fd35e0"
+        ],
+        "reason": "Learner marked 'guessing' on boundary item despite correct execution.",
+        "skillId": "boundaries"
+      },
+      {
+        "action": "Review modifier placement and subject-verb agreement rules with Level 3 complex sentences.",
+        "evidenceIds": [
+          "97c86e56-58df-410b-84aa-d675f6a0eaba"
+        ],
+        "reason": "Learner marked 'unsure' on dangling modifier item.",
+        "skillId": "form-structure-sense"
+      },
+      {
+        "action": "Expand Math practice to multi-step linear equations, systems, and linear word problems at Level 3.",
+        "evidenceIds": [
+          "0f1269e1-405a-4f00-b38f-e5c86f16f23b"
+        ],
+        "reason": "Only 1 Math question evaluated; need broader coverage to establish Math baseline.",
+        "skillId": "linear-equations-one-variable"
+      },
+      {
+        "action": "Drill Level 3 graph and table analysis items requiring multi-variable comparisons.",
+        "evidenceIds": [
+          "68c30d85-e830-4d3e-b7ab-47fa7cde398c"
+        ],
+        "reason": "Item had longest completion time (30s) and 'unsure' confidence tag.",
+        "skillId": "command-evidence-quantitative"
+      }
+    ],
+    "sevenDayPlan": [
+      {
+        "day": "Day 1",
+        "minutes": 30,
+        "successCheck": "Explain the grammatical rule behind punctuation choice with 100% confidence.",
+        "work": "Targeted lesson & drill on Sentence Boundaries & Modifier Placement rules at Level 3."
+      },
+      {
+        "day": "Day 2",
+        "minutes": 30,
+        "successCheck": "Maintain >90% accuracy while keeping pacing under 60s per item.",
+        "work": "Math Expansion drill: 10 Level 3 items covering Linear Equations, Linear Inequalities, and Systems of Equations."
+      },
+      {
+        "day": "Day 3",
+        "minutes": 25,
+        "successCheck": "Complete 10 Level 3 items within target time (55s) and reduce 'unsure' tags by half.",
+        "work": "Mixed Reading & Writing drill (Craft & Structure + Information & Ideas) at Level 3 difficulty."
+      },
+      {
+        "day": "Day 4",
+        "minutes": 20,
+        "successCheck": "Correctly identify error types in 5 targeted rule verification questions.",
+        "work": "Spaced recall & rule validation: Review boundaries, modifier rules, and quantitative evidence synthesis."
+      },
+      {
+        "day": "Day 5",
+        "minutes": 35,
+        "successCheck": "Solve multi-variable quantitative items accurately within 45s.",
+        "work": "Math Problem Solving & Data Analysis drill: Table/chart synthesis and linear model word problems."
+      },
+      {
+        "day": "Day 6",
+        "minutes": 30,
+        "successCheck": "Achieve >= 85% accuracy across Level 3 items with active confidence tagging.",
+        "work": "Mixed RW & Math Level 3 timed practice set (15 items)."
+      },
+      {
+        "day": "Day 7",
+        "minutes": 20,
+        "successCheck": "Zero unverified guesses on Standard English and Inference items.",
+        "work": "Weekly review, miscalibration audit, and goal setting for Level 3 adaptive set."
+      }
+    ],
+    "recommendedMix": "70% Level 3 Reading & Writing (focusing on Standard English rules and dense Inference/Quantitative Evidence) and 30% Level 3 Math (expanding from linear equations to linear systems, word problems, and functions).",
+    "limitations": [
+      "All evidence derives from a single diagnostic session (cf15003d-c6f5-438c-bf0f-fdb24d8a5841) conducted on 2026-08-06.",
+      "Sample size per skill is N=1, preventing definitive assessment of skill mastery, stability, or transfer.",
+      "Math domain is severely under-sampled (1 algebra question only), leaving non-linear algebra, problem solving, geometry, and trigonometry unassessed.",
+      "No multi-session longitudinal data exists to evaluate retention over time."
+    ],
+    "path": "/Users/tannmaybaid/Desktop/Claude Projects/SAT-learning/data/reports/weekly/2026-W32.md",
+    "jsonPath": "/Users/tannmaybaid/Desktop/Claude Projects/SAT-learning/data/reports/weekly/2026-W32.json"
+  },
+  {
+    "id": "f54585d8-b881-433e-ab98-c6a4d24be003",
+    "type": "session",
+    "title": "SAT Math Adaptive Calibration Learning Report & Learner Model Update (Session f54585d8-b881-433e-ab98-c6a4d24be003)",
+    "period": "2026-08-06T21:20:00.060Z to 2026-08-06T21:25:35.734Z",
+    "createdAt": "2026-08-06T21:26:20.876Z",
+    "executiveSummary": "During the period 2026-08-06T21:20:00.060Z to 2026-08-06T21:25:35.734Z (Session f54585d8-b881-433e-ab98-c6a4d24be003), the learner completed a 15-item adaptive Math calibration set at Difficulty Level 2. The learner demonstrated high procedural accuracy (14/15 correct, 93.3%) and rapid pacing, spending an average of 19 seconds per item compared to an estimated target time of 111 seconds (82.9% under target time).\n\nThe single error occurred on item 66d07f42-e51d-485a-bd12-b3f774b26820 (skill: statistical-claims), where the learner expressed 'certain' confidence but incorrectly selected choice D, claiming 'no treatment was imposed' in a study where subjects were randomly assigned to desk types. This indicates a conceptual gap regarding the definition and scope of controlled experiments versus observational studies. Across the 10 items with explicit confidence ratings (9 'certain', 1 'medium'), 9 were correct, highlighting high self-trust that is well-calibrated computationally but susceptible to overconfidence on study design terminology. All skills evaluated in this single session are maintained as tentative mastery assessments pending multi-item and multi-session verification.",
+    "model": "gemini-3.6-flash-high",
+    "sectionBreakdown": [
+      {
+        "section": "Math",
+        "accuracySummary": "14/15 correct (93%)",
+        "pacingSummary": "19s average against a 111s authored target",
+        "findings": [
+          {
+            "claim": "High procedural mastery across line equations, systems, quadratics, percentages, data measures, and probability.",
+            "confidence": "strong",
+            "evidenceIds": [
+              "6de0b134-69b1-4539-8c4b-1edf6224c9df",
+              "4660ca0e-72d6-46f7-8900-c2e4ab25cbf5",
+              "a48a79be-f0e4-4f85-822e-2e4009cb444a",
+              "c6ea2930-975a-4a05-a88d-7dfd3e18ac2a",
+              "04c8867f-c3ad-446a-af2d-7ad363c1be29",
+              "b6dbcc81-b105-4669-a2e4-f7330e135c69",
+              "dc88fcfc-3f1c-433f-a60a-18c3afbfe9f8",
+              "5e69591f-ad05-4520-b7d9-ed2d0cb47f93",
+              "5d56696d-1ce2-450d-aa6e-6ea919bb8b36",
+              "19c0f33e-dfe6-45ec-8789-3ca5eb6fa1e4",
+              "e8f2aec6-09f4-4425-ab79-2389feece769",
+              "a981d839-4e3e-4652-af7e-0ee75864da1a",
+              "cf51d623-f02b-46cb-bfd1-ac9999d7d42c",
+              "a0ebe31d-173d-4974-9104-2b85d85541c1"
+            ]
+          },
+          {
+            "claim": "Single error on statistical claims involving interpretation of experimental design versus observational study boundaries.",
+            "confidence": "strong",
+            "evidenceIds": [
+              "66d07f42-e51d-485a-bd12-b3f774b26820"
+            ]
+          }
+        ],
+        "recommendedFocus": "Remediate statistical study design principles and escalate Math skills to Difficulty Level 3."
+      }
+    ],
+    "skillBreakdown": [
+      {
+        "skillId": "linear-equations-two-variables",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 35,
+        "diagnosis": "Calculated line slope from two points accurately.",
+        "nextDifficulty": 3,
+        "action": "Escalate to Level 3 items involving multi-step line equations and graph interpretations.",
+        "evidenceIds": [
+          "6de0b134-69b1-4539-8c4b-1edf6224c9df"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "linear-functions",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 10,
+        "diagnosis": "Rapid substitution and evaluation of linear function value.",
+        "nextDifficulty": 3,
+        "action": "Advance to Level 3 function evaluation and contextual interpretation.",
+        "evidenceIds": [
+          "4660ca0e-72d6-46f7-8900-c2e4ab25cbf5"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "systems-linear-equations",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 46,
+        "diagnosis": "Accurate elimination method execution for linear systems.",
+        "nextDifficulty": 3,
+        "action": "Introduce Level 3 system word problems and parameter-based solution counts.",
+        "evidenceIds": [
+          "a48a79be-f0e4-4f85-822e-2e4009cb444a"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "linear-inequalities",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 18,
+        "diagnosis": "Correct isolation of inequality with sign reversal on negative division.",
+        "nextDifficulty": 3,
+        "action": "Test Level 3 compound inequalities and system of inequality graphs.",
+        "evidenceIds": [
+          "c6ea2930-975a-4a05-a88d-7dfd3e18ac2a"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "equivalent-expressions",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 7,
+        "diagnosis": "Instant identification of difference of squares factorization.",
+        "nextDifficulty": 3,
+        "action": "Advance to Level 3 polynomial division and complex rational exponent equivalence.",
+        "evidenceIds": [
+          "04c8867f-c3ad-446a-af2d-7ad363c1be29"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "nonlinear-equations",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 25,
+        "diagnosis": "Factored quadratic to find sum of solutions accurately.",
+        "nextDifficulty": 3,
+        "action": "Escalate to Level 3 quadratics requiring quadratic formula, discriminant, or radical/rational equations.",
+        "evidenceIds": [
+          "b6dbcc81-b105-4669-a2e4-f7330e135c69"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "nonlinear-functions",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 22,
+        "diagnosis": "Extracted vertex coordinates directly from vertex form.",
+        "nextDifficulty": 3,
+        "action": "Test Level 3 vertex conversions and transformations of exponential/quadratic functions.",
+        "evidenceIds": [
+          "dc88fcfc-3f1c-433f-a60a-18c3afbfe9f8"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "systems-nonlinear",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 37,
+        "diagnosis": "Substituted line into parabola and found sum of roots correctly.",
+        "nextDifficulty": 3,
+        "action": "Introduce Level 3 circle-line or higher-degree curve intersections.",
+        "evidenceIds": [
+          "5e69591f-ad05-4520-b7d9-ed2d0cb47f93"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "ratios-rates-units",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 10,
+        "diagnosis": "Direct unit rate division executed rapidly.",
+        "nextDifficulty": 3,
+        "action": "Advance to Level 3 multi-step unit conversions and compound rates.",
+        "evidenceIds": [
+          "5d56696d-1ce2-450d-aa6e-6ea919bb8b36"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "percentages",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 15,
+        "diagnosis": "Applied percent increase formula cleanly.",
+        "nextDifficulty": 3,
+        "action": "Introduce Level 3 multi-year compound interest and successive percent changes.",
+        "evidenceIds": [
+          "19c0f33e-dfe6-45ec-8789-3ca5eb6fa1e4"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "one-variable-data",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 10,
+        "diagnosis": "Calculated dataset range (max minus min) and scatterplot residual (observed minus predicted) cleanly.",
+        "nextDifficulty": 3,
+        "action": "Escalate to Level 3 data set analysis (mean/median shifts, standard deviation, and scatterplot models).",
+        "evidenceIds": [
+          "e8f2aec6-09f4-4425-ab79-2389feece769"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "two-variable-data",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 7,
+        "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+        "nextDifficulty": 2,
+        "action": "Collect another varied item before changing difficulty.",
+        "evidenceIds": [
+          "a981d839-4e3e-4652-af7e-0ee75864da1a"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "probability",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 14,
+        "diagnosis": "Calculated joint probability from event counts accurately.",
+        "nextDifficulty": 3,
+        "action": "Advance to Level 3 conditional probability tables and independent/dependent events.",
+        "evidenceIds": [
+          "cf51d623-f02b-46cb-bfd1-ac9999d7d42c"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "sampling-margin-error",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 19,
+        "diagnosis": "Identified relationship between sample size and margin of error correctly.",
+        "nextDifficulty": 3,
+        "action": "Introduce Level 3 population inference bounds and sample bias evaluation.",
+        "evidenceIds": [
+          "a0ebe31d-173d-4974-9104-2b85d85541c1"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "statistical-claims",
+        "correct": 0,
+        "total": 1,
+        "averageSeconds": 16,
+        "diagnosis": "Misidentified randomized experiment as observational ('no treatment imposed').",
+        "nextDifficulty": 2,
+        "action": "Remediate experimental vs. observational study distinction before re-testing at Level 2/3.",
+        "evidenceIds": [
+          "66d07f42-e51d-485a-bd12-b3f774b26820"
+        ],
+        "confidence": "strong"
+      }
+    ],
+    "errorTaxonomy": [
+      {
+        "count": 1,
+        "evidenceIds": [
+          "66d07f42-e51d-485a-bd12-b3f774b26820"
+        ],
+        "label": "Study Design Concept Gap",
+        "mechanism": "Failed to recognize that random assignment of volunteers to standing vs. seated desks constitutes an experimental treatment, incorrectly concluding 'no treatment was imposed' and that only association could be inferred."
+      }
+    ],
+    "studyPriorities": [
+      {
+        "action": "Review distinction between randomized experiments (allows causal claims for studied sample) and observational studies (shows association only).",
+        "evidenceIds": [
+          "66d07f42-e51d-485a-bd12-b3f774b26820"
+        ],
+        "reason": "Sole error in session occurred here despite expressing 'certain' confidence.",
+        "skillId": "statistical-claims"
+      },
+      {
+        "action": "Practice Level 3 multi-step nonlinear system intersections and coordinate sum/product interpretations.",
+        "evidenceIds": [
+          "5e69591f-ad05-4520-b7d9-ed2d0cb47f93"
+        ],
+        "reason": "Required 37s; prime candidate for Level 3 escalation.",
+        "skillId": "systems-nonlinear"
+      },
+      {
+        "action": "Escalate to Level 3 linear systems involving word problem setups and parameter conditions.",
+        "evidenceIds": [
+          "a48a79be-f0e4-4f85-822e-2e4009cb444a"
+        ],
+        "reason": "Required 46s; solid execution ready for Level 3 challenge.",
+        "skillId": "systems-linear-equations"
+      },
+      {
+        "action": "Escalate to Level 3 line equations with slope-intercept interpretations in context.",
+        "evidenceIds": [
+          "6de0b134-69b1-4539-8c4b-1edf6224c9df"
+        ],
+        "reason": "Required 35s; target Level 3 difficulty.",
+        "skillId": "linear-equations-two-variables"
+      }
+    ],
+    "sevenDayPlan": [
+      {
+        "day": "Day 1",
+        "minutes": 25,
+        "successCheck": "Score 100% on a 5-item quiz distinguishing random assignment (experiments) vs. random sampling (observational studies).",
+        "work": "Study Design Remediation: Review experimental design principles, random assignment, causal claims, and observational study bounds."
+      },
+      {
+        "day": "Day 2",
+        "minutes": 30,
+        "successCheck": "Complete 10 Level 3 items with ≥80% accuracy.",
+        "work": "Algebra Level 3 Escalation: Practice complex linear systems, multi-step inequalities, and two-variable linear equations."
+      },
+      {
+        "day": "Day 3",
+        "minutes": 30,
+        "successCheck": "Complete 10 Level 3 items maintaining average pace under 45 seconds per item.",
+        "work": "Advanced Math Level 3 Escalation: Nonlinear systems, quadratic factoring/vertex transformations, and rational expressions."
+      },
+      {
+        "day": "Day 4",
+        "minutes": 25,
+        "successCheck": "Complete 8 Level 3 items with ≥85% accuracy.",
+        "work": "Problem Solving & Data Analysis Escalation: Multi-step percentages, conditional probability, and scatterplot residuals."
+      },
+      {
+        "day": "Day 5",
+        "minutes": 25,
+        "successCheck": "Correctly classify 4 study design scenarios with explicit confidence calibration.",
+        "work": "Spaced Recall & Verification: Re-test statistical-claims items alongside previous Reading & Writing boundary items."
+      },
+      {
+        "day": "Day 6",
+        "minutes": 40,
+        "successCheck": "Maintain average pace under 60 seconds per item with ≥85% accuracy.",
+        "work": "Timed Mixed Section Practice: 15 Level 3 Math items and 10 Level 3 RW items."
+      },
+      {
+        "day": "Day 7",
+        "minutes": 20,
+        "successCheck": "Update learner model with verified Level 3 thresholds.",
+        "work": "Session Review & Progress Calibration: Analyze error taxonomy and calibrate confidence accuracy."
+      }
+    ],
+    "recommendedMix": "60% Math Level 3 escalation (Algebra, Advanced Math, Problem-Solving), 20% Statistical Study Design remediation (Level 2/3), 20% Reading & Writing Level 3 calibration.",
+    "limitations": [
+      "Each skill in this session was sampled via 1 item (except 1-var and 2-var data combined into 2 items), precluding firm conclusions regarding retention, transfer, or full skill mastery.",
+      "No Reading and Writing items were administered during this period; RW observations remain unchanged from prior sessions.",
+      "Confidence ratings were omitted on 5 items, limiting explicit calibration analysis to 10 items."
+    ],
+    "path": "/Users/tannmaybaid/Desktop/Claude Projects/SAT-learning/data/reports/session/f54585d8-b881-433e-ab98-c6a4d24be003.md",
+    "jsonPath": "/Users/tannmaybaid/Desktop/Claude Projects/SAT-learning/data/reports/session/f54585d8-b881-433e-ab98-c6a4d24be003.json"
+  },
+  {
+    "id": "15f47a6d-bf24-42c1-8c42-cc3739872585",
+    "type": "session",
+    "title": "Set review: 15 of 15 correct",
+    "period": "2026-08-07T10:51:13.514Z to 2026-08-07T11:03:25.582Z",
+    "createdAt": "2026-08-07T11:04:26.176Z",
+    "executiveSummary": "You achieved a perfect 15-for-15 score across Level 3 adaptive items in both Reading & Writing and Math. Your execution was remarkably fast, averaging 34 seconds per question against an 87-second target budget. Mechanics and syntax rules were handled almost instantly, while complex evidence and spatial geometry questions were completed cleanly well within time limits.",
+    "model": "gemini-3.6-flash-high",
+    "answerCount": 15,
+    "sectionBreakdown": [
+      {
+        "section": "Reading and Writing",
+        "accuracySummary": "7/7 correct (100%)",
+        "pacingSummary": "27s average against a 73s authored target",
+        "findings": [
+          {
+            "claim": "Rapid execution on sentence boundaries, modifiers, and transitions, paired with careful text evaluation for quantitative and textual evidence questions.",
+            "confidence": "strong",
+            "evidenceIds": [
+              "130f3b7c-6bb5-4c96-ab9f-c06e6f57c89d",
+              "e31381b5-f220-4c97-ba7d-227e6da82afd",
+              "d1fe2f38-3402-4cd9-93b2-44834afe4b65",
+              "cdb2e7bb-9bcc-4b12-9a58-c63f7bb15815",
+              "310c4611-12e2-4b33-b780-f5211eb7d9b6",
+              "e6eb3dfc-af7c-46cd-a20c-25c8f12a35a6",
+              "9caf6971-cabb-49f9-92e1-71fec77dab0a"
+            ]
+          }
+        ],
+        "recommendedFocus": "Maintain momentum while testing longer multi-paragraph passages and complex scientific table interpretations."
+      },
+      {
+        "section": "Math",
+        "accuracySummary": "8/8 correct (100%)",
+        "pacingSummary": "41s average against a 100s authored target",
+        "findings": [
+          {
+            "claim": "Swift algebraic manipulation and geometric reasoning across Level 3 concepts.",
+            "confidence": "strong",
+            "evidenceIds": [
+              "0767d629-0a00-4829-87d2-313c7ef061b4",
+              "4f8b4a40-6efe-423e-be37-7ff08b9a3990",
+              "d8727341-31a3-4b8b-8d2c-5926b97d5cd2",
+              "c75fa5d8-231d-4983-8fd2-442d442e8d57",
+              "7bbe438e-f816-4dee-9a7a-2c5628684c02",
+              "6ba69724-35c9-4b1c-8bd5-8b3f38a9e410",
+              "0da98ac5-070a-4964-a20b-12c98681cdc0",
+              "9bf7a918-f8d0-4b86-9805-c7fe24cce2e0"
+            ]
+          }
+        ],
+        "recommendedFocus": "Practice mental shortcuts for 3D measurement formulas to align spatial geometry speed with coordinate geometry pace."
+      }
+    ],
+    "skillBreakdown": [
+      {
+        "skillId": "area-volume",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 81,
+        "diagnosis": "Correct calculation of 3D prism dimensions using volume formula; pacing close to target.",
+        "nextDifficulty": 3,
+        "action": "Practice fast-factor mental division for 3D geometry problems to reduce calculation time.",
+        "evidenceIds": [
+          "0767d629-0a00-4829-87d2-313c7ef061b4"
+        ],
+        "confidence": "strong"
+      },
+      {
+        "skillId": "boundaries",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 9,
+        "diagnosis": "Instant recognition of independent clause boundary requiring terminal punctuation.",
+        "nextDifficulty": 3,
+        "action": "Maintain rapid clause identification on complex compound-complex sentence structures.",
+        "evidenceIds": [
+          "130f3b7c-6bb5-4c96-ab9f-c06e6f57c89d"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "lines-angles-triangles",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 27,
+        "diagnosis": "Immediate application of exterior angle theorem.",
+        "nextDifficulty": 3,
+        "action": "Extend to multi-shape angle puzzles and parallel line transversal proofs.",
+        "evidenceIds": [
+          "4f8b4a40-6efe-423e-be37-7ff08b9a3990"
+        ],
+        "confidence": "strong"
+      },
+      {
+        "skillId": "text-structure-purpose",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 44,
+        "diagnosis": "Accurately extracted underlying argument structure from academic art history passage.",
+        "nextDifficulty": 3,
+        "action": "Continue practicing main-purpose identification on dense humanities texts.",
+        "evidenceIds": [
+          "e31381b5-f220-4c97-ba7d-227e6da82afd"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "right-triangle-trig",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 39,
+        "diagnosis": "Rapid identification of Pythagorean triple scaling.",
+        "nextDifficulty": 3,
+        "action": "Challenge with multi-step trigonometric ratios and non-standard right triangles.",
+        "evidenceIds": [
+          "d8727341-31a3-4b8b-8d2c-5926b97d5cd2"
+        ],
+        "confidence": "strong"
+      },
+      {
+        "skillId": "command-evidence-textual",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 29,
+        "diagnosis": "Directly matched hypothesis on pricing framing with retention data.",
+        "nextDifficulty": 3,
+        "action": "Test subtle distinction evidence items with competing plausible options.",
+        "evidenceIds": [
+          "d1fe2f38-3402-4cd9-93b2-44834afe4b65"
+        ],
+        "confidence": "strong"
+      },
+      {
+        "skillId": "circles",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 52,
+        "diagnosis": "Correct sector area calculation and pi-scaling.",
+        "nextDifficulty": 3,
+        "action": "Solve combined arc-length and circle equation transformation problems.",
+        "evidenceIds": [
+          "c75fa5d8-231d-4983-8fd2-442d442e8d57"
+        ],
+        "confidence": "strong"
+      },
+      {
+        "skillId": "inferences",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 37,
+        "diagnosis": "Logical synthesis of dual-zone mangrove carbon burial dynamics.",
+        "nextDifficulty": 3,
+        "action": "Practice multi-variable ecological and scientific inference items.",
+        "evidenceIds": [
+          "cdb2e7bb-9bcc-4b12-9a58-c63f7bb15815"
+        ],
+        "confidence": "strong"
+      },
+      {
+        "skillId": "systems-nonlinear",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 27,
+        "diagnosis": "Quick evaluation of parabola vertex relative to horizontal line.",
+        "nextDifficulty": 3,
+        "action": "Advance to line-parabola tangency and circle-line intersection count problems.",
+        "evidenceIds": [
+          "7bbe438e-f816-4dee-9a7a-2c5628684c02"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "form-structure-sense",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 11,
+        "diagnosis": "Swift resolution of dangling modifier by placing proper subject after introductory phrase.",
+        "nextDifficulty": 3,
+        "action": "Maintain modifier alignment speed on longer introductory participial clauses.",
+        "evidenceIds": [
+          "310c4611-12e2-4b33-b780-f5211eb7d9b6"
+        ],
+        "confidence": "strong"
+      },
+      {
+        "skillId": "systems-linear-equations",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 57,
+        "diagnosis": "Accurate translation and solution of ticket total and revenue word problem.",
+        "nextDifficulty": 3,
+        "action": "Work on direct elimination strategies for two-variable linear systems.",
+        "evidenceIds": [
+          "6ba69724-35c9-4b1c-8bd5-8b3f38a9e410"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "transitions",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 13,
+        "diagnosis": "Flawless detection of contrasting language strategies in bilingual study.",
+        "nextDifficulty": 3,
+        "action": "Drill subtle transition pairs like indeed vs in fact or nevertheless vs regardless.",
+        "evidenceIds": [
+          "e6eb3dfc-af7c-46cd-a20c-25c8f12a35a6"
+        ],
+        "confidence": "strong"
+      },
+      {
+        "skillId": "linear-equations-two-variables",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 20,
+        "diagnosis": "Fast coordinate substitution into standard form linear equation.",
+        "nextDifficulty": 3,
+        "action": "Practice slope-intercept form conversions and context-based intercept interpretations.",
+        "evidenceIds": [
+          "0da98ac5-070a-4964-a20b-12c98681cdc0"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "command-evidence-quantitative",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 44,
+        "diagnosis": "Precise evaluation of counter-hypothesis data in urban heat island study table.",
+        "nextDifficulty": 3,
+        "action": "Practice multi-column data synthesis under tighter time targets.",
+        "evidenceIds": [
+          "9caf6971-cabb-49f9-92e1-71fec77dab0a"
+        ],
+        "confidence": "strong"
+      },
+      {
+        "skillId": "nonlinear-equations",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 21,
+        "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+        "nextDifficulty": 3,
+        "action": "Collect another varied item before changing difficulty.",
+        "evidenceIds": [
+          "9bf7a918-f8d0-4b86-9805-c7fe24cce2e0"
+        ],
+        "confidence": "tentative"
+      }
+    ],
+    "errorTaxonomy": [],
+    "studyPriorities": [
+      {
+        "action": "Refine 3D geometry mental calculations",
+        "evidenceIds": [
+          "0767d629-0a00-4829-87d2-313c7ef061b4"
+        ],
+        "reason": "Highest elapsed time (81s) among math questions.",
+        "skillId": "area-volume"
+      },
+      {
+        "action": "Practice elimination shortcuts for two-variable word problems",
+        "evidenceIds": [
+          "6ba69724-35c9-4b1c-8bd5-8b3f38a9e410"
+        ],
+        "reason": "Took 57s, which is well within budget but could be optimized further.",
+        "skillId": "systems-linear-equations"
+      },
+      {
+        "action": "Drill complex multi-variable data table interpretations",
+        "evidenceIds": [
+          "9caf6971-cabb-49f9-92e1-71fec77dab0a"
+        ],
+        "reason": "Ensure high accuracy is maintained under tighter time constraints.",
+        "skillId": "command-evidence-quantitative"
+      }
+    ],
+    "sevenDayPlan": [
+      {
+        "day": "Day 1",
+        "minutes": 25,
+        "successCheck": "Complete 5 Level 3 area-volume items in under 60s each with 100% accuracy.",
+        "work": "Focused review of 3D geometry formulas and volume/surface area shortcuts."
+      },
+      {
+        "day": "Day 2",
+        "minutes": 20,
+        "successCheck": "Achieve 100% accuracy on 8 standard English Level 3 items.",
+        "work": "Drill advanced sentence boundaries and dangling modifier constructions."
+      },
+      {
+        "day": "Day 3",
+        "minutes": 25,
+        "successCheck": "Solve 6 systems problems averaging under 40s per item.",
+        "work": "Mixed practice on linear and nonlinear systems of equations."
+      },
+      {
+        "day": "Day 4",
+        "minutes": 30,
+        "successCheck": "Correctly analyze 5 complex research tables without misinterpreting variable trends.",
+        "work": "Quantitative evidence and data table interpretation practice."
+      },
+      {
+        "day": "Day 5",
+        "minutes": 20,
+        "successCheck": "Answer 6 geometry items with 100% accuracy.",
+        "work": "Spaced recall drill covering circle equations, sector areas, and trigonometry triples."
+      },
+      {
+        "day": "Day 6",
+        "minutes": 30,
+        "successCheck": "Finish within 12 minutes with 90%+ accuracy.",
+        "work": "Timed mixed Reading and Writing mini-module (12 Level 3 items)."
+      },
+      {
+        "day": "Day 7",
+        "minutes": 35,
+        "successCheck": "Maintain 90%+ accuracy while keeping average time per item under 45 seconds.",
+        "work": "Full adaptive 15-item review set at Difficulty Level 3."
+      }
+    ],
+    "recommendedMix": "60% Level 3 Hard Math / 40% Level 3 Reading & Writing mixed practice.",
+    "limitations": [
+      "Each of the 15 skills was tested on a single item in this set; full mastery requires repeated success across varied item forms.",
+      "Long-term retention across time intervals cannot be evaluated within a single completed practice set."
+    ],
+    "path": "/Users/tannmaybaid/Desktop/Claude Projects/SAT-learning/data/reports/session/15f47a6d-bf24-42c1-8c42-cc3739872585.md",
+    "jsonPath": "/Users/tannmaybaid/Desktop/Claude Projects/SAT-learning/data/reports/session/15f47a6d-bf24-42c1-8c42-cc3739872585.json"
+  },
+  {
+    "id": "c08a3e50-888d-4514-b5f1-c7164eb122af",
+    "type": "session",
+    "title": "Set review: 9 of 10 correct",
+    "period": "2026-08-07T11:38:50.484Z to 2026-08-07T11:48:03.078Z",
+    "createdAt": "2026-08-07T11:48:46.894Z",
+    "executiveSummary": "You completed a 10-question adaptive set with 9 correct answers (90% accuracy), maintaining an average speed of 36 seconds per question against a target budget of 98 seconds. Reading and Writing performance was perfect across 5 questions at 34 seconds per item. In Math, you solved 4 of 5 questions correctly with an average speed of 39 seconds, demonstrating strong execution on circle equations and nonlinear systems. The single error occurred on a Level 4 statistical claims question where high confidence coincided with misinterpreting experimental design principles regarding causality vs generalizability.",
+    "model": "gemini-3.6-flash-high",
+    "answerCount": 10,
+    "sectionBreakdown": [
+      {
+        "section": "Reading and Writing",
+        "accuracySummary": "5/5 correct (100%)",
+        "pacingSummary": "34s average against a 84s authored target",
+        "findings": [
+          {
+            "claim": "Flawless interpretation of quantitative data tables and scientific text inferences across all 5 questions.",
+            "confidence": "strong",
+            "evidenceIds": [
+              "dfaa25a3-5d7b-4848-9039-542965296441",
+              "4f9f2320-cc89-445f-a318-e95673ee8d30",
+              "facc4853-8c8a-4096-af1e-a447ed9a8db6",
+              "4ef81cf4-8670-4385-a0f1-ded4ea24d59d",
+              "562b7e22-d511-4e99-8363-80f2841a0e94"
+            ]
+          }
+        ],
+        "recommendedFocus": "Escalate to Level 4 Reading and Writing items featuring dual-text arguments and dense humanities passages."
+      },
+      {
+        "section": "Math",
+        "accuracySummary": "4/5 correct (80%)",
+        "pacingSummary": "39s average against a 112s authored target",
+        "findings": [
+          {
+            "claim": "Strong execution on standard algebraic systems, 3D volume, and circle geometry, but misapplied statistical inference rules under rapid pacing on study design questions.",
+            "confidence": "strong",
+            "evidenceIds": [
+              "e5ec6239-70b3-44e8-bebb-c024cecd27a1",
+              "47dd0e96-a421-425c-9c62-541c36fc3884",
+              "693eb75a-d219-4f83-b05b-71915a0c984b",
+              "0fe11d54-544c-4598-b031-12a8cf4834c6",
+              "80465dd8-0832-4358-9ddd-3a945762e26d"
+            ]
+          }
+        ],
+        "recommendedFocus": "Review study design concepts (random sampling vs. random assignment) and test Level 4 data analysis items."
+      }
+    ],
+    "skillBreakdown": [
+      {
+        "skillId": "area-volume",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 86,
+        "diagnosis": "Accurately calculated missing rectangular prism height from volume equation.",
+        "nextDifficulty": 3,
+        "action": "Practice 3D geometry problems involving cylinder, cone, and sphere volume ratios to build multi-shape fluency.",
+        "evidenceIds": [
+          "e5ec6239-70b3-44e8-bebb-c024cecd27a1"
+        ],
+        "confidence": "strong"
+      },
+      {
+        "skillId": "command-evidence-quantitative",
+        "correct": 3,
+        "total": 3,
+        "averageSeconds": 33,
+        "diagnosis": "Extremely swift and precise matching of numeric data table trends to text claims.",
+        "nextDifficulty": 4,
+        "action": "Advance to Level 4 quantitative evidence items with complex multi-variable tables and graphic transformations.",
+        "evidenceIds": [
+          "dfaa25a3-5d7b-4848-9039-542965296441",
+          "facc4853-8c8a-4096-af1e-a447ed9a8db6",
+          "562b7e22-d511-4e99-8363-80f2841a0e94"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "systems-linear-equations",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 26,
+        "diagnosis": "Efficient setup and solution of two-variable word problem.",
+        "nextDifficulty": 4,
+        "action": "Solve linear system word problems with infinite or no solution parameters.",
+        "evidenceIds": [
+          "47dd0e96-a421-425c-9c62-541c36fc3884"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "inferences",
+        "correct": 2,
+        "total": 2,
+        "averageSeconds": 35,
+        "diagnosis": "Quickly extracted empirical trends to complete logical arguments in paleontology and geochemistry contexts.",
+        "nextDifficulty": 4,
+        "action": "Introduce Level 4 passage completion items requiring subtle counterfactual reasoning.",
+        "evidenceIds": [
+          "4f9f2320-cc89-445f-a318-e95673ee8d30",
+          "4ef81cf4-8670-4385-a0f1-ded4ea24d59d"
+        ],
+        "confidence": "strong"
+      },
+      {
+        "skillId": "circles",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 29,
+        "diagnosis": "Completed the square seamlessly on an expanded circle equation to determine radius.",
+        "nextDifficulty": 4,
+        "action": "Practice circle arc length, sector area, and tangent line intersection problems.",
+        "evidenceIds": [
+          "693eb75a-d219-4f83-b05b-71915a0c984b"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "systems-nonlinear",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 18,
+        "diagnosis": "Instant visual/algebraic determination of parabola-line intersection counts.",
+        "nextDifficulty": 4,
+        "action": "Practice line-quadratic system discriminant analysis for single or zero solution conditions.",
+        "evidenceIds": [
+          "0fe11d54-544c-4598-b031-12a8cf4834c6"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "statistical-claims",
+        "correct": 0,
+        "total": 1,
+        "averageSeconds": 36,
+        "diagnosis": "Setup/model selection error: confused random assignment (supports causation) with random sampling (supports generalization), selecting option C instead of D.",
+        "nextDifficulty": 4,
+        "action": "Review the two-by-two study design matrix: Random Selection -> Generalizability; Random Assignment -> Causal Inference.",
+        "evidenceIds": [
+          "80465dd8-0832-4358-9ddd-3a945762e26d"
+        ],
+        "confidence": "strong"
+      }
+    ],
+    "errorTaxonomy": [
+      {
+        "count": 1,
+        "evidenceIds": [
+          "80465dd8-0832-4358-9ddd-3a945762e26d"
+        ],
+        "label": "Study Design Model Selection",
+        "mechanism": "Confusing the methodological role of random assignment (establishing causality) versus random sampling (establishing population generalizability)."
+      }
+    ],
+    "studyPriorities": [
+      {
+        "action": "Master the Study Design Matrix: Random Sampling -> Population Generalizability; Random Assignment -> Causal Inference.",
+        "evidenceIds": [
+          "80465dd8-0832-4358-9ddd-3a945762e26d"
+        ],
+        "reason": "Prevent high-confidence errors on Level 4 statistical validity questions.",
+        "skillId": "statistical-claims"
+      },
+      {
+        "action": "Maintain high speed while advancing to Level 4 complex multi-variable data table questions.",
+        "evidenceIds": [
+          "dfaa25a3-5d7b-4848-9039-542965296441",
+          "facc4853-8c8a-4096-af1e-a447ed9a8db6",
+          "562b7e22-d511-4e99-8363-80f2841a0e94"
+        ],
+        "reason": "Capitalize on 100% accuracy to reach mastery thresholds across varied question formats.",
+        "skillId": "command-evidence-quantitative"
+      },
+      {
+        "action": "Practice equation completion for circles alongside arc length and sector area applications.",
+        "evidenceIds": [
+          "693eb75a-d219-4f83-b05b-71915a0c984b"
+        ],
+        "reason": "Solidify Level 4 circle geometry performance.",
+        "skillId": "circles"
+      }
+    ],
+    "sevenDayPlan": [
+      {
+        "day": "Day 1",
+        "minutes": 15,
+        "successCheck": "Correctly classify causal vs. generalizable claims on 4/4 practice questions.",
+        "work": "Review Study Design Matrix (Random Selection vs. Random Assignment) with 4 targeted practice items."
+      },
+      {
+        "day": "Day 2",
+        "minutes": 20,
+        "successCheck": "Maintain >80% accuracy with average speed under 60 seconds per item.",
+        "work": "Level 4 Math Mixed Problem Set (Circles, Systems of Equations, Area/Volume)."
+      },
+      {
+        "day": "Day 3",
+        "minutes": 15,
+        "successCheck": "Achieve 100% accuracy across 5 dense data/text items.",
+        "work": "Level 4 Reading and Writing Quantitative Evidence & Inferences drill."
+      },
+      {
+        "day": "Day 4",
+        "minutes": 10,
+        "successCheck": "Zero misclassifications of sampling vs. assignment.",
+        "work": "Spaced recall quiz on statistical claims and experimental setup traps."
+      },
+      {
+        "day": "Day 5",
+        "minutes": 20,
+        "successCheck": "Complete set within target time budgets with >85% accuracy.",
+        "work": "Full timed Math Module set focusing on Problem Solving and Data Analysis."
+      },
+      {
+        "day": "Day 6",
+        "minutes": 15,
+        "successCheck": "Maintain fast pacing (under 45s/item) with high accuracy.",
+        "work": "Mixed Reading & Writing hard module practice focusing on dual-texts and inferences."
+      },
+      {
+        "day": "Day 7",
+        "minutes": 25,
+        "successCheck": "Achieve 90%+ overall accuracy across both sections.",
+        "work": "Comprehensive 15-item adaptive check set covering Level 4 Math and RW skills."
+      }
+    ],
+    "recommendedMix": "50% Math (focusing on statistical claims, circle equations, and nonlinear systems) / 50% Reading & Writing (focusing on Level 4 quantitative evidence and complex inferences).",
+    "limitations": [
+      "Only 1 item was completed for statistical claims, so error diagnosis is based on a single high-confidence attempt.",
+      "Confidence ratings were voluntarily provided on only 3 of 10 items, limiting comprehensive confidence calibration analysis.",
+      "Long-term skill retention cannot be confirmed from a single session; multi-session evaluation across separate days is required."
+    ],
+    "path": "/Users/tannmaybaid/Desktop/Claude Projects/SAT-learning/data/reports/session/c08a3e50-888d-4514-b5f1-c7164eb122af.md",
+    "jsonPath": "/Users/tannmaybaid/Desktop/Claude Projects/SAT-learning/data/reports/session/c08a3e50-888d-4514-b5f1-c7164eb122af.json"
+  },
+  {
+    "id": "41fe74be-5aa9-424e-b0b5-280af3f0a205",
+    "type": "session",
+    "title": "Set review: 16 of 20 correct",
+    "period": "2026-08-09T06:10:51.278Z to 2026-08-09T06:25:46.057Z",
+    "createdAt": "2026-08-09T06:26:41.446Z",
+    "executiveSummary": "In this 20-item Level 5 adaptive practice set, you achieved an overall accuracy of 80% (16/20 correct) with an average solving pace of 34 seconds per item, significantly faster than the 102-second target pace. Performance was balanced across both domain sections: Reading & Writing scored 80% (8/10 correct, 34s average vs 79s target) and Math scored 80% (8/10 correct, 34s average vs 125s target). Your target score is 1600 with 13 days remaining before the exam. Your current estimated score is 1150 (590 Reading & Writing, 560 Math), leaving a gap of 450 points to reach your goal. Because no completed full practice tests are available in your history, a weekly score trend and multi-mock projection cannot be calculated. Notably, Math represents 240 points (53.3%) of your total point gap, making high-difficulty Math concepts your highest-leverage area for point gains. Across both sections, errors stemmed from fast-paced misreads and setup oversights rather than fundamental conceptual gaps, with immediate intra-session recovery demonstrated on parallel retry items.",
+    "model": "gemini-3.6-flash-high",
+    "answerCount": 20,
+    "sectionBreakdown": [
+      {
+        "section": "Reading and Writing",
+        "accuracySummary": "8/10 correct (80%)",
+        "pacingSummary": "34s average against a 79s authored target",
+        "findings": [
+          {
+            "claim": "Excellent synthesis and passage structure analysis on Level 5 craft and structure items.",
+            "confidence": "strong",
+            "evidenceIds": [
+              "2ace3b42-20e1-4eb7-b838-0ac38d317cee",
+              "daf6dd68-aae5-46cb-bc7a-eb857f07dfa7",
+              "6082aa2f-211c-44ed-bc94-314f39079071"
+            ]
+          },
+          {
+            "claim": "Errors occurred on vocabulary antonym distractor traps and textual evidence evaluation.",
+            "confidence": "moderate",
+            "evidenceIds": [
+              "a71d3720-883a-4d93-8f61-46acb5220aa1",
+              "61aaf0f2-72f9-4d46-9b41-46a527180c23"
+            ]
+          }
+        ],
+        "recommendedFocus": "Practice cautious elimination on high-level vocabulary choices and verify direct mechanism alignment on textual evidence questions."
+      },
+      {
+        "section": "Math",
+        "accuracySummary": "8/10 correct (80%)",
+        "pacingSummary": "34s average against a 125s authored target",
+        "findings": [
+          {
+            "claim": "Flawless performance on Level 5 algebra, linear inequalities, and polynomial manipulations.",
+            "confidence": "strong",
+            "evidenceIds": [
+              "47c03205-3daa-41d6-a694-924fa4d6e7c5",
+              "c8628ace-cc18-4c64-98d5-c8e7da4bd225",
+              "e5019821-3d77-45fd-96b4-b0e6d6c38626",
+              "26845dd4-82da-4b39-9794-e3bfc04531a3"
+            ]
+          },
+          {
+            "claim": "Errors were caused by initial misapplication of statistical shift rules and 3D scale factor setups, both corrected immediately on retry.",
+            "confidence": "strong",
+            "evidenceIds": [
+              "836d3eec-a333-4bde-982d-9be3f1334f70",
+              "dec13e14-055d-4bc4-8e2b-e6042170bbf0",
+              "2c25b455-7393-44a7-a9c5-b1a72e0bfded",
+              "c74a7a0c-f7d3-4e88-9631-502e28969e35"
+            ]
+          }
+        ],
+        "recommendedFocus": "Solidify 3D scale factor setups (cube of linear ratio) and invariant properties of statistical distributions."
+      }
+    ],
+    "skillBreakdown": [
+      {
+        "skillId": "linear-equations-one-variable",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 11,
+        "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+        "nextDifficulty": 5,
+        "action": "Collect another varied item before changing difficulty.",
+        "evidenceIds": [
+          "47c03205-3daa-41d6-a694-924fa4d6e7c5"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "cross-text-connections",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 34,
+        "diagnosis": "Accurately synthesized perspective conflict between material origin and centralized administration.",
+        "nextDifficulty": 5,
+        "action": "Continue evaluating structural logical relationships across texts.",
+        "evidenceIds": [
+          "2ace3b42-20e1-4eb7-b838-0ac38d317cee"
+        ],
+        "confidence": "strong"
+      },
+      {
+        "skillId": "linear-inequalities",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 61,
+        "diagnosis": "Verified solution bounds across linear inequality system.",
+        "nextDifficulty": 5,
+        "action": "Keep testing boundary coordinates efficiently.",
+        "evidenceIds": [
+          "c8628ace-cc18-4c64-98d5-c8e7da4bd225"
+        ],
+        "confidence": "strong"
+      },
+      {
+        "skillId": "rhetorical-synthesis",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 90,
+        "diagnosis": "Synthesized notes accurately to emphasize specific research finding.",
+        "nextDifficulty": 5,
+        "action": "Maintain strict focus on prompt directives.",
+        "evidenceIds": [
+          "daf6dd68-aae5-46cb-bc7a-eb857f07dfa7"
+        ],
+        "confidence": "moderate"
+      },
+      {
+        "skillId": "equivalent-expressions",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 59,
+        "diagnosis": "Expanded binomial product and tracked single variable coefficient correctly.",
+        "nextDifficulty": 5,
+        "action": "Continue careful distribution of negative signs and coefficients.",
+        "evidenceIds": [
+          "e5019821-3d77-45fd-96b4-b0e6d6c38626"
+        ],
+        "confidence": "strong"
+      },
+      {
+        "skillId": "words-in-context",
+        "correct": 2,
+        "total": 3,
+        "averageSeconds": 15,
+        "diagnosis": "Selected antonym distractor 'segregate' on one item due to rapid pacing; succeeded on remaining two context items.",
+        "nextDifficulty": 5,
+        "action": "Pause for 5 seconds to double-check context contrast words before selecting options.",
+        "evidenceIds": [
+          "a71d3720-883a-4d93-8f61-46acb5220aa1",
+          "0cf987a8-4305-41ed-807f-20ebc495e4eb",
+          "9c4906e0-d59d-4df4-afa4-4532342998e5"
+        ],
+        "confidence": "moderate"
+      },
+      {
+        "skillId": "one-variable-data",
+        "correct": 1,
+        "total": 2,
+        "averageSeconds": 16,
+        "diagnosis": "Initially assumed scalar addition changes range, but immediately corrected understanding on follow-up item.",
+        "nextDifficulty": 5,
+        "action": "Reinforce that constant addition shifts center (median/mean) but leaves spread (range/IQR/SD) invariant.",
+        "evidenceIds": [
+          "836d3eec-a333-4bde-982d-9be3f1334f70",
+          "dec13e14-055d-4bc4-8e2b-e6042170bbf0"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "central-ideas-details",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 40,
+        "diagnosis": "Accurately identified passage main idea contrasting historical assumptions with empirical evidence.",
+        "nextDifficulty": 5,
+        "action": "Sustain focus on main thesis versus supporting context.",
+        "evidenceIds": [
+          "88288811-fce2-48e0-bec0-27cc7904405a"
+        ],
+        "confidence": "strong"
+      },
+      {
+        "skillId": "two-variable-data",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 39,
+        "diagnosis": "Calculated linear rate of change correctly from coordinate pairs.",
+        "nextDifficulty": 5,
+        "action": "Maintain rapid slope calculation from data tables.",
+        "evidenceIds": [
+          "1c5700ef-7703-4dbc-bdca-4037b050d949"
+        ],
+        "confidence": "strong"
+      },
+      {
+        "skillId": "linear-functions",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 46,
+        "diagnosis": "Evaluated composite function transformation correctly despite self-reporting low certainty.",
+        "nextDifficulty": 5,
+        "action": "Build confidence in multi-step function evaluation rules.",
+        "evidenceIds": [
+          "92bb4575-94e4-4169-8c6f-2b40b2123122"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "text-structure-purpose",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 47,
+        "diagnosis": "Tracked narrative shift from traditional theory to archival challenge and revised conclusion.",
+        "nextDifficulty": 5,
+        "action": "Continue mapping overall passage logic.",
+        "evidenceIds": [
+          "6082aa2f-211c-44ed-bc94-314f39079071"
+        ],
+        "confidence": "strong"
+      },
+      {
+        "skillId": "nonlinear-functions",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 27,
+        "diagnosis": "Interpreted exponential decay base to determine annual percentage reduction.",
+        "nextDifficulty": 5,
+        "action": "Sustain fast conversion between growth/decay factors and percentage changes.",
+        "evidenceIds": [
+          "26845dd4-82da-4b39-9794-e3bfc04531a3"
+        ],
+        "confidence": "strong"
+      },
+      {
+        "skillId": "boundaries",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 20,
+        "diagnosis": "Correctly selected semicolon to join two independent clauses without coordinating conjunction.",
+        "nextDifficulty": 5,
+        "action": "Solidify punctuation boundary rules to boost self-assessed certainty.",
+        "evidenceIds": [
+          "6761d052-626b-447b-bf56-fd662701ecf2"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "ratios-rates-units",
+        "correct": 1,
+        "total": 2,
+        "averageSeconds": 33,
+        "diagnosis": "Applied 1D scale factor to volume on first item; correctly cubed scale factor on immediate follow-up item.",
+        "nextDifficulty": 5,
+        "action": "Explicitly write out scale factor powers (area = k², volume = k³) before computing.",
+        "evidenceIds": [
+          "2c25b455-7393-44a7-a9c5-b1a72e0bfded",
+          "c74a7a0c-f7d3-4e88-9631-502e28969e35"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "command-evidence-textual",
+        "correct": 1,
+        "total": 2,
+        "averageSeconds": 30,
+        "diagnosis": "Chose exaggerated comparative income claim on first item; correctly selected direct voucher evidence on second item.",
+        "nextDifficulty": 5,
+        "action": "Ensure selected evidence matches the precise mechanism described in the claim.",
+        "evidenceIds": [
+          "61aaf0f2-72f9-4d46-9b41-46a527180c23",
+          "15ee23e5-a89f-4b2e-922a-aeff8021c076"
+        ],
+        "confidence": "tentative"
+      }
+    ],
+    "errorTaxonomy": [
+      {
+        "count": 1,
+        "evidenceIds": [
+          "a71d3720-883a-4d93-8f61-46acb5220aa1"
+        ],
+        "label": "Vocabulary Antonym Misread",
+        "mechanism": "text/condition misread"
+      },
+      {
+        "count": 1,
+        "evidenceIds": [
+          "836d3eec-a333-4bde-982d-9be3f1334f70"
+        ],
+        "label": "Statistical Shift Invariance",
+        "mechanism": "concept gap"
+      },
+      {
+        "count": 1,
+        "evidenceIds": [
+          "2c25b455-7393-44a7-a9c5-b1a72e0bfded"
+        ],
+        "label": "Volumetric Scale Factor Setup",
+        "mechanism": "setup/model selection"
+      },
+      {
+        "count": 1,
+        "evidenceIds": [
+          "61aaf0f2-72f9-4d46-9b41-46a527180c23"
+        ],
+        "label": "Textual Evidence Mechanism Alignment",
+        "mechanism": "text/condition misread"
+      }
+    ],
+    "studyPriorities": [
+      {
+        "action": "Practice 3D scale factor transformations and volumetric unit conversions.",
+        "evidenceIds": [
+          "2c25b455-7393-44a7-a9c5-b1a72e0bfded",
+          "c74a7a0c-f7d3-4e88-9631-502e28969e35"
+        ],
+        "reason": "Math accounts for 240 points (53.3%) of your total 450-point score gap to reaching 1600.",
+        "skillId": "ratios-rates-units"
+      },
+      {
+        "action": "Drill distribution shift invariant properties (mean/median shift vs range/IQR constancy).",
+        "evidenceIds": [
+          "836d3eec-a333-4bde-982d-9be3f1334f70",
+          "dec13e14-055d-4bc4-8e2b-e6042170bbf0"
+        ],
+        "reason": "Math represents the larger portion of your score deficit, requiring zero-error execution on data analysis.",
+        "skillId": "one-variable-data"
+      },
+      {
+        "action": "Practice matching explicit logical mechanisms in text evidence options to claim statements.",
+        "evidenceIds": [
+          "61aaf0f2-72f9-4d46-9b41-46a527180c23",
+          "15ee23e5-a89f-4b2e-922a-aeff8021c076"
+        ],
+        "reason": "Reading & Writing accounts for 210 points of the remaining gap to goal.",
+        "skillId": "command-evidence-textual"
+      },
+      {
+        "action": "Apply brief context verification pausing on high-difficulty vocabulary items.",
+        "evidenceIds": [
+          "a71d3720-883a-4d93-8f61-46acb5220aa1"
+        ],
+        "reason": "Prevents rapid-pacing antonym trap errors on Level 5 Reading & Writing questions.",
+        "skillId": "words-in-context"
+      }
+    ],
+    "sevenDayPlan": [
+      {
+        "day": "Day 1",
+        "minutes": 30,
+        "successCheck": "Solve 5 consecutive volumetric scale problems using k³ setup without error.",
+        "work": "Targeted Math scale factors and 3D volume ratios drill at Level 5."
+      },
+      {
+        "day": "Day 2",
+        "minutes": 30,
+        "successCheck": "Correctly classify center vs spread changes across 6 data shift questions.",
+        "work": "Data distribution properties lesson on scalar transformations, mean, median, range, and standard deviation."
+      },
+      {
+        "day": "Day 3",
+        "minutes": 35,
+        "successCheck": "Achieve 100% accuracy on 6 Level 5 textual command of evidence items.",
+        "work": "Reading & Writing textual evidence matching drill focusing on mechanism alignment vs distractor claims."
+      },
+      {
+        "day": "Day 4",
+        "minutes": 30,
+        "successCheck": "Eliminate antonym traps across 8 vocabulary items.",
+        "work": "Level 5 vocabulary in context practice with forced 5-second context verification step."
+      },
+      {
+        "day": "Day 5",
+        "minutes": 45,
+        "successCheck": "Maintain 85%+ accuracy while pacing at under 60 seconds per item.",
+        "work": "Mixed Level 5 Math section drill weighted toward geometry, ratios, and function transformations."
+      },
+      {
+        "day": "Day 6",
+        "minutes": 45,
+        "successCheck": "Maintain 85%+ accuracy while pacing at under 45 seconds per item.",
+        "work": "Mixed Level 5 Reading & Writing section drill covering craft, structure, and standard English conventions."
+      },
+      {
+        "day": "Day 7",
+        "minutes": 60,
+        "successCheck": "Complete both modules, generate score estimate, and establish formal weekly point trend.",
+        "work": "Full-length adaptive practice test module to establish baseline weekly trend and test progress."
+      }
+    ],
+    "recommendedMix": "55% Math / 45% Reading & Writing. This distribution gives heavier weight to Math because Math represents 240 points (53.3%) of your total 450-point gap toward your 1600 goal, compared to 210 points for Reading & Writing.",
+    "limitations": [
+      "This report is based on a single 20-item Level 5 adaptive practice set.",
+      "Only 8 of 20 answer events included voluntary confidence ratings; 12 items lacked confidence data.",
+      "No completed full-length practice tests exist in the record, preventing calculation of a weekly score trend or multi-mock projection.",
+      "Intra-session recovery was observed on repeated concepts, but multi-session retention has not yet been established."
+    ],
+    "path": "/Users/tannmaybaid/Desktop/Claude Projects/SAT-learning/data/reports/session/41fe74be-5aa9-424e-b0b5-280af3f0a205.md",
+    "jsonPath": "/Users/tannmaybaid/Desktop/Claude Projects/SAT-learning/data/reports/session/41fe74be-5aa9-424e-b0b5-280af3f0a205.json"
+  },
+  {
+    "id": "1182ff5b-8c8f-4732-9085-8d0b81531f55",
+    "type": "session",
+    "title": "Set review: 92 of 98 correct",
+    "period": "2026-08-09T08:18:17.198Z to 2026-08-09T09:45:15.811Z",
+    "createdAt": "2026-08-09T09:48:45.685Z",
+    "executiveSummary": "The learner completed a full-length mock SAT session Across this work the recorded date to the recorded date. Out of 90 total questions across Reading & Writing and Math (both on the higher difficulty adaptive route), the learner answered 84 correctly (93.3% overall accuracy), achieving an estimated total score of 1500 (Reading & Writing: 770, Math: 730). Performance in Reading & Writing was exceptional (52/54, 96.3%), while Math demonstrated strong foundational mastery with key targeted error patterns in composite function transformations, signed inequality directions, and multi-step polynomial expansion.",
+    "model": "gemini-3.6-flash-high",
+    "answerCount": 98,
+    "sectionBreakdown": [
+      {
+        "section": "Reading and Writing",
+        "accuracySummary": "52/54 correct (96%)",
+        "pacingSummary": "36s average against a 67s authored target",
+        "findings": [
+          {
+            "claim": "Demonstrated near-flawless performance across all Standard English Conventions, Transitions, Rhetorical Synthesis, and Inferences skills.",
+            "confidence": "strong",
+            "evidenceIds": [
+              "1182ff5b-8c8f-4732-9085-8d0b81531f55-bnd-03",
+              "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-de41316c-9b07-4757-95f5-c1abbd4a0907",
+              "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-0f3274fc-c6c0-456e-89e2-5fdd3d8d9268",
+              "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-170d7529-2440-4193-8d39-a97e42992df6"
+            ]
+          },
+          {
+            "claim": "Only 2 errors in RW, both on difficulty 5 items involving subtle tone selection (Words in Context) and directional claim reading in scientific texts (Central Ideas).",
+            "confidence": "strong",
+            "evidenceIds": [
+              "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-aa8c3391-548f-4a71-8ee1-cd4f22ebe37d",
+              "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-a6653d21-e8ca-4bbc-a402-111931de3817"
+            ]
+          }
+        ],
+        "recommendedFocus": "Maintain current verbal strategies while practicing active annotations for directional claims (increase/decrease) in scientific reading."
+      },
+      {
+        "section": "Math",
+        "accuracySummary": "40/44 correct (91%)",
+        "pacingSummary": "20s average against a 113s authored target",
+        "findings": [
+          {
+            "claim": "Perfect scores achieved in Geometry/Trig (7/7) and Problem Solving & Data Analysis (6/6).",
+            "confidence": "strong",
+            "evidenceIds": [
+              "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-lines-angles-triangles-178626350079",
+              "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-right-triangle-trig-178626350080",
+              "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-area-volume-178626350078",
+              "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-sampling-margin-error-178626350076"
+            ]
+          },
+          {
+            "claim": "Vulnerabilities observed in linear function transformations g(x)=f(x+h)+k (1/3 correct), signed linear inequality solving (1/2 correct), and expansion arithmetic under time constraints (3/4 correct).",
+            "confidence": "strong",
+            "evidenceIds": [
+              "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-functions-178626349932",
+              "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-functions-178626350062",
+              "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-inequalities-178626349934",
+              "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-equivalent-expressions-178626350067"
+            ]
+          }
+        ],
+        "recommendedFocus": "Implement a two-pass verification routine for function transformation questions g(x) = f(x+h) + k and negative inequality divisions."
+      }
+    ],
+    "skillBreakdown": [
+      {
+        "skillId": "words-in-context",
+        "correct": 7,
+        "total": 8,
+        "averageSeconds": 40,
+        "diagnosis": "Excellent vocabulary accuracy (87.5%), with 1 error on selecting 'tentative' instead of 'pragmatic' in a trade-off context.",
+        "nextDifficulty": 5,
+        "action": "Review vocabulary nuance for trade-offs vs uncertainty ('pragmatic' vs 'tentative').",
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-00990460-3e33-434e-a80d-0ad7a95673a0",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-762a255a-1ff3-471e-b2e2-f0a8efd49cbb",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-9697c196-ec17-482d-b974-72bafede456a",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-aa8c3391-548f-4a71-8ee1-cd4f22ebe37d",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-7641bca5-6f9e-4ddb-8107-c8fcb8243eca",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-fc6073f1-b516-47ad-ba03-6846eaf62558",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-2af5fdf4-a023-4e52-a76c-921ae3485d6d",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-6ae04abc-b141-49ab-8a3b-5a4acbb0da0e"
+        ],
+        "confidence": "strong"
+      },
+      {
+        "skillId": "text-structure-purpose",
+        "correct": 6,
+        "total": 6,
+        "averageSeconds": 33,
+        "diagnosis": "Flawless execution across all difficulty 5 text structure and purpose items.",
+        "nextDifficulty": 5,
+        "action": "Maintain current analytical approach for passage structure and purpose.",
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-783ea645-b50a-4d90-a9ab-1910a8091743",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-70fc149b-e1c9-42e0-945d-2fba0ca0f40f",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-75517a99-c4d4-42ca-93ed-a3a83536186b",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-b54a5240-8356-47b5-be03-1153106e27ff",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-b0c6f63d-187d-433f-b18e-f73caa5b6ed2",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-eec0e5d0-c3f7-46cd-b26d-8520f64d41e1"
+        ],
+        "confidence": "strong"
+      },
+      {
+        "skillId": "cross-text-connections",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 0,
+        "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+        "nextDifficulty": 5,
+        "action": "Collect another varied item before changing difficulty.",
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-2fa1bb11-1cb5-48fb-91d5-518b3ee5a540"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "central-ideas-details",
+        "correct": 3,
+        "total": 4,
+        "averageSeconds": 56,
+        "diagnosis": "Solid overall understanding (75%), with 1 reversal error misreading monoterpene emission increase as a decrease.",
+        "nextDifficulty": 5,
+        "action": "Annotate directional shifts (increase/decrease) in scientific text to avoid reversal traps.",
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-36e6d39d-05dc-4b57-8c5e-ad5ff8352636",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-a6653d21-e8ca-4bbc-a402-111931de3817",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-cf8dd117-aa14-4ccc-8ee1-7eef7fcbf91f",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-053f3bd5-7f04-4fea-a36a-8daf5cd87e8e"
+        ],
+        "confidence": "moderate"
+      },
+      {
+        "skillId": "command-evidence-textual",
+        "correct": 3,
+        "total": 3,
+        "averageSeconds": 84,
+        "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+        "nextDifficulty": 5,
+        "action": "Collect another varied item before changing difficulty.",
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-51760db0-24c1-4dbe-8ccc-6b54b0d901e5",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-7cddbc9c-c19d-4f32-b82f-3a40afa92dc4",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-e2d64bca-c7fd-4e23-b8c3-86239855dd62"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "command-evidence-quantitative",
+        "correct": 3,
+        "total": 3,
+        "averageSeconds": 62,
+        "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+        "nextDifficulty": 5,
+        "action": "Collect another varied item before changing difficulty.",
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-9c9a768b-8870-48aa-a85a-78ef978e681e",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-2e9fd689-29bd-4f3f-82aa-a487f1c07b1a",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-347b1e8a-e18e-4899-ac01-870cb8013128"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "inferences",
+        "correct": 4,
+        "total": 4,
+        "averageSeconds": 47,
+        "diagnosis": "100% accuracy on difficulty 5 inference questions.",
+        "nextDifficulty": 5,
+        "action": "Maintain logical deduction strategy for complex inferences.",
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-b85b3fd0-f0f3-4ca9-ac5a-a3d018946224",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-691aaede-a3be-4489-bff7-bf5d0ec7bb0b",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-85b05499-b81f-4235-a721-3538efe93b08",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-bf04f34d-151b-4d8d-ade6-e35a281e3716"
+        ],
+        "confidence": "strong"
+      },
+      {
+        "skillId": "boundaries",
+        "correct": 7,
+        "total": 7,
+        "averageSeconds": 19,
+        "diagnosis": "Flawless punctuation boundary control across colons, semicolons, and commas.",
+        "nextDifficulty": 5,
+        "action": "Maintain fast clause boundary punctuation rules.",
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-bnd-03",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-bnd-05",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-20351d32-fa84-4e7e-a462-802e2b5440d5",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-bnd-11",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-bnd-09",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-agent-a-rw-167",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-agent-a-rw-176"
+        ],
+        "confidence": "strong"
+      },
+      {
+        "skillId": "form-structure-sense",
+        "correct": 7,
+        "total": 7,
+        "averageSeconds": 24,
+        "diagnosis": "100% accuracy on subject-verb agreement, verb complements, and parallelism.",
+        "nextDifficulty": 5,
+        "action": "Maintain current grammatical agreement and verb form strategies.",
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-de41316c-9b07-4757-95f5-c1abbd4a0907",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-4e82ae50-92da-4ad6-a0f4-f67563e625fa",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-380843d7-4967-497f-9459-740cfb5b1405",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-0d3d28a7-61cd-43eb-a255-5f3b823989e5",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-4a92e35b-a0d9-4f51-a152-c8725135947d",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-82f34b22-be16-4185-ab7d-682033f333dc",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-8e15a31f-3743-4367-8b0a-17736937ef47"
+        ],
+        "confidence": "strong"
+      },
+      {
+        "skillId": "transitions",
+        "correct": 6,
+        "total": 6,
+        "averageSeconds": 15,
+        "diagnosis": "100% accuracy on logical transition selection.",
+        "nextDifficulty": 5,
+        "action": "Maintain rapid transition logic identification.",
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-0f3274fc-c6c0-456e-89e2-5fdd3d8d9268",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-e59edf8d-e3d4-4441-9f75-de380ad1fa59",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-c53eed88-af2a-4244-b8df-4ffd5269d9ae",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-27c3197d-f3f7-4a55-ab7f-55a7aa640804",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-71878ebe-db30-43f1-8c5a-d252446a7194",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-c345779c-f275-412c-96f7-7d48ada075f3"
+        ],
+        "confidence": "strong"
+      },
+      {
+        "skillId": "rhetorical-synthesis",
+        "correct": 5,
+        "total": 5,
+        "averageSeconds": 39,
+        "diagnosis": "100% accuracy on goal-driven rhetorical synthesis questions.",
+        "nextDifficulty": 5,
+        "action": "Maintain note integration strategy.",
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-170d7529-2440-4193-8d39-a97e42992df6",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-48858600-9374-401c-8198-8a4583fa23dc",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-80e1adad-8cf5-4e0c-8b05-30f4e8e73725",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-d3f63828-cbf6-4b48-94d3-9ac73c8fe1c6",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-50717194-976f-45e8-a81f-a2e55aad9311"
+        ],
+        "confidence": "strong"
+      },
+      {
+        "skillId": "lines-angles-triangles",
+        "correct": 2,
+        "total": 2,
+        "averageSeconds": 28,
+        "diagnosis": "100% accuracy on triangle angle sums and similar triangle scale factors.",
+        "nextDifficulty": 5,
+        "action": "Maintain speed on basic geometric angle sums and similar triangles.",
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-lines-angles-triangles-178626349950",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-lines-angles-triangles-178626350079"
+        ],
+        "confidence": "strong"
+      },
+      {
+        "skillId": "ratios-rates-units",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 0,
+        "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+        "nextDifficulty": 1,
+        "action": "Collect another varied item before changing difficulty.",
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-ratios-rates-units-178626349945"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "linear-equations-one-variable",
+        "correct": 3,
+        "total": 3,
+        "averageSeconds": 3,
+        "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+        "nextDifficulty": 1,
+        "action": "Collect another varied item before changing difficulty.",
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-equations-one-variable-178626349930",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-equations-one-variable-178626349935",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-equations-one-variable-178626350060"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "nonlinear-functions",
+        "correct": 4,
+        "total": 4,
+        "averageSeconds": 15,
+        "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+        "nextDifficulty": 1,
+        "action": "Collect another varied item before changing difficulty.",
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-nonlinear-functions-178626349940",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-nonlinear-functions-178626349944",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-nonlinear-functions-178626350073",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-nonlinear-functions-178626350069"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "nonlinear-equations",
+        "correct": 4,
+        "total": 4,
+        "averageSeconds": 8,
+        "diagnosis": "100% accuracy on factoring quadratics and solving radical equations with extraneous solution checks.",
+        "nextDifficulty": 5,
+        "action": "Maintain factoring and radical equation solving workflows.",
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-nonlinear-equations-178626349943",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-nonlinear-equations-178626349939",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-nonlinear-equations-178626350068",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-nonlinear-equations-178626350072"
+        ],
+        "confidence": "strong"
+      },
+      {
+        "skillId": "equivalent-expressions",
+        "correct": 3,
+        "total": 4,
+        "averageSeconds": 23,
+        "diagnosis": "75% accuracy (3/4). Made 1 expansion calculation error under time pressure on a difficulty 5 scalar product item.",
+        "nextDifficulty": 5,
+        "action": "Implement explicit arithmetic confirmation step when calculating linear coefficients from product expansions.",
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-equivalent-expressions-178626349938",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-equivalent-expressions-178626349942",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-equivalent-expressions-178626350071",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-equivalent-expressions-178626350067"
+        ],
+        "confidence": "strong"
+      },
+      {
+        "skillId": "probability",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 8,
+        "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+        "nextDifficulty": 2,
+        "action": "Collect another varied item before changing difficulty.",
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-probability-178626349948"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "systems-linear-equations",
+        "correct": 4,
+        "total": 4,
+        "averageSeconds": 17,
+        "diagnosis": "100% accuracy on linear systems including standard elimination and parameter matching for infinite solutions.",
+        "nextDifficulty": 5,
+        "action": "Maintain elimination/substitution methods and infinite solution criteria (4k=24).",
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-systems-linear-equations-178626349933",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-systems-linear-equations-178626349937",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-systems-linear-equations-178626350066",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-systems-linear-equations-178626350063"
+        ],
+        "confidence": "strong"
+      },
+      {
+        "skillId": "linear-equations-two-variables",
+        "correct": 3,
+        "total": 3,
+        "averageSeconds": 19,
+        "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+        "nextDifficulty": 3,
+        "action": "Collect another varied item before changing difficulty.",
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-equations-two-variables-178626349931",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-equations-two-variables-178626350065",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-equations-two-variables-178626350061"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "percentages",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 0,
+        "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+        "nextDifficulty": 3,
+        "action": "Collect another varied item before changing difficulty.",
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-percentages-178626349946"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "right-triangle-trig",
+        "correct": 2,
+        "total": 2,
+        "averageSeconds": 24,
+        "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+        "nextDifficulty": 3,
+        "action": "Collect another varied item before changing difficulty.",
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-right-triangle-trig-178626349951",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-right-triangle-trig-178626350080"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "systems-nonlinear",
+        "correct": 3,
+        "total": 3,
+        "averageSeconds": 13,
+        "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+        "nextDifficulty": 3,
+        "action": "Collect another varied item before changing difficulty.",
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-systems-nonlinear-178626349941",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-systems-nonlinear-178626350070",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-systems-nonlinear-178626350074"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "linear-functions",
+        "correct": 1,
+        "total": 3,
+        "averageSeconds": 45,
+        "diagnosis": "33.3% accuracy (1/3). Failed both difficulty 5 transformation questions by misapplying vertical/horizontal shifts and stopping at intermediate values.",
+        "nextDifficulty": 4,
+        "action": "Practice function transformations g(x) = f(x+h) + k explicitly writing f(x) before shifting.",
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-functions-178626349936",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-functions-178626349932",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-functions-178626350062"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "area-volume",
+        "correct": 2,
+        "total": 2,
+        "averageSeconds": 53,
+        "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+        "nextDifficulty": 4,
+        "action": "Collect another varied item before changing difficulty.",
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-area-volume-178626349949",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-area-volume-178626350078"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "linear-inequalities",
+        "correct": 1,
+        "total": 2,
+        "averageSeconds": 41,
+        "diagnosis": "50% accuracy (1/2). Missed sign reversal when dividing by negative coefficient -12.",
+        "nextDifficulty": 4,
+        "action": "Enforce mandatory check: flip inequality direction whenever dividing by negative coefficients.",
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-inequalities-178626349934",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-inequalities-178626350064"
+        ],
+        "confidence": "moderate"
+      },
+      {
+        "skillId": "one-variable-data",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 9,
+        "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+        "nextDifficulty": 5,
+        "action": "Collect another varied item before changing difficulty.",
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-one-variable-data-178626349947"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "two-variable-data",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 19,
+        "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+        "nextDifficulty": 3,
+        "action": "Collect another varied item before changing difficulty.",
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-two-variable-data-178626350075"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "sampling-margin-error",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 0,
+        "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+        "nextDifficulty": 4,
+        "action": "Collect another varied item before changing difficulty.",
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-sampling-margin-error-178626350076"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "circles",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 47,
+        "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+        "nextDifficulty": 4,
+        "action": "Collect another varied item before changing difficulty.",
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-circles-178626350081"
+        ],
+        "confidence": "tentative"
+      },
+      {
+        "skillId": "statistical-claims",
+        "correct": 1,
+        "total": 1,
+        "averageSeconds": 0,
+        "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+        "nextDifficulty": 5,
+        "action": "Collect another varied item before changing difficulty.",
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-statistical-claims-178626350077"
+        ],
+        "confidence": "tentative"
+      }
+    ],
+    "errorTaxonomy": [
+      {
+        "count": 2,
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-functions-178626349932",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-functions-178626350062"
+        ],
+        "label": "Function Transformation & Intermediate Evaluation Error",
+        "mechanism": "Failing to correctly execute horizontal/vertical shift composition g(x) = f(x+h) + k or stopping at an intermediate step when evaluating g(0)."
+      },
+      {
+        "count": 1,
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-inequalities-178626349934"
+        ],
+        "label": "Inequality Direction Inversion Error",
+        "mechanism": "Neglecting to flip the inequality sign when dividing both sides by a negative coefficient."
+      },
+      {
+        "count": 1,
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-equivalent-expressions-178626350067"
+        ],
+        "label": "Algebraic Polynomial Expansion Error",
+        "mechanism": "Arithmetic error in calculating the linear coefficient b when expanding non-monic binomial products multiplied by a scalar factor and subtracted."
+      },
+      {
+        "count": 1,
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-a6653d21-e8ca-4bbc-a402-111931de3817"
+        ],
+        "label": "Passage Trend Reversal Error",
+        "mechanism": "Selecting an answer choice that claims a reduction in a biological emission when the text explicitly states an increase under environmental stress."
+      },
+      {
+        "count": 1,
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-aa8c3391-548f-4a71-8ee1-cd4f22ebe37d"
+        ],
+        "label": "Vocabulary Tone & Utility Misalignment",
+        "mechanism": "Selecting 'tentative' (uncertainty) rather than 'pragmatic' (practical trade-off) in a passage describing trade-offs between computational speed and accuracy."
+      }
+    ],
+    "studyPriorities": [
+      {
+        "action": "Practice evaluating function transformations g(x) = f(x+h) + k by writing down f(x) explicitly before substituting (x+h) and evaluating g(0).",
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-functions-178626349932",
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-functions-178626350062"
+        ],
+        "reason": "Accuracy of 33.3% (1/3) on linear-functions transformation items represents the largest single point drag in Math.",
+        "skillId": "linear-functions"
+      },
+      {
+        "action": "Enforce a mandatory check rule to flip inequality signs whenever dividing or multiplying by negative quantities.",
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-linear-inequalities-178626349934"
+        ],
+        "reason": "50% accuracy on linear-inequalities caused by omitting inequality direction flip when dividing -12x > 0.",
+        "skillId": "linear-inequalities"
+      },
+      {
+        "action": "Double-check linear term coefficient arithmetic in 3-step polynomial expansions a(bx+c)(dx+e) - fx.",
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-math-equivalent-expressions-178626350067"
+        ],
+        "reason": "Timed execution error on difficulty 5 equivalent expressions item (entered 147 instead of 57).",
+        "skillId": "equivalent-expressions"
+      },
+      {
+        "action": "Annotate directional words (increase, decrease, protect, suppress) when tracking complex scientific passage claims.",
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-a6653d21-e8ca-4bbc-a402-111931de3817"
+        ],
+        "reason": "Fell for a reversal trap on difficulty 5 central ideas item by selecting a choice claiming emissions decreased during drought.",
+        "skillId": "central-ideas-details"
+      },
+      {
+        "action": "Distinguish between practical trade-off vocabulary ('pragmatic') and uncertainty vocabulary ('tentative') in technical contexts.",
+        "evidenceIds": [
+          "1182ff5b-8c8f-4732-9085-8d0b81531f55-ai-rw-aa8c3391-548f-4a71-8ee1-cd4f22ebe37d"
+        ],
+        "reason": "Off-target error selecting 'tentative' when describing practical trade-off models delivering sufficient accuracy.",
+        "skillId": "words-in-context"
+      }
+    ],
+    "sevenDayPlan": [
+      {
+        "day": "Day 1: Function Transformations Core Mastery",
+        "minutes": 45,
+        "successCheck": "Achieve 100% accuracy on 10 targeted function transformation questions g(x) = f(x+h) + k.",
+        "work": "Review transformation mechanics for g(x) = f(x+h) + k. Drill 10 hard linear and quadratic function shift questions, explicitly writing out f(x+h) before applying k."
+      },
+      {
+        "day": "Day 2: Signed Inequalities & Inequality Systems",
+        "minutes": 35,
+        "successCheck": "Solve 8 consecutive negative-coefficient inequalities without missing sign reversals.",
+        "work": "Practice linear inequalities with negative coefficients and inequality system point testing. Focus on mandatory sign-flip checks during negative division."
+      },
+      {
+        "day": "Day 3: Multi-Step Algebraic Expansions & Verification",
+        "minutes": 40,
+        "successCheck": "Correctly calculate linear coefficients in 10 polynomial expansion items under timed conditions (90s per item).",
+        "work": "Drill multi-term polynomial expansions involving scalar multipliers 3(ax+b)(cx+d) - ex. Practice rapid double-checking of linear coefficients b."
+      },
+      {
+        "day": "Day 4: Reading Scientific Passages & Directional Tracking",
+        "minutes": 45,
+        "successCheck": "Identify central claims in 6 high-difficulty scientific passages with 100% accuracy, marking directional keywords (increase/decrease/suppress).",
+        "work": "Practice reading dense scientific passages (biology/chemistry). Focus on identifying directional claims and avoiding reversal choices in Central Ideas questions."
+      },
+      {
+        "day": "Day 5: Vocabulary Precision & Functional Tone Drills",
+        "minutes": 30,
+        "successCheck": "Complete 12 difficulty-5 Words in Context items with zero off-target or overclaim trap selections.",
+        "work": "Review high-utility academic vocabulary (pragmatic, tentative, superfluous, insular, supplant). Drill Words in Context items focusing on tone and functional fit."
+      },
+      {
+        "day": "Day 6: Targeted Math Mixed Hard-Set Sprint",
+        "minutes": 50,
+        "successCheck": "Score 18/20 or better on a mixed hard-level Math set (Difficulty 4-5).",
+        "work": "Complete a timed set of 20 difficulty 4-5 Math questions combining Linear Functions, Equivalent Expressions, Systems, and Geometry."
+      },
+      {
+        "day": "Day 7: Full Adaptive Module Simulation & Review",
+        "minutes": 60,
+        "successCheck": "Achieve 100% accuracy on function transformations and signed inequalities during timed re-test.",
+        "work": "Re-test the 6 missed items from this set followed by a mini-mock set of 15 RW and 15 Math questions."
+      }
+    ],
+    "recommendedMix": "70% Math (focused on linear function transformations, inequality algebraic manipulations, and non-monic polynomial expansions) / 30% Reading & Writing (focused on high-density scientific Central Ideas and precision vocabulary trade-offs).",
+    "limitations": [
+      "Session evaluated a single full adaptive mock test (90 items).",
+      "No student reasoning notes were recorded in the event stream for qualitative thought-process verification."
+    ],
+    "path": "/Users/tannmaybaid/Desktop/Claude Projects/SAT-learning/data/reports/session/1182ff5b-8c8f-4732-9085-8d0b81531f55.md",
+    "jsonPath": "/Users/tannmaybaid/Desktop/Claude Projects/SAT-learning/data/reports/session/1182ff5b-8c8f-4732-9085-8d0b81531f55.json"
+  }
+]

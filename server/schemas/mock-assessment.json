@@ -1,0 +1,13 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["difficulty", "expectedScore", "expectedRwScore", "expectedMathScore", "confidence", "rationale"],
+  "properties": {
+    "difficulty": { "type": "integer", "minimum": 1, "maximum": 5 },
+    "expectedScore": { "type": "integer", "minimum": 400, "maximum": 1600 },
+    "expectedRwScore": { "type": "integer", "minimum": 200, "maximum": 800 },
+    "expectedMathScore": { "type": "integer", "minimum": 200, "maximum": 800 },
+    "confidence": { "type": "string", "enum": ["tentative", "moderate", "strong"] },
+    "rationale": { "type": "string", "minLength": 20, "maxLength": 1200 }
+  }
+}

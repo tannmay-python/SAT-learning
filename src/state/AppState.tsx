@@ -7,6 +7,7 @@ import type {
   LearnerModel,
   LearnerSettings,
   LearningStateSnapshot,
+  MockAssessment,
   Question,
   QuestionBlueprint,
   ReportSummary,
@@ -43,6 +44,7 @@ interface AppStateValue {
   analyses: AttemptAnalysis[]
   learnerModel: LearnerModel
   reports: ReportSummary[]
+  mockAssessments: MockAssessment[]
   aiStatus: AiStatus
   activeMock: unknown | null
   dataDirectory: string
@@ -141,9 +143,10 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
   }, [refresh])
 
   const saveActiveMock = useCallback(async (mock: unknown | null) => {
-    await fetch('/api/active-mock', {
+    const response = await fetch('/api/active-mock', {
       method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mock }),
     })
+    if (!response.ok) throw new Error('SATLAS could not clear the saved mock.')
     setSnapshot((current) => current ? { ...current, activeMock: mock } : current)
   }, [])
 
@@ -170,6 +173,7 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
     analyses: snapshot?.analyses ?? [],
     learnerModel: snapshot?.learnerModel ?? defaultLearnerModel,
     reports: snapshot?.reports ?? [],
+    mockAssessments: snapshot?.mockAssessments ?? [],
     aiStatus: snapshot?.aiStatus ?? defaultAiStatus,
     activeMock: snapshot?.activeMock ?? null,
     dataDirectory: snapshot?.dataDirectory ?? '',

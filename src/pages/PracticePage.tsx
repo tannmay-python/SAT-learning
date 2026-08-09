@@ -3,6 +3,7 @@ import { Link } from 'wouter'
 import { ArrowRight, Brain, CheckCircle, Clock, Repeat, Sparkle, Target, XCircle } from '@phosphor-icons/react'
 import { curriculum, domains, skillById } from '../data/curriculum'
 import { readingQuestionBank } from '../data/readingBank'
+import { readingExpansionQuestionBank } from '../data/readingExpansion'
 import { generateMathQuestion, mathSkillIds } from '../engine/mathGenerators'
 import { mixedSectionPlan, planReadingBlueprint, sectionTargetDifficulty, selectNextQuestion, weakerSection } from '../engine/adaptive'
 import { isCorrectResponse } from '../engine/questions'
@@ -14,6 +15,8 @@ import type { Confidence, Difficulty, GeneratedQuestionRecord, Question, Questio
 
 type PracticeMode = 'mixed' | SectionId
 type QuestionSource = 'fresh' | 'authored'
+
+const authoredReadingPool = [...readingQuestionBank, ...readingExpansionQuestionBank]
 
 export function PracticePage() {
   const { stateMap, attempts, recordAttempt, analyzeAttempt, saveSession, prepareFreshQuestions, generatedQuestions, officialQuestions, learnerModel, analyses, aiStatus } = useAppState()
@@ -53,7 +56,7 @@ export function PracticePage() {
     const math = mathSkillIds.flatMap((skillId, skillIndex) => ([1, 2, 3, 4, 5] as const).flatMap((difficulty) => [0, 1].map((variant) => generateMathQuestion(skillId, difficulty, 10_000 + skillIndex * 100 + difficulty * 10 + variant))))
     // Real released items outrank anything written for this app, so they sit
     // first in the pool and win ties during selection.
-    return [...officialQuestions, ...readingQuestionBank, ...math, ...generatedQuestions]
+    return [...officialQuestions, ...authoredReadingPool, ...math, ...generatedQuestions]
   }, [generatedQuestions, officialQuestions])
 
   const calibratedTargets = useMemo(() => ({
@@ -121,7 +124,7 @@ export function PracticePage() {
       // asks for that one skill directly; otherwise every slot varies by design.
       const blueprint: QuestionBlueprint[] = topicSkill && topicSkill.section === 'rw'
         ? Array.from({ length: previewCounts.rw }, () => ({ section: 'rw', domain: topicSkill.domain, skillId: topicSkill.id, difficulty: sectionTargets.rw }))
-        : planReadingBlueprint(readingQuestionBank, previewCounts.rw, stateMap, new Set(attempts.map((attempt) => attempt.questionId)), learnerModel.skillDirectives, sectionTargets.rw)
+        : planReadingBlueprint(authoredReadingPool, previewCounts.rw, stateMap, new Set(attempts.map((attempt) => attempt.questionId)), learnerModel.skillDirectives, sectionTargets.rw)
           // Same exactness fix applied to freshly generated items: pin the
           // requested difficulty directly rather than the blended recommendation.
           .map((entry) => difficultyOverride === 'adaptive' ? entry : { ...entry, difficulty: difficultyOverride })

@@ -43,6 +43,8 @@ export interface Question {
   format: QuestionFormat
   stimulus?: string
   secondaryStimulus?: string
+  /** Text that was underlined in the source form, when the source preserved it. */
+  underlinedText?: string
   table?: DataTable
   plot?: DataPlot
   prompt: string
@@ -54,7 +56,8 @@ export interface Question {
   whyWrong?: Record<string, string>
   misconceptionByChoice?: Record<string, string>
   estimatedSeconds: number
-  source: 'local-original' | 'ai-generated'
+  source: 'local-original' | 'ai-generated' | 'official-practice'
+  testForm?: number
 }
 
 export interface LessonExample {
@@ -153,6 +156,22 @@ export interface SessionRecord {
   /** Section split of estimatedScore, mock sessions only. Absent on older records. */
   rwScore?: number
   mathScore?: number
+  /** Question provenance and scoring metadata retained for mock review. */
+  questionSources?: Record<string, Question['source']>
+  questionDifficulties?: Record<string, Difficulty>
+  pretestQuestionIds?: string[]
+}
+
+export interface MockAssessment {
+  sessionId: string
+  difficulty: Difficulty
+  expectedScore: number
+  expectedRwScore: number
+  expectedMathScore: number
+  confidence: 'tentative' | 'moderate' | 'strong'
+  rationale: string
+  model: string
+  createdAt: string
 }
 
 export interface LearnerSettings {
@@ -184,6 +203,8 @@ export interface QuestionBlueprint {
   domain: DomainId
   skillId: string
   difficulty: Difficulty
+  /** Used by fresh Math generation; Reading and Writing remains multiple-choice. */
+  format?: QuestionFormat
 }
 
 export interface EvidenceClaim {
@@ -318,6 +339,7 @@ export interface LearningStateSnapshot {
   analyses: AttemptAnalysis[]
   learnerModel: LearnerModel
   reports: ReportSummary[]
+  mockAssessments: MockAssessment[]
   aiStatus: AiStatus
   activeMock: unknown | null
   dataDirectory: string
@@ -330,4 +352,5 @@ export interface MockModule {
   durationSeconds: number
   questions: Question[]
   route?: 'routing' | 'lower' | 'higher'
+  pretestQuestionIds?: string[]
 }

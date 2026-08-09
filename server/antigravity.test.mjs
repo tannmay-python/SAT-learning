@@ -1,5 +1,19 @@
 import { describe, expect, it } from 'vitest'
-import { applyGenerationReviews, hasSuspiciousReadingOverlap, intervalFacts, normalizeReport, blankConventionFault, computeGoalFacts, plainProse, rebalanceAnswerPositions, remapChoiceReferences, validateGeneratedReadingQuestion } from './antigravity.mjs'
+import { applyGenerationReviews, hasSuspiciousReadingOverlap, intervalFacts, normalizeReport, blankConventionFault, computeGoalFacts, normalizeMockAssessment, plainProse, rebalanceAnswerPositions, remapChoiceReferences, validateGeneratedReadingQuestion } from './antigravity.mjs'
+
+describe('mock assessment guardrails', () => {
+  it('keeps expected total internally consistent and clamps model output', () => {
+    expect(normalizeMockAssessment({ difficulty: 7, expectedRwScore: 873, expectedMathScore: 421, expectedScore: 100, confidence: 'strong', rationale: 'Prior evidence is mixed, so the expected score is provisional.' }, 'mock-1', 'test-model')).toMatchObject({
+      sessionId: 'mock-1',
+      difficulty: 5,
+      expectedRwScore: 800,
+      expectedMathScore: 420,
+      expectedScore: 1220,
+      confidence: 'strong',
+      model: 'test-model',
+    })
+  })
+})
 
 describe('interval report evidence guardrails', () => {
   const attempts = [

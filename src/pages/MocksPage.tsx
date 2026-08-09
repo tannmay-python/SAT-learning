@@ -1,16 +1,48 @@
-import { Link } from 'wouter'
-import { ArrowRight, Calculator, Clock, Flag, ListChecks, WarningCircle } from '@phosphor-icons/react'
+import { useState } from 'react'
+import { Link, useLocation } from 'wouter'
+import { ArrowRight, Calculator, Clock, Flag, ListChecks, Trash, WarningCircle } from '@phosphor-icons/react'
+import { DifficultyStars } from '../components/DifficultyStars'
 import { useAppState } from '../state/AppState'
 
 export function MocksPage() {
-  const { sessions, activeMock } = useAppState()
+  const { sessions, attempts, mockAssessments, activeMock, saveActiveMock } = useAppState()
+  const [, navigate] = useLocation()
+  const [confirmClear, setConfirmClear] = useState(false)
+  const [clearing, setClearing] = useState(false)
   const mocks = sessions.filter((session) => session.type === 'mock' && session.completedAt)
   const hasActive = Boolean(activeMock)
+
+  const clearAndRestart = async () => {
+    setClearing(true)
+    try {
+      await saveActiveMock(null)
+      navigate('/mock/run')
+    } finally {
+      setClearing(false)
+      setConfirmClear(false)
+    }
+  }
+
+  const provenanceFor = (mock: (typeof mocks)[number]) => {
+    const fromSession = mock.questionSources
+      ? Object.values(mock.questionSources)
+      : attempts
+        .filter((attempt) => attempt.sessionId === mock.id)
+        .map((attempt) => attempt.questionSnapshot?.source)
+        .filter((source): source is NonNullable<typeof source> => Boolean(source))
+    const counts = fromSession.reduce<Record<string, number>>((result, source) => ({ ...result, [source]: (result[source] || 0) + 1 }), {})
+    const labels = [
+      counts['official-practice'] ? `${counts['official-practice']} official` : '',
+      counts['ai-generated'] ? `${counts['ai-generated']} Gemini` : '',
+      counts['local-original'] ? `${counts['local-original']} authored` : '',
+    ].filter(Boolean)
+    return labels.length ? labels.join(' · ') : 'Question provenance unavailable for this older mock'
+  }
 
   return (
     <div className="mocks-page">
       <section className="mock-hero">
-        <div><p className="eyebrow">Full digital simulation</p><h2>Two hours. Four modules. One honest read.</h2><p>Use a full mock when you can protect the whole sitting. The result updates your learning map, pacing profile, and review queue.</p><div className="hero-actions"><Link href="/mock/run" className="primary-button">{hasActive ? 'Resume mock' : 'Start full mock'} <ArrowRight size={18} weight="bold" /></Link><Link href="/practice" className="text-button">Take a shorter set</Link></div></div>
+        <div><p className="eyebrow">Full digital simulation</p><h2>Two hours. Four modules. One honest read.</h2><p>Use a full mock when you can protect the whole sitting. The result updates your learning map, pacing profile, and review queue.</p><div className="hero-actions"><Link href="/mock/run" className="primary-button">{hasActive ? 'Resume mock' : 'Start full mock'} <ArrowRight size={18} weight="bold" /></Link>{hasActive && !confirmClear && <button className="ghost-button" onClick={() => setConfirmClear(true)}><Trash size={16} /> Clear and restart</button>}{hasActive && confirmClear && <div className="mock-clear-confirm" role="alert"><span>Discard this saved mock?</span><button className="text-button" disabled={clearing} onClick={() => setConfirmClear(false)}>Cancel</button><button className="danger-button" disabled={clearing} onClick={() => void clearAndRestart()}>{clearing ? 'Clearing…' : 'Clear mock'}</button></div>}<Link href="/practice" className="text-button">Take a shorter set</Link></div></div>
         <div className="mock-blueprint" aria-label="Mock test structure">
           <div><span>Reading and Writing</span><strong>64 min</strong><small>27 + 27 questions</small></div>
           <i />
@@ -27,11 +59,23 @@ export function MocksPage() {
         <div><Flag size={23} weight="duotone" /><strong>Bluebook-like review</strong><p>Move freely inside a module, flag items, and review unanswered questions before submitting.</p></div>
       </section>
 
-      <section className="score-caveat"><WarningCircle size={22} weight="fill" /><div><strong>A practice estimate, never a fake official score.</strong><p>College Board does not publish enough operational item parameters to reproduce adaptive scoring. SATLAS reports a transparent estimate with uncertainty and preserves raw module results.</p></div></section>
+      <section className="score-caveat"><WarningCircle size={22} weight="fill" /><div><strong>A practice estimate, never a fake official score.</strong><p>Each module includes two SAT-style pretest questions that do not count toward the score; SATLAS still records them for learning but excludes them from the mock estimate. College Board does not publish enough operational item parameters to reproduce adaptive scoring, so SATLAS reports a transparent estimate with uncertainty.</p></div></section>
 
       <section className="panel history-panel">
         <div className="section-heading"><div><h3>Mock history</h3><p>Full sittings appear here when completed.</p></div><span>{mocks.length} complete</span></div>
-        {mocks.length ? <div className="history-list">{mocks.map((mock) => <div className="history-row" key={mock.id}><span><strong>{new Date(mock.completedAt!).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' })}</strong><small>{mock.correct} of {mock.total} correct</small></span><strong>{mock.estimatedScore ?? 'Estimated'}</strong></div>)}</div> : <div className="empty-state small"><ListChecks size={27} /><h3>No full mock yet.</h3><p>Your first completed simulation will establish a pacing and endurance baseline.</p></div>}
+        {mocks.length ? <div className="history-list">{mocks.map((mock) => {
+          const assessment = mockAssessments.find((item) => item.sessionId === mock.id)
+          const expectedGap = assessment && typeof mock.estimatedScore === 'number' ? mock.estimatedScore - assessment.expectedScore : null
+          return <article className="history-row mock-history-row" key={mock.id}>
+            <div className="history-row-intro"><strong>{new Date(mock.completedAt!).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' })}</strong><small>{mock.correct} of {mock.total} scored questions correct · {mock.questionIds.length} presented</small><small>{provenanceFor(mock)}</small></div>
+            <div className="mock-history-metrics">
+              <span><small>Actual</small><strong>{mock.estimatedScore ?? '—'}</strong></span>
+              <span><small>Gemini expected</small><strong>{assessment?.expectedScore ?? 'Analyzing…'}</strong>{expectedGap !== null && <em className={expectedGap >= 0 ? 'positive' : 'negative'}>{expectedGap >= 0 ? '+' : ''}{expectedGap} vs expected</em>}</span>
+              <span><small>Form difficulty</small>{assessment ? <DifficultyStars difficulty={assessment.difficulty} size={10} /> : <em>Pending Gemini</em>}</span>
+            </div>
+            {assessment && <p className="mock-assessment-rationale">{assessment.rationale}</p>}
+          </article>
+        })}</div> : <div className="empty-state small"><ListChecks size={27} /><h3>No full mock yet.</h3><p>Your first completed simulation will establish a pacing and endurance baseline.</p></div>}
       </section>
     </div>
   )

@@ -20,7 +20,9 @@ import {
   queueAttemptAnalysis,
   queueAdaptiveQuestionGeneration,
   queueComprehensiveReport,
+  queueMockAssessment,
   queueSessionReport,
+  recoverPendingMockAssessments,
   recoverPendingReports,
 } from './server/antigravity.mjs'
 
@@ -62,12 +64,21 @@ const settingsSchema = z.object({
   onboardingComplete: z.boolean().optional(),
 }).strict()
 
-const generatedBlueprintSchema = z.array(z.object({
-  section: z.literal('rw'),
-  domain: z.enum(['craft-structure', 'information-ideas', 'standard-english', 'expression-ideas']),
-  skillId: z.enum(['words-in-context', 'text-structure-purpose', 'cross-text-connections', 'central-ideas-details', 'command-evidence-textual', 'command-evidence-quantitative', 'inferences', 'boundaries', 'form-structure-sense', 'rhetorical-synthesis', 'transitions']),
-  difficulty: z.number().int().min(1).max(5),
-})).min(1).max(12)
+const generatedBlueprintSchema = z.array(z.union([
+  z.object({
+    section: z.literal('rw'),
+    domain: z.enum(['craft-structure', 'information-ideas', 'standard-english', 'expression-ideas']),
+    skillId: z.enum(['words-in-context', 'text-structure-purpose', 'cross-text-connections', 'central-ideas-details', 'command-evidence-textual', 'command-evidence-quantitative', 'inferences', 'boundaries', 'form-structure-sense', 'rhetorical-synthesis', 'transitions']),
+    difficulty: z.number().int().min(1).max(5),
+  }),
+  z.object({
+    section: z.literal('math'),
+    domain: z.enum(['algebra', 'advanced-math', 'problem-solving-data', 'geometry-trigonometry']),
+    skillId: z.enum(['linear-equations-one-variable', 'linear-equations-two-variables', 'linear-functions', 'systems-linear-equations', 'linear-inequalities', 'equivalent-expressions', 'nonlinear-equations', 'nonlinear-functions', 'systems-nonlinear', 'ratios-rates-units', 'percentages', 'one-variable-data', 'two-variable-data', 'probability', 'sampling-margin-error', 'statistical-claims', 'area-volume', 'lines-angles-triangles', 'right-triangle-trig', 'circles']),
+    difficulty: z.number().int().min(1).max(5),
+    format: z.enum(['multiple-choice', 'student-produced']).optional(),
+  }),
+])).min(1).max(12)
 
 app.get('/api/state', async (_request, response) => {
   response.json(await getState(getAiStatus()))
@@ -108,6 +119,7 @@ app.post('/api/sessions', async (request, response) => {
   if (saved && session.completedAt) {
     queueSessionReport(session)
       .catch(() => undefined)
+    if (session.type === 'mock') queueMockAssessment(session).catch(() => undefined)
   }
   response.status(saved ? 201 : 200).json({ saved, reportQueued: saved && Boolean(session.completedAt) })
 })
@@ -186,7 +198,8 @@ app.listen(port, '127.0.0.1', async () => {
   const status = getAiStatus()
   console.log(status.available ? `Antigravity analyst ready: ${status.observerModel}` : status.lastError)
   await recoverPendingReports()
+  await recoverPendingMockAssessments()
 })
 
-const recoveryTimer = setInterval(() => recoverPendingReports().catch(() => undefined), 60_000)
+const recoveryTimer = setInterval(() => Promise.all([recoverPendingReports(), recoverPendingMockAssessments()]).catch(() => undefined), 60_000)
 recoveryTimer.unref()

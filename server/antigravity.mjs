@@ -5,7 +5,7 @@ import { homedir } from 'node:os'
 import { dirname, resolve } from 'node:path'
 import { promisify } from 'node:util'
 import { fileURLToPath } from 'node:url'
-import { getEvidence, hasReport, saveAnalysis, saveGeneratedQuestions, saveLearnerModel, saveReport } from './store.mjs'
+import { getEvidence, hasReport, saveAnalysis, saveGeneratedQuestions, saveLearnerModel, saveMockAssessment, saveReport } from './store.mjs'
 import officialDensity from './official-density.json' with { type: 'json' }
 
 const execFileAsync = promisify(execFile)
@@ -30,6 +30,7 @@ let workChain = Promise.resolve()
 let resetRevision = 0
 const queuedAttemptIds = new Set()
 const queuedReportIds = new Set()
+const queuedMockAssessmentIds = new Set()
 
 export function invalidateAiWork() {
   resetRevision += 1
@@ -135,6 +136,14 @@ const readingSkills = new Set([
   'words-in-context', 'text-structure-purpose', 'cross-text-connections', 'central-ideas-details', 'command-evidence-textual',
   'command-evidence-quantitative', 'inferences', 'boundaries', 'form-structure-sense', 'rhetorical-synthesis', 'transitions',
 ])
+
+const mathSkills = new Set([
+  'linear-equations-one-variable', 'linear-equations-two-variables', 'linear-functions', 'systems-linear-equations', 'linear-inequalities',
+  'equivalent-expressions', 'nonlinear-equations', 'nonlinear-functions', 'systems-nonlinear',
+  'ratios-rates-units', 'percentages', 'one-variable-data', 'two-variable-data', 'probability', 'sampling-margin-error', 'statistical-claims',
+  'area-volume', 'lines-angles-triangles', 'right-triangle-trig', 'circles',
+])
+const mathDomains = new Set(['algebra', 'advanced-math', 'problem-solving-data', 'geometry-trigonometry'])
 
 const words = (value = '') => value.trim().split(/\s+/).filter(Boolean).length
 
@@ -248,6 +257,16 @@ const BLANK = /_{2,}/
 /** Skills whose official form is a passage with a blank the choices fill. */
 const blankSkills = new Set(['boundaries', 'form-structure-sense', 'transitions', 'words-in-context', 'inferences'])
 
+// These phrases describe how to solve an item rather than belonging to the
+// item itself. They entered the bank when density padding was mistaken for
+// context, so keep a hard stop here as well as removing the old padding.
+const stimulusMetaLeak = /the (?:sentence|question) is part of|the punctuation decision depends on|the surrounding information clarifies|readers can test the choice|the clause relationship remains clear|recheck the exact claim/i
+
+export function generatedStimulusFault(raw) {
+  const text = `${raw?.stimulus || ''} ${raw?.secondaryStimulus || ''}`
+  return stimulusMetaLeak.test(text) ? 'the passage contains instructional commentary rather than source-like context' : null
+}
+
 /**
  * A blank item has to still read correctly once a choice is dropped into it.
  * The generator's characteristic failure is leaving the word in the passage AND
@@ -296,6 +315,7 @@ export function validationFault(raw, blueprint) {
   if (raw.table && (!Array.isArray(raw.table.headers) || !Array.isArray(raw.table.rows) || raw.table.rows.some((row) => row.length !== raw.table.headers.length))) {
     return 'the table rows do not line up with its headers'
   }
+  if (generatedStimulusFault(raw)) return generatedStimulusFault(raw)
   return blankConventionFault(raw)
 }
 
@@ -363,7 +383,132 @@ export function applyGenerationReviews(questions, reviews) {
   })
 }
 
+const mathAnswer = /^-?(?:\d+(?:\.\d+)?|\.\d+)(?:\/\d+(?:\.\d+)?)?$/
+
+function mathAnswersMatch(left, right) {
+  const a = String(left ?? '').replace(/\s+/g, '')
+  const b = String(right ?? '').replace(/\s+/g, '')
+  if (a === b) return true
+  const value = (text) => {
+    if (!mathAnswer.test(text)) return Number.NaN
+    if (!text.includes('/')) return Number(text)
+    const [numerator, denominator] = text.split('/').map(Number)
+    return denominator ? numerator / denominator : Number.NaN
+  }
+  const av = value(a); const bv = value(b)
+  return Number.isFinite(av) && Number.isFinite(bv) && Math.abs(av - bv) < 1e-9
+}
+
+export function mathValidationFault(raw, blueprint) {
+  if (!raw || raw.section !== 'math' || !mathSkills.has(raw.skillId) || !mathDomains.has(raw.domain)) return 'not a recognised Math skill or domain'
+  if (raw.skillId !== blueprint.skillId || raw.domain !== blueprint.domain || raw.difficulty !== blueprint.difficulty) return `does not match the requested Math blueprint (wanted ${blueprint.skillId} at difficulty ${blueprint.difficulty})`
+  if (blueprint.format && raw.format !== blueprint.format) return `returned ${raw.format} but the form slot requires ${blueprint.format}`
+  if (!['multiple-choice', 'student-produced'].includes(raw.format)) return 'format must be multiple-choice or student-produced'
+  if (String(raw.prompt || '').trim().length < 12) return 'the prompt is missing or too short'
+  if (String(raw.explanation || '').trim().length < 35) return 'the explanation is missing or too short'
+  if (!mathAnswer.test(String(raw.answer || '').replace(/\s+/g, '')) && raw.format === 'student-produced') return 'student-produced answer is not a plain number, decimal, or fraction'
+  if (raw.format === 'multiple-choice') {
+    if (!Array.isArray(raw.choices) || raw.choices.length !== 4) return 'multiple-choice Math must have exactly four choices'
+    const ids = raw.choices.map((choice) => choice?.id)
+    const texts = raw.choices.map((choice) => String(choice?.text || '').trim())
+    if (new Set(ids).size !== 4 || !['A', 'B', 'C', 'D'].every((id) => ids.includes(id))) return 'choice ids are not exactly A, B, C, D'
+    if (new Set(texts.map((text) => text.toLowerCase())).size !== 4 || texts.some((text) => text.length < 1)) return 'Math choices are duplicated or empty'
+    if (!ids.includes(raw.answer)) return 'the answer does not name one of the Math choices'
+  } else if (raw.choices?.length) return 'student-produced Math must not include multiple-choice options'
+  if (raw.table && (!Array.isArray(raw.table.headers) || !Array.isArray(raw.table.rows) || raw.table.rows.some((row) => row.length !== raw.table.headers.length))) return 'the Math table rows do not line up with their headers'
+  return null
+}
+
+export function validateGeneratedMathQuestion(raw, blueprint) {
+  if (mathValidationFault(raw, blueprint)) return null
+  const whyWrong = {}
+  const misconceptionByChoice = {}
+  for (const choice of raw.choices || []) {
+    if (choice.id === raw.answer) continue
+    const reason = plainProse(raw.misconceptionByChoice?.[choice.id] || raw.whyWrong?.[choice.id]) || 'This result comes from a different operation or does not satisfy the stated conditions.'
+    whyWrong[choice.id] = reason
+    misconceptionByChoice[choice.id] = reason
+  }
+  return {
+    id: `ai-math-${randomUUID()}`,
+    section: 'math',
+    domain: raw.domain,
+    skillId: raw.skillId,
+    difficulty: raw.difficulty,
+    format: raw.format,
+    ...(raw.stimulus ? { stimulus: plainProse(raw.stimulus) } : {}),
+    ...(raw.table ? { table: raw.table } : {}),
+    ...(raw.plot ? { plot: raw.plot } : {}),
+    prompt: plainProse(raw.prompt),
+    ...(raw.choices ? { choices: raw.choices.map((choice) => ({ id: choice.id, text: plainProse(choice.text) })) } : {}),
+    answer: String(raw.answer).replace(/\s+/g, ''),
+    ...(raw.acceptedAnswers ? { acceptedAnswers: raw.acceptedAnswers.map((answer) => String(answer).replace(/\s+/g, '')) } : {}),
+    explanation: plainProse(raw.explanation),
+    concept: plainProse(raw.concept) || 'Translate the representation, solve carefully, and check the result in the original conditions.',
+    whyWrong,
+    misconceptionByChoice,
+    estimatedSeconds: Math.max(45, Math.min(150, Math.round(Number(raw.estimatedSeconds) || 95))),
+    source: 'ai-generated',
+    createdAt: new Date().toISOString(),
+    validationStatus: 'accepted',
+  }
+}
+
+export function queueAdaptiveMathQuestionGeneration(blueprint) {
+  const cleanBlueprint = blueprint.filter((item) => item?.section === 'math' && mathSkills.has(item.skillId) && mathDomains.has(item.domain)).slice(0, 10)
+  if (!cleanBlueprint.length) return Promise.reject(new Error('No valid Math question blueprint was supplied.'))
+  return enqueue(`preparing ${cleanBlueprint.length} fresh Math question${cleanBlueprint.length === 1 ? '' : 's'}`, async () => {
+    const evidence = await getEvidence()
+    const recentMath = evidence.attempts.filter((attempt) => attempt.section === 'math').slice(-60).map((attempt) => ({ skillId: attempt.skillId, difficulty: attempt.difficulty, correct: attempt.correct, priorPrompt: attempt.questionSnapshot?.prompt, priorStimulus: attempt.questionSnapshot?.stimulus?.slice(0, 140) }))
+    const blueprintWithContract = cleanBlueprint.map((entry) => ({ ...entry, context: 'Use a self-contained SAT-style setting when useful; vary equation, table, graph, geometry, function, data, and real-world representations across the batch.' }))
+    const prompt = `Create exactly ${cleanBlueprint.length} original digital SAT Math questions in the order of the blueprint.
+
+PRIMARY CALIBRATION: the supplied SAT Mocks and official SAT structure. Each Math module contains a broad mix of Algebra, Advanced Math, Problem-Solving and Data Analysis, and Geometry and Trigonometry; each module has both multiple-choice and student-produced response items; roughly 30 percent of the section uses a science, social-science, or real-world context; and items move from easier to harder while varying the representation and task. Do not make a fixed worksheet of the same pattern with new numbers.
+
+FORM BLUEPRINT
+${JSON.stringify(blueprintWithContract, null, 2)}
+
+CURRENT MATH EVIDENCE (avoid repeating these exact situations and representations)
+${JSON.stringify(recentMath, null, 2)}
+
+CURRENT LEARNER MODEL
+${JSON.stringify(evidence.learnerModel, null, 2)}
+
+QUALITY CONTRACT
+- Every question must be solvable from the text and any included table or plot. Do not require an unprovided diagram or outside fact.
+- Match the exact skill, domain, difficulty, and format in the blueprint. Student-produced response answers must be a plain integer, decimal, or fraction.
+- For multiple-choice items, use exactly four plausible choices and exactly one correct answer. Each distractor must come from a distinct, realistic error such as sign reversal, wrong quantity, wrong scale, or an invalid inference.
+- Use clean mathematical notation in plain text. Include units where the question needs them, and do not accidentally change units mid-solution.
+- Vary the surface form: equations, functions, tables, scatterplots, geometry descriptions, proportional situations, probability, and study designs should not all look alike. Context is useful only when it contributes to the mathematical task.
+- Solve each item independently after writing it. The explanation must show enough arithmetic or algebra for an adversarial reviewer to reproduce the answer.
+- Do not mention SATLAS, Gemini, the learner, this prompt, or the generation process inside a question.
+
+Return only the structured questions.`
+    const generated = await runStructured({ prompt, schema: 'generated-math-set.json', model: generationModel, effort: 'high', timeout: '3m' })
+    const candidates = cleanBlueprint.map((entry, index) => ({ entry, question: validateGeneratedMathQuestion(generated.questions?.[index], entry) })).filter((item) => item.question)
+    if (!candidates.length) throw new Error('No Math question in this batch passed the structural fidelity checks.')
+    const reviewPrompt = `Act as an adversarial digital SAT Math reviewer. Independently solve every candidate below without trusting its answer key. Check the exact requested skill, arithmetic, units, table or graph interpretation, format, difficulty, and whether exactly one choice is defensible. Reject any item with an arithmetic error, an ambiguous answer, a missing condition, a decorative display, an unprovided diagram, or a distractor that is not plausible.
+
+BLUEPRINT
+${JSON.stringify(cleanBlueprint, null, 2)}
+
+CANDIDATES WITHOUT ANSWER KEYS
+${JSON.stringify(candidates.map((item, index) => ({ index, section: item.question.section, domain: item.question.domain, skillId: item.question.skillId, difficulty: item.question.difficulty, format: item.question.format, stimulus: item.question.stimulus, table: item.question.table, plot: item.question.plot, prompt: item.question.prompt, choices: item.question.choices })), null, 2)}
+
+For multiple-choice items, solvedAnswer must be A, B, C, or D. For student-produced items, solvedAnswer must be the independently calculated numeric answer. Return one review for every candidate index.`
+    const reviewed = await runStructured({ prompt: reviewPrompt, schema: 'generated-math-review.json', model: observerModel, effort: 'high', timeout: '3m' })
+    const survivors = candidates.filter((item, index) => {
+      const review = (reviewed.reviews || []).find((candidate) => candidate.index === index)
+      return review?.verdict === 'accept' && review.uniqueAnswer === true && mathAnswersMatch(review.solvedAnswer, item.question.answer)
+    }).map((item) => ({ ...item.question, generation: { model: generationModel, promptVersion: `${promptVersion}-math`, blueprint: item.entry, reviewerModel: observerModel, reviewerVerdict: 'Accepted after independent Math solve.', reviewedAt: new Date().toISOString() } }))
+    if (!survivors.length) throw new Error('The independent Math answer-key review rejected every question in this batch.')
+    await saveGeneratedQuestions(survivors)
+    return survivors
+  })
+}
+
 export function queueAdaptiveQuestionGeneration(blueprint) {
+  if (blueprint.some((item) => item?.section === 'math')) return queueAdaptiveMathQuestionGeneration(blueprint)
   const cleanBlueprint = blueprint.filter((item) => item?.section === 'rw' && readingSkills.has(item.skillId)).slice(0, 12)
   if (!cleanBlueprint.length) return Promise.reject(new Error('No valid Reading and Writing question blueprint was supplied.'))
   return enqueue(`preparing ${cleanBlueprint.length} fresh question${cleanBlueprint.length === 1 ? '' : 's'}`, async () => {
@@ -729,21 +874,31 @@ export function computeGoalFacts(settings, skillStates, sessions) {
     return selected.reduce((sum, state) => sum + state.theta * Math.sqrt(state.attempts), 0) / totalWeight
   }
   const scoreFromTheta = (theta) => Math.max(200, Math.min(800, Math.round((200 + 600 / (1 + Math.exp(-1.12 * theta))) / 10) * 10))
-  const rw = scoreFromTheta(sectionTheta(readingSkills))
-  const math = scoreFromTheta(sectionTheta(mathSkillIds))
-  const currentEstimate = { rw, math, total: rw + math }
+  const liveRw = scoreFromTheta(sectionTheta(readingSkills))
+  const liveMath = scoreFromTheta(sectionTheta(mathSkillIds))
 
   const mockHistory = sessions
     .filter((session) => session.type === 'mock' && session.completedAt && typeof session.estimatedScore === 'number')
     .sort((a, b) => a.completedAt.localeCompare(b.completedAt))
     .map((session) => ({ date: session.completedAt, total: session.estimatedScore, rw: session.rwScore, math: session.mathScore }))
 
+  const latestMock = mockHistory.at(-1)
+  const mockWeight = mockHistory.length ? Math.min(0.42, 0.2 + Math.max(0, mockHistory.length - 1) * 0.08) : 0
+  const nearestTen = (value) => Math.round(value / 10) * 10
+  const blendWithCheckpoint = (live, checkpoint) => checkpoint === undefined ? live : nearestTen(live * (1 - mockWeight) + checkpoint * mockWeight)
+  const rw = blendWithCheckpoint(liveRw, latestMock?.rw)
+  const math = blendWithCheckpoint(liveMath, latestMock?.math)
+  const currentEstimate = { rw, math, total: rw + math }
+
   let weeklyTrend = null
   if (mockHistory.length >= 2) {
-    const first = mockHistory[0]
-    const last = mockHistory[mockHistory.length - 1]
-    const weeks = Math.max(1 / 7, (new Date(last.date).getTime() - new Date(first.date).getTime()) / (7 * 24 * 60 * 60 * 1000))
-    weeklyTrend = Math.round((last.total - first.total) / weeks)
+    const firstDate = new Date(mockHistory[0].date).getTime()
+    const points = mockHistory.map((point) => ({ x: (new Date(point.date).getTime() - firstDate) / (24 * 60 * 60 * 1000), y: point.total }))
+    const meanX = points.reduce((sum, point) => sum + point.x, 0) / points.length
+    const meanY = points.reduce((sum, point) => sum + point.y, 0) / points.length
+    const denominator = points.reduce((sum, point) => sum + (point.x - meanX) ** 2, 0)
+    const slopePerDay = denominator ? points.reduce((sum, point) => sum + (point.x - meanX) * (point.y - meanY), 0) / denominator : 0
+    weeklyTrend = Math.round(slopePerDay * 7)
   }
 
   const daysRemaining = settings.testDate ? Math.ceil((new Date(settings.testDate).getTime() - Date.now()) / (24 * 60 * 60 * 1000)) : null
@@ -918,6 +1073,70 @@ export function queueSessionReport(session) {
   }).finally(() => queuedReportIds.delete(session.id))
 }
 
+export function normalizeMockAssessment(raw, sessionId, model = sessionModel) {
+  const clamp = (value, minimum, maximum, fallback) => {
+    const numeric = Number.isFinite(Number(value)) ? Number(value) : fallback
+    return Math.max(minimum, Math.min(maximum, Math.round(numeric / 10) * 10))
+  }
+  const expectedRwScore = clamp(raw?.expectedRwScore, 200, 800, 500)
+  const expectedMathScore = clamp(raw?.expectedMathScore, 200, 800, 500)
+  return {
+    sessionId,
+    difficulty: Math.max(1, Math.min(5, Math.round(Number(raw?.difficulty) || 3))),
+    expectedScore: expectedRwScore + expectedMathScore,
+    expectedRwScore,
+    expectedMathScore,
+    confidence: ['tentative', 'moderate', 'strong'].includes(raw?.confidence) ? raw.confidence : 'tentative',
+    rationale: String(raw?.rationale || 'The estimate is based on the available prior answer history and remains provisional until more full mocks are completed.').trim(),
+    model,
+    createdAt: new Date().toISOString(),
+  }
+}
+
+export function queueMockAssessment(session) {
+  if (queuedMockAssessmentIds.has(session.id)) return Promise.resolve(null)
+  queuedMockAssessmentIds.add(session.id)
+  return enqueue(`mock assessment ${session.id}`, async () => {
+    const evidence = await getEvidence()
+    if (evidence.mockAssessments.some((item) => item.sessionId === session.id)) return null
+    const priorAttempts = evidence.attempts
+      .filter((item) => item.sessionId !== session.id)
+      .slice(-160)
+      .map((item) => ({ section: item.section, skillId: item.skillId, difficulty: item.difficulty, correct: item.correct, elapsedSeconds: Math.round(item.elapsedMs / 1000) }))
+    const priorSessions = evidence.sessions
+      .filter((item) => item.id !== session.id && item.completedAt)
+      .slice(-12)
+      .map((item) => ({ type: item.type, completedAt: item.completedAt, total: item.total, correct: item.correct, estimatedScore: item.estimatedScore, rwScore: item.rwScore, mathScore: item.mathScore }))
+    const priorAssessments = evidence.mockAssessments.slice(-8).map((item) => ({ difficulty: item.difficulty, expectedScore: item.expectedScore, expectedRwScore: item.expectedRwScore, expectedMathScore: item.expectedMathScore, confidence: item.confidence }))
+    const currentComposition = {
+      questionCount: session.questionIds.length,
+      pretestQuestions: session.pretestQuestionIds?.length ?? 0,
+      questionDifficulties: session.questionDifficulties,
+      questionSources: session.questionSources,
+      route: session.route,
+    }
+    const prompt = `Assess one completed SATLAS full mock. Return a compact, honest difficulty rating and a pre-mock expected score.
+
+The expected score must be a counterfactual estimate based on the learner's evidence BEFORE this mock, not a restatement of the score they just earned. Use prior full mocks, prior practice answers, section-level performance, and the prior mock assessments when available. If history is thin, lower confidence and say so in the rationale. Do not pretend this is an official College Board score.
+
+The difficulty rating describes the form the learner received, from 1 (mostly accessible) to 5 (very demanding), using the question difficulty distribution, adaptive routes, and whether the form contains a meaningful hard tail. Do not infer form difficulty from the learner's score alone.
+
+The SAT has two unscored pretest questions in each module. They are included in the form metadata below and must not affect the expected or actual score comparison. Keep the section estimates internally consistent: expectedScore must equal expectedRwScore plus expectedMathScore.
+
+PRIOR LEARNER EVIDENCE (use this for the expected score)
+${JSON.stringify({ priorSessions, priorAssessments, priorAttempts, learnerModel: evidence.learnerModel, skillStates: evidence.skillStates }, null, 2)}
+
+CURRENT MOCK FORM COMPOSITION (use this for difficulty, not expected performance)
+${JSON.stringify(currentComposition, null, 2)}
+
+Return only the requested structured assessment. Write the rationale directly to the learner in plain language, naming the evidence pattern and the main uncertainty. Avoid raw IDs, timestamps, and database language.`
+    const result = await runStructured({ prompt, schema: 'mock-assessment.json', model: sessionModel, effort: 'high', timeout: '3m' })
+    const assessment = normalizeMockAssessment(result, session.id, sessionModel)
+    await saveMockAssessment(assessment)
+    return assessment
+  }).finally(() => queuedMockAssessmentIds.delete(session.id))
+}
+
 export function queueComprehensiveReport() {
   const id = `comprehensive-${new Date().toISOString().replace(/[:.]/g, '-')}`
   return enqueue('complete learning report', async () => {
@@ -937,5 +1156,14 @@ export async function recoverPendingReports(limit = Number.POSITIVE_INFINITY) {
     if (!await hasReport(session.id)) pending.push(session)
   }
   for (const session of pending) queueSessionReport(session).catch(() => undefined)
+  return pending.length
+}
+
+export async function recoverPendingMockAssessments(limit = Number.POSITIVE_INFINITY) {
+  if (!existsSync(agyBinary)) return 0
+  const evidence = await getEvidence()
+  const completed = evidence.sessions.filter((item) => item.type === 'mock' && item.completedAt).slice(-limit)
+  const pending = completed.filter((session) => !evidence.mockAssessments.some((item) => item.sessionId === session.id))
+  for (const session of pending) queueMockAssessment(session).catch(() => undefined)
   return pending.length
 }

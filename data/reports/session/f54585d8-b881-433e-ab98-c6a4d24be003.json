@@ -1,0 +1,549 @@
+{
+  "id": "f54585d8-b881-433e-ab98-c6a4d24be003",
+  "type": "session",
+  "title": "SAT Math Adaptive Calibration Learning Report & Learner Model Update (Session f54585d8-b881-433e-ab98-c6a4d24be003)",
+  "period": "2026-08-06T21:20:00.060Z to 2026-08-06T21:25:35.734Z",
+  "createdAt": "2026-08-06T21:26:20.876Z",
+  "executiveSummary": "During the period 2026-08-06T21:20:00.060Z to 2026-08-06T21:25:35.734Z (Session f54585d8-b881-433e-ab98-c6a4d24be003), the learner completed a 15-item adaptive Math calibration set at Difficulty Level 2. The learner demonstrated high procedural accuracy (14/15 correct, 93.3%) and rapid pacing, spending an average of 19 seconds per item compared to an estimated target time of 111 seconds (82.9% under target time).\n\nThe single error occurred on item 66d07f42-e51d-485a-bd12-b3f774b26820 (skill: statistical-claims), where the learner expressed 'certain' confidence but incorrectly selected choice D, claiming 'no treatment was imposed' in a study where subjects were randomly assigned to desk types. This indicates a conceptual gap regarding the definition and scope of controlled experiments versus observational studies. Across the 10 items with explicit confidence ratings (9 'certain', 1 'medium'), 9 were correct, highlighting high self-trust that is well-calibrated computationally but susceptible to overconfidence on study design terminology. All skills evaluated in this single session are maintained as tentative mastery assessments pending multi-item and multi-session verification.",
+  "model": "gemini-3.6-flash-high",
+  "sectionBreakdown": [
+    {
+      "section": "Math",
+      "accuracySummary": "14/15 correct (93%)",
+      "pacingSummary": "19s average against a 111s authored target",
+      "findings": [
+        {
+          "claim": "High procedural mastery across line equations, systems, quadratics, percentages, data measures, and probability.",
+          "confidence": "strong",
+          "evidenceIds": [
+            "6de0b134-69b1-4539-8c4b-1edf6224c9df",
+            "4660ca0e-72d6-46f7-8900-c2e4ab25cbf5",
+            "a48a79be-f0e4-4f85-822e-2e4009cb444a",
+            "c6ea2930-975a-4a05-a88d-7dfd3e18ac2a",
+            "04c8867f-c3ad-446a-af2d-7ad363c1be29",
+            "b6dbcc81-b105-4669-a2e4-f7330e135c69",
+            "dc88fcfc-3f1c-433f-a60a-18c3afbfe9f8",
+            "5e69591f-ad05-4520-b7d9-ed2d0cb47f93",
+            "5d56696d-1ce2-450d-aa6e-6ea919bb8b36",
+            "19c0f33e-dfe6-45ec-8789-3ca5eb6fa1e4",
+            "e8f2aec6-09f4-4425-ab79-2389feece769",
+            "a981d839-4e3e-4652-af7e-0ee75864da1a",
+            "cf51d623-f02b-46cb-bfd1-ac9999d7d42c",
+            "a0ebe31d-173d-4974-9104-2b85d85541c1"
+          ]
+        },
+        {
+          "claim": "Single error on statistical claims involving interpretation of experimental design versus observational study boundaries.",
+          "confidence": "strong",
+          "evidenceIds": [
+            "66d07f42-e51d-485a-bd12-b3f774b26820"
+          ]
+        }
+      ],
+      "recommendedFocus": "Remediate statistical study design principles and escalate Math skills to Difficulty Level 3."
+    }
+  ],
+  "skillBreakdown": [
+    {
+      "skillId": "linear-equations-two-variables",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 35,
+      "diagnosis": "Calculated line slope from two points accurately.",
+      "nextDifficulty": 3,
+      "action": "Escalate to Level 3 items involving multi-step line equations and graph interpretations.",
+      "evidenceIds": [
+        "6de0b134-69b1-4539-8c4b-1edf6224c9df"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "linear-functions",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 10,
+      "diagnosis": "Rapid substitution and evaluation of linear function value.",
+      "nextDifficulty": 3,
+      "action": "Advance to Level 3 function evaluation and contextual interpretation.",
+      "evidenceIds": [
+        "4660ca0e-72d6-46f7-8900-c2e4ab25cbf5"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "systems-linear-equations",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 46,
+      "diagnosis": "Accurate elimination method execution for linear systems.",
+      "nextDifficulty": 3,
+      "action": "Introduce Level 3 system word problems and parameter-based solution counts.",
+      "evidenceIds": [
+        "a48a79be-f0e4-4f85-822e-2e4009cb444a"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "linear-inequalities",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 18,
+      "diagnosis": "Correct isolation of inequality with sign reversal on negative division.",
+      "nextDifficulty": 3,
+      "action": "Test Level 3 compound inequalities and system of inequality graphs.",
+      "evidenceIds": [
+        "c6ea2930-975a-4a05-a88d-7dfd3e18ac2a"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "equivalent-expressions",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 7,
+      "diagnosis": "Instant identification of difference of squares factorization.",
+      "nextDifficulty": 3,
+      "action": "Advance to Level 3 polynomial division and complex rational exponent equivalence.",
+      "evidenceIds": [
+        "04c8867f-c3ad-446a-af2d-7ad363c1be29"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "nonlinear-equations",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 25,
+      "diagnosis": "Factored quadratic to find sum of solutions accurately.",
+      "nextDifficulty": 3,
+      "action": "Escalate to Level 3 quadratics requiring quadratic formula, discriminant, or radical/rational equations.",
+      "evidenceIds": [
+        "b6dbcc81-b105-4669-a2e4-f7330e135c69"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "nonlinear-functions",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 22,
+      "diagnosis": "Extracted vertex coordinates directly from vertex form.",
+      "nextDifficulty": 3,
+      "action": "Test Level 3 vertex conversions and transformations of exponential/quadratic functions.",
+      "evidenceIds": [
+        "dc88fcfc-3f1c-433f-a60a-18c3afbfe9f8"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "systems-nonlinear",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 37,
+      "diagnosis": "Substituted line into parabola and found sum of roots correctly.",
+      "nextDifficulty": 3,
+      "action": "Introduce Level 3 circle-line or higher-degree curve intersections.",
+      "evidenceIds": [
+        "5e69591f-ad05-4520-b7d9-ed2d0cb47f93"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "ratios-rates-units",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 10,
+      "diagnosis": "Direct unit rate division executed rapidly.",
+      "nextDifficulty": 3,
+      "action": "Advance to Level 3 multi-step unit conversions and compound rates.",
+      "evidenceIds": [
+        "5d56696d-1ce2-450d-aa6e-6ea919bb8b36"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "percentages",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 15,
+      "diagnosis": "Applied percent increase formula cleanly.",
+      "nextDifficulty": 3,
+      "action": "Introduce Level 3 multi-year compound interest and successive percent changes.",
+      "evidenceIds": [
+        "19c0f33e-dfe6-45ec-8789-3ca5eb6fa1e4"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "one-variable-data",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 10,
+      "diagnosis": "Calculated dataset range (max minus min) and scatterplot residual (observed minus predicted) cleanly.",
+      "nextDifficulty": 3,
+      "action": "Escalate to Level 3 data set analysis (mean/median shifts, standard deviation, and scatterplot models).",
+      "evidenceIds": [
+        "e8f2aec6-09f4-4425-ab79-2389feece769"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "two-variable-data",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 7,
+      "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+      "nextDifficulty": 2,
+      "action": "Collect another varied item before changing difficulty.",
+      "evidenceIds": [
+        "a981d839-4e3e-4652-af7e-0ee75864da1a"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "probability",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 14,
+      "diagnosis": "Calculated joint probability from event counts accurately.",
+      "nextDifficulty": 3,
+      "action": "Advance to Level 3 conditional probability tables and independent/dependent events.",
+      "evidenceIds": [
+        "cf51d623-f02b-46cb-bfd1-ac9999d7d42c"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "sampling-margin-error",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 19,
+      "diagnosis": "Identified relationship between sample size and margin of error correctly.",
+      "nextDifficulty": 3,
+      "action": "Introduce Level 3 population inference bounds and sample bias evaluation.",
+      "evidenceIds": [
+        "a0ebe31d-173d-4974-9104-2b85d85541c1"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "statistical-claims",
+      "correct": 0,
+      "total": 1,
+      "averageSeconds": 16,
+      "diagnosis": "Misidentified randomized experiment as observational ('no treatment imposed').",
+      "nextDifficulty": 2,
+      "action": "Remediate experimental vs. observational study distinction before re-testing at Level 2/3.",
+      "evidenceIds": [
+        "66d07f42-e51d-485a-bd12-b3f774b26820"
+      ],
+      "confidence": "strong"
+    }
+  ],
+  "errorTaxonomy": [
+    {
+      "count": 1,
+      "evidenceIds": [
+        "66d07f42-e51d-485a-bd12-b3f774b26820"
+      ],
+      "label": "Study Design Concept Gap",
+      "mechanism": "Failed to recognize that random assignment of volunteers to standing vs. seated desks constitutes an experimental treatment, incorrectly concluding 'no treatment was imposed' and that only association could be inferred."
+    }
+  ],
+  "studyPriorities": [
+    {
+      "action": "Review distinction between randomized experiments (allows causal claims for studied sample) and observational studies (shows association only).",
+      "evidenceIds": [
+        "66d07f42-e51d-485a-bd12-b3f774b26820"
+      ],
+      "reason": "Sole error in session occurred here despite expressing 'certain' confidence.",
+      "skillId": "statistical-claims"
+    },
+    {
+      "action": "Practice Level 3 multi-step nonlinear system intersections and coordinate sum/product interpretations.",
+      "evidenceIds": [
+        "5e69591f-ad05-4520-b7d9-ed2d0cb47f93"
+      ],
+      "reason": "Required 37s; prime candidate for Level 3 escalation.",
+      "skillId": "systems-nonlinear"
+    },
+    {
+      "action": "Escalate to Level 3 linear systems involving word problem setups and parameter conditions.",
+      "evidenceIds": [
+        "a48a79be-f0e4-4f85-822e-2e4009cb444a"
+      ],
+      "reason": "Required 46s; solid execution ready for Level 3 challenge.",
+      "skillId": "systems-linear-equations"
+    },
+    {
+      "action": "Escalate to Level 3 line equations with slope-intercept interpretations in context.",
+      "evidenceIds": [
+        "6de0b134-69b1-4539-8c4b-1edf6224c9df"
+      ],
+      "reason": "Required 35s; target Level 3 difficulty.",
+      "skillId": "linear-equations-two-variables"
+    }
+  ],
+  "sevenDayPlan": [
+    {
+      "day": "Day 1",
+      "minutes": 25,
+      "successCheck": "Score 100% on a 5-item quiz distinguishing random assignment (experiments) vs. random sampling (observational studies).",
+      "work": "Study Design Remediation: Review experimental design principles, random assignment, causal claims, and observational study bounds."
+    },
+    {
+      "day": "Day 2",
+      "minutes": 30,
+      "successCheck": "Complete 10 Level 3 items with ≥80% accuracy.",
+      "work": "Algebra Level 3 Escalation: Practice complex linear systems, multi-step inequalities, and two-variable linear equations."
+    },
+    {
+      "day": "Day 3",
+      "minutes": 30,
+      "successCheck": "Complete 10 Level 3 items maintaining average pace under 45 seconds per item.",
+      "work": "Advanced Math Level 3 Escalation: Nonlinear systems, quadratic factoring/vertex transformations, and rational expressions."
+    },
+    {
+      "day": "Day 4",
+      "minutes": 25,
+      "successCheck": "Complete 8 Level 3 items with ≥85% accuracy.",
+      "work": "Problem Solving & Data Analysis Escalation: Multi-step percentages, conditional probability, and scatterplot residuals."
+    },
+    {
+      "day": "Day 5",
+      "minutes": 25,
+      "successCheck": "Correctly classify 4 study design scenarios with explicit confidence calibration.",
+      "work": "Spaced Recall & Verification: Re-test statistical-claims items alongside previous Reading & Writing boundary items."
+    },
+    {
+      "day": "Day 6",
+      "minutes": 40,
+      "successCheck": "Maintain average pace under 60 seconds per item with ≥85% accuracy.",
+      "work": "Timed Mixed Section Practice: 15 Level 3 Math items and 10 Level 3 RW items."
+    },
+    {
+      "day": "Day 7",
+      "minutes": 20,
+      "successCheck": "Update learner model with verified Level 3 thresholds.",
+      "work": "Session Review & Progress Calibration: Analyze error taxonomy and calibrate confidence accuracy."
+    }
+  ],
+  "recommendedMix": "60% Math Level 3 escalation (Algebra, Advanced Math, Problem-Solving), 20% Statistical Study Design remediation (Level 2/3), 20% Reading & Writing Level 3 calibration.",
+  "limitations": [
+    "Each skill in this session was sampled via 1 item (except 1-var and 2-var data combined into 2 items), precluding firm conclusions regarding retention, transfer, or full skill mastery.",
+    "No Reading and Writing items were administered during this period; RW observations remain unchanged from prior sessions.",
+    "Confidence ratings were omitted on 5 items, limiting explicit calibration analysis to 10 items."
+  ],
+  "confidenceCalibration": [
+    {
+      "claim": "Confidence ratings were explicitly provided for 10 attempts (9 'certain', 1 'medium') and omitted for 5 attempts. Overconfidence was observed on item 66d07f42-e51d-485a-bd12-b3f774b26820, where the learner marked 'certain' on an incorrect statistical claims choice.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "66d07f42-e51d-485a-bd12-b3f774b26820",
+        "c6ea2930-975a-4a05-a88d-7dfd3e18ac2a",
+        "6de0b134-69b1-4539-8c4b-1edf6224c9df",
+        "4660ca0e-72d6-46f7-8900-c2e4ab25cbf5",
+        "b6dbcc81-b105-4669-a2e4-f7330e135c69",
+        "dc88fcfc-3f1c-433f-a60a-18c3afbfe9f8",
+        "5d56696d-1ce2-450d-aa6e-6ea919bb8b36",
+        "19c0f33e-dfe6-45ec-8789-3ca5eb6fa1e4",
+        "cf51d623-f02b-46cb-bfd1-ac9999d7d42c",
+        "a0ebe31d-173d-4974-9104-2b85d85541c1"
+      ]
+    },
+    {
+      "claim": "Per strict evaluation rules, the 5 omitted confidence ratings are treated as unrated; no default ratings were inferred or added to calibration totals.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "a48a79be-f0e4-4f85-822e-2e4009cb444a",
+        "04c8867f-c3ad-446a-af2d-7ad363c1be29",
+        "5e69591f-ad05-4520-b7d9-ed2d0cb47f93",
+        "e8f2aec6-09f4-4425-ab79-2389feece769",
+        "a981d839-4e3e-4652-af7e-0ee75864da1a"
+      ]
+    }
+  ],
+  "learnerModel": {
+    "coachingStyle": "Validate rapid math execution, address study design conceptual nuances, and escalate all demonstrated Math skills to Level 3 items.",
+    "hypotheses": [
+      {
+        "claim": "Learner operates with rapid computational intuition on standard math items, but risks misreading stimulus details on statistical methodology questions.",
+        "confidence": "moderate",
+        "evidenceIds": [
+          "66d07f42-e51d-485a-bd12-b3f774b26820"
+        ]
+      }
+    ],
+    "nextSession": "Administer a 15-item Level 3 adaptive Math set with targeted study design verification items.",
+    "priorities": [
+      {
+        "claim": "Remediate study design concepts (random assignment vs. random sampling, causal inference vs. association).",
+        "confidence": "strong",
+        "evidenceIds": [
+          "66d07f42-e51d-485a-bd12-b3f774b26820"
+        ]
+      },
+      {
+        "claim": "Escalate all demonstrated Level 2 Math skills to Level 3 to establish upper accuracy bounds.",
+        "confidence": "strong",
+        "evidenceIds": [
+          "f54585d8-b881-433e-ab98-c6a4d24be003"
+        ]
+      }
+    ],
+    "skillDirectives": [
+      {
+        "evidenceIds": [
+          "66d07f42-e51d-485a-bd12-b3f774b26820"
+        ],
+        "priority": 0.95,
+        "reason": "High-confidence error on experimental study design; needs remediation and Level 2/3 re-testing.",
+        "skillId": "statistical-claims",
+        "targetDifficulty": 2
+      },
+      {
+        "evidenceIds": [
+          "5e69591f-ad05-4520-b7d9-ed2d0cb47f93"
+        ],
+        "priority": 0.85,
+        "reason": "Successful resolution in 37s; advance to Level 3 multi-curve intersections.",
+        "skillId": "systems-nonlinear",
+        "targetDifficulty": 3
+      },
+      {
+        "evidenceIds": [
+          "a48a79be-f0e4-4f85-822e-2e4009cb444a"
+        ],
+        "priority": 0.8,
+        "reason": "Correct elimination execution (46s); escalate to Level 3 contextual linear systems.",
+        "skillId": "systems-linear-equations",
+        "targetDifficulty": 3
+      },
+      {
+        "evidenceIds": [
+          "6de0b134-69b1-4539-8c4b-1edf6224c9df"
+        ],
+        "priority": 0.75,
+        "reason": "Correct slope calculation (35s); escalate to Level 3 line interpretation.",
+        "skillId": "linear-equations-two-variables",
+        "targetDifficulty": 3
+      },
+      {
+        "evidenceIds": [
+          "b6dbcc81-b105-4669-a2e4-f7330e135c69"
+        ],
+        "priority": 0.7,
+        "reason": "Factored quadratic efficiently (25s); test Level 3 complex quadratics.",
+        "skillId": "nonlinear-equations",
+        "targetDifficulty": 3
+      }
+    ],
+    "strengths": [
+      {
+        "claim": "High accuracy (14/15, 93.3%) and rapid pacing (19s avg) across Level 2 Math items.",
+        "confidence": "strong",
+        "evidenceIds": [
+          "f54585d8-b881-433e-ab98-c6a4d24be003"
+        ]
+      }
+    ],
+    "summary": "The learner achieved 93.3% accuracy (14/15) across 15 Math skills at Difficulty Level 2, averaging 19 seconds per item. A single overconfident error on statistical-claims highlighted a concept gap in identifying experimental treatments. All Level 2 math skills are ready for Level 3 escalation."
+  },
+  "misconceptionPatterns": [
+    {
+      "claim": "Assuming a study cannot establish causation due to 'no treatment imposed' despite explicit random assignment of subjects to distinct treatment conditions.",
+      "confidence": "moderate",
+      "evidenceIds": [
+        "66d07f42-e51d-485a-bd12-b3f774b26820"
+      ]
+    }
+  ],
+  "pacingAndDecisions": [
+    {
+      "claim": "Learner exhibits extremely rapid pacing across all Math domains, averaging 19s per item against a 111s target allocation.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "f54585d8-b881-433e-ab98-c6a4d24be003"
+      ]
+    },
+    {
+      "claim": "Rapid execution on item 66d07f42-e51d-485a-bd12-b3f774b26820 (16s) may have led to skimming the stimulus and missing the phrase 'randomly assign volunteers'.",
+      "confidence": "moderate",
+      "evidenceIds": [
+        "66d07f42-e51d-485a-bd12-b3f774b26820"
+      ]
+    }
+  ],
+  "strengths": [
+    {
+      "claim": "High operational velocity and accuracy across Algebra and Advanced Math core operations at Level 2 (e.g., equivalent expressions in 7s, linear functions in 10s, nonlinear functions in 22s).",
+      "confidence": "strong",
+      "evidenceIds": [
+        "04c8867f-c3ad-446a-af2d-7ad363c1be29",
+        "4660ca0e-72d6-46f7-8900-c2e4ab25cbf5",
+        "dc88fcfc-3f1c-433f-a60a-18c3afbfe9f8",
+        "b6dbcc81-b105-4669-a2e4-f7330e135c69"
+      ]
+    },
+    {
+      "claim": "Solid competence in Problem-Solving and Data Analysis calculations (ratios, percentages, 1-var and 2-var data, probability, sampling margin of error).",
+      "confidence": "strong",
+      "evidenceIds": [
+        "5d56696d-1ce2-450d-aa6e-6ea919bb8b36",
+        "19c0f33e-dfe6-45ec-8789-3ca5eb6fa1e4",
+        "e8f2aec6-09f4-4425-ab79-2389feece769",
+        "a981d839-4e3e-4652-af7e-0ee75864da1a",
+        "cf51d623-f02b-46cb-bfd1-ac9999d7d42c",
+        "a0ebe31d-173d-4974-9104-2b85d85541c1"
+      ]
+    }
+  ],
+  "transferAndRetention": [
+    {
+      "claim": "Demonstrated high performance on 14/15 Difficulty Level 2 Math skills within a single session. However, because each skill was evaluated on only one item, claims of skill mastery, transfer, or retention remain tentative.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "f54585d8-b881-433e-ab98-c6a4d24be003"
+      ]
+    }
+  ],
+  "weaknesses": [
+    {
+      "claim": "Misinterpreting study design characteristics by confusing experimental random assignment with non-experimental observational studies.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "66d07f42-e51d-485a-bd12-b3f774b26820"
+      ]
+    }
+  ],
+  "whatChanged": [
+    {
+      "claim": "Demonstrated high accuracy (14/15, 93.3%) across 15 distinct Math skills at Difficulty Level 2, completing questions in an average of 19 seconds (target 111s).",
+      "confidence": "strong",
+      "evidenceIds": [
+        "f54585d8-b881-433e-ab98-c6a4d24be003",
+        "6de0b134-69b1-4539-8c4b-1edf6224c9df",
+        "4660ca0e-72d6-46f7-8900-c2e4ab25cbf5",
+        "a48a79be-f0e4-4f85-822e-2e4009cb444a",
+        "c6ea2930-975a-4a05-a88d-7dfd3e18ac2a",
+        "04c8867f-c3ad-446a-af2d-7ad363c1be29",
+        "b6dbcc81-b105-4669-a2e4-f7330e135c69",
+        "dc88fcfc-3f1c-433f-a60a-18c3afbfe9f8",
+        "5e69591f-ad05-4520-b7d9-ed2d0cb47f93",
+        "5d56696d-1ce2-450d-aa6e-6ea919bb8b36",
+        "19c0f33e-dfe6-45ec-8789-3ca5eb6fa1e4",
+        "e8f2aec6-09f4-4425-ab79-2389feece769",
+        "a981d839-4e3e-4652-af7e-0ee75864da1a",
+        "cf51d623-f02b-46cb-bfd1-ac9999d7d42c",
+        "a0ebe31d-173d-4974-9104-2b85d85541c1"
+      ]
+    },
+    {
+      "claim": "Identified a conceptual gap and overconfidence in identifying experimental treatment vs. observational study limitations in statistical claims.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "66d07f42-e51d-485a-bd12-b3f774b26820"
+      ]
+    }
+  ]
+}

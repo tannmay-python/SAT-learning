@@ -12,6 +12,7 @@ const paths = {
   learnerModel: resolve(dataDirectory, 'profile/learner-model.json'),
   attempts: resolve(dataDirectory, 'events/attempts.jsonl'),
   sessions: resolve(dataDirectory, 'events/sessions.jsonl'),
+  mockAssessments: resolve(dataDirectory, 'events/mock-assessments.jsonl'),
   analyses: resolve(dataDirectory, 'events/ai-observations.jsonl'),
   questions: resolve(dataDirectory, 'questions/generated.jsonl'),
   reportsIndex: resolve(dataDirectory, 'reports/index.json'),
@@ -139,7 +140,7 @@ export async function initializeStore() {
 }
 
 export async function getState(aiStatus) {
-  const [settings, skillStates, learnerModel, attempts, sessions, analyses, generatedQuestions, reports, activeMock, officialQuestions] = await Promise.all([
+  const [settings, skillStates, learnerModel, attempts, sessions, analyses, generatedQuestions, reports, activeMockRaw, officialQuestions, mockAssessments] = await Promise.all([
     readJson(paths.settings, defaultSettings),
     readJson(paths.skills, []),
     readJson(paths.learnerModel, defaultLearnerModel),
@@ -150,17 +151,33 @@ export async function getState(aiStatus) {
     readJson(paths.reportsIndex, []),
     readJson(paths.activeMock, null),
     readOfficialQuestions(),
+    readJsonl(paths.mockAssessments),
   ])
+  const officialById = new Map(officialQuestions.map((question) => [question.id, question]))
+  const hydrateQuestion = (question) => {
+    if (!question?.id) return question
+    const official = officialById.get(question.id)
+    return official?.underlinedText && !question.underlinedText
+      ? { ...question, underlinedText: official.underlinedText }
+      : question
+  }
+  const hydratedAttempts = attempts.map((attempt) => attempt.questionSnapshot
+    ? { ...attempt, questionSnapshot: hydrateQuestion(attempt.questionSnapshot) }
+    : attempt)
+  const activeMock = activeMockRaw && Array.isArray(activeMockRaw.modules)
+    ? { ...activeMockRaw, modules: activeMockRaw.modules.map((module) => ({ ...module, questions: (module.questions || []).map(hydrateQuestion) })) }
+    : activeMockRaw
   return {
     settings,
     skillStates,
     learnerModel,
-    attempts: attempts.toReversed(),
+    attempts: hydratedAttempts.toReversed(),
     sessions: sessions.toReversed(),
     analyses: analyses.toReversed(),
     generatedQuestions: generatedQuestions.filter((question) => question.validationStatus === 'accepted'),
     officialQuestions,
     reports: reports.toReversed().map((report) => report.type === 'weekly' ? { ...report, type: 'comprehensive' } : report),
+    mockAssessments: mockAssessments.toReversed(),
     activeMock,
     aiStatus,
     dataDirectory,
@@ -185,6 +202,13 @@ export async function saveSession(session) {
   const existing = await readJsonl(paths.sessions)
   if (existing.some((item) => item.id === session.id)) return false
   await appendJsonl(paths.sessions, session)
+  return true
+}
+
+export async function saveMockAssessment(assessment) {
+  const existing = await readJsonl(paths.mockAssessments)
+  if (existing.some((item) => item.sessionId === assessment.sessionId)) return false
+  await appendJsonl(paths.mockAssessments, assessment)
   return true
 }
 
@@ -232,11 +256,12 @@ export async function hasReport(id) {
 }
 
 export async function getEvidence() {
-  const [attempts, sessions, analyses, skillStates, learnerModel, generatedQuestions, settings] = await Promise.all([
+  const [attempts, sessions, analyses, skillStates, learnerModel, generatedQuestions, settings, mockAssessments] = await Promise.all([
     readJsonl(paths.attempts), readJsonl(paths.sessions), readJsonl(paths.analyses), readJson(paths.skills, []), readJson(paths.learnerModel, defaultLearnerModel), readJsonl(paths.questions),
     readJson(paths.settings, defaultSettings),
+    readJsonl(paths.mockAssessments),
   ])
-  return { attempts, sessions, analyses, skillStates, learnerModel, generatedQuestions, settings }
+  return { attempts, sessions, analyses, skillStates, learnerModel, generatedQuestions, settings, mockAssessments }
 }
 
 export async function setActiveMock(mock) {

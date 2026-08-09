@@ -92,4 +92,14 @@ describe('adaptive learner model', () => {
     expect(new Set(blueprint.map((item) => item.skillId)).size).toBe(4)
     expect(blueprint.every((item) => item.section === 'rw' && item.difficulty === 3)).toBe(true)
   })
+
+  it('can plan an exact mock quota so every generated slot maps to a form slot', () => {
+    const questions = Array.from({ length: 8 }, (_, index) => ({
+      id: `rw-${index}`, section: 'rw', domain: 'information-ideas', skillId: `skill-${index % 2}`, difficulty: 3,
+    })) as never[]
+    const blueprint = planReadingBlueprint(questions, 54, new Map(), new Set(), [], 3, { 'skill-0': 4, 'skill-1': 2 })
+    expect(blueprint).toHaveLength(6)
+    expect(blueprint.filter((item) => item.skillId === 'skill-0')).toHaveLength(4)
+    expect(blueprint.filter((item) => item.skillId === 'skill-1')).toHaveLength(2)
+  })
 })

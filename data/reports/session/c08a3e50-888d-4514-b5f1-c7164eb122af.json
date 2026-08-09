@@ -1,0 +1,468 @@
+{
+  "confidenceCalibration": [
+    {
+      "claim": "2 of 3 explicitly rated items were correct when marked 'certain', but 1 was incorrect, demonstrating moderate calibration with a key blind spot in experimental logic.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "e5ec6239-70b3-44e8-bebb-c024cecd27a1",
+        "4ef81cf4-8670-4385-a0f1-ded4ea24d59d",
+        "80465dd8-0832-4358-9ddd-3a945762e26d"
+      ]
+    }
+  ],
+  "errorTaxonomy": [
+    {
+      "count": 1,
+      "evidenceIds": [
+        "80465dd8-0832-4358-9ddd-3a945762e26d"
+      ],
+      "label": "Study Design Model Selection",
+      "mechanism": "Confusing the methodological role of random assignment (establishing causality) versus random sampling (establishing population generalizability)."
+    }
+  ],
+  "executiveSummary": "You completed a 10-question adaptive set with 9 correct answers (90% accuracy), maintaining an average speed of 36 seconds per question against a target budget of 98 seconds. Reading and Writing performance was perfect across 5 questions at 34 seconds per item. In Math, you solved 4 of 5 questions correctly with an average speed of 39 seconds, demonstrating strong execution on circle equations and nonlinear systems. The single error occurred on a Level 4 statistical claims question where high confidence coincided with misinterpreting experimental design principles regarding causality vs generalizability.",
+  "learnerModel": {
+    "coachingStyle": "Acknowledge high accuracy and exceptional speed across verbal and core math; target high-confidence blind spots in experimental design rules and advance to Level 4 difficulty.",
+    "hypotheses": [
+      {
+        "claim": "Learner possesses strong visual and quantitative reading comprehension, answering Level 3 Reading and Writing evidence items accurately and far below time budgets.",
+        "confidence": "strong",
+        "evidenceIds": [
+          "dfaa25a3-5d7b-4848-9039-542965296441",
+          "4f9f2320-cc89-445f-a318-e95673ee8d30",
+          "facc4853-8c8a-4096-af1e-a447ed9a8db6",
+          "4ef81cf4-8670-4385-a0f1-ded4ea24d59d",
+          "562b7e22-d511-4e99-8363-80f2841a0e94"
+        ]
+      },
+      {
+        "claim": "Learner tends to rush through conceptual statistical design choices, confusing random assignment with observational limitations.",
+        "confidence": "strong",
+        "evidenceIds": [
+          "80465dd8-0832-4358-9ddd-3a945762e26d"
+        ]
+      }
+    ],
+    "nextSession": "Administer a Level 4 mixed adaptive set with 4 statistical study design items, 4 circle/nonlinear math items, and 4 advanced quantitative evidence items.",
+    "priorities": [
+      {
+        "claim": "Eliminate study design misconceptions regarding random assignment and causal conclusions.",
+        "confidence": "strong",
+        "evidenceIds": [
+          "80465dd8-0832-4358-9ddd-3a945762e26d"
+        ]
+      },
+      {
+        "claim": "Sustain fast execution speed on Level 4 Math and Reading/Writing skills while confirming multi-session retention.",
+        "confidence": "moderate",
+        "evidenceIds": [
+          "693eb75a-d219-4f83-b05b-71915a0c984b",
+          "dfaa25a3-5d7b-4848-9039-542965296441"
+        ]
+      }
+    ],
+    "skillDirectives": [
+      {
+        "evidenceIds": [
+          "80465dd8-0832-4358-9ddd-3a945762e26d"
+        ],
+        "priority": 0.95,
+        "reason": "Target study design and causal inference logic to resolve high-confidence misconception.",
+        "skillId": "statistical-claims",
+        "targetDifficulty": 4
+      },
+      {
+        "evidenceIds": [
+          "dfaa25a3-5d7b-4848-9039-542965296441",
+          "facc4853-8c8a-4096-af1e-a447ed9a8db6",
+          "562b7e22-d511-4e99-8363-80f2841a0e94"
+        ],
+        "priority": 0.85,
+        "reason": "Escalate quantitative evidence to Level 4 difficulty.",
+        "skillId": "command-evidence-quantitative",
+        "targetDifficulty": 4
+      },
+      {
+        "evidenceIds": [
+          "693eb75a-d219-4f83-b05b-71915a0c984b"
+        ],
+        "priority": 0.8,
+        "reason": "Consolidate Level 4 circle equation completion and geometric properties.",
+        "skillId": "circles",
+        "targetDifficulty": 4
+      },
+      {
+        "evidenceIds": [
+          "4f9f2320-cc89-445f-a318-e95673ee8d30",
+          "4ef81cf4-8670-4385-a0f1-ded4ea24d59d"
+        ],
+        "priority": 0.75,
+        "reason": "Advance verbal inferences to Level 4 complex scientific texts.",
+        "skillId": "inferences",
+        "targetDifficulty": 4
+      },
+      {
+        "evidenceIds": [
+          "0fe11d54-544c-4598-b031-12a8cf4834c6"
+        ],
+        "priority": 0.7,
+        "reason": "Practice Level 4 line-quadratic tangency and discriminant analysis.",
+        "skillId": "systems-nonlinear",
+        "targetDifficulty": 4
+      }
+    ],
+    "strengths": [
+      {
+        "claim": "Strong accuracy (9/10, 90%) overall with rapid pacing (average 36 seconds per item).",
+        "confidence": "strong",
+        "evidenceIds": [
+          "e5ec6239-70b3-44e8-bebb-c024cecd27a1",
+          "dfaa25a3-5d7b-4848-9039-542965296441",
+          "47dd0e96-a421-425c-9c62-541c36fc3884",
+          "4f9f2320-cc89-445f-a318-e95673ee8d30",
+          "693eb75a-d219-4f83-b05b-71915a0c984b",
+          "facc4853-8c8a-4096-af1e-a447ed9a8db6",
+          "0fe11d54-544c-4598-b031-12a8cf4834c6",
+          "4ef81cf4-8670-4385-a0f1-ded4ea24d59d",
+          "562b7e22-d511-4e99-8363-80f2841a0e94"
+        ]
+      }
+    ],
+    "summary": "The learner achieved 90% accuracy (9/10) across Reading/Writing and Math with an average item time of 36 seconds (budget 98s). Reading/Writing was 100% accurate (5/5). Math was 80% accurate (4/5), demonstrating high proficiency on algebra and circle geometry, with a single error on a Level 4 statistical study design question caused by misapplying causal inference rules under fast pacing."
+  },
+  "limitations": [
+    "Only 1 item was completed for statistical claims, so error diagnosis is based on a single high-confidence attempt.",
+    "Confidence ratings were voluntarily provided on only 3 of 10 items, limiting comprehensive confidence calibration analysis.",
+    "Long-term skill retention cannot be confirmed from a single session; multi-session evaluation across separate days is required."
+  ],
+  "misconceptionPatterns": [
+    {
+      "claim": "Causal vs. Observational Study Fallacy: Believing that random sampling prevents causal conclusions even when random assignment is explicitly present in an experimental design.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "80465dd8-0832-4358-9ddd-3a945762e26d"
+      ]
+    }
+  ],
+  "pacingAndDecisions": [
+    {
+      "claim": "Overall execution speed is exceptional across both sections, averaging 36 seconds per question against a 98-second budget.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "e5ec6239-70b3-44e8-bebb-c024cecd27a1",
+        "dfaa25a3-5d7b-4848-9039-542965296441",
+        "47dd0e96-a421-425c-9c62-541c36fc3884",
+        "4f9f2320-cc89-445f-a318-e95673ee8d30",
+        "693eb75a-d219-4f83-b05b-71915a0c984b",
+        "facc4853-8c8a-4096-af1e-a447ed9a8db6",
+        "0fe11d54-544c-4598-b031-12a8cf4834c6",
+        "4ef81cf4-8670-4385-a0f1-ded4ea24d59d",
+        "80465dd8-0832-4358-9ddd-3a945762e26d",
+        "562b7e22-d511-4e99-8363-80f2841a0e94"
+      ]
+    },
+    {
+      "claim": "Rushing through conceptual statistical options: Spending only 36 seconds on a 125-second budget Level 4 statistical claim question led to a premature decision on study design rules.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "80465dd8-0832-4358-9ddd-3a945762e26d"
+      ]
+    }
+  ],
+  "recommendedMix": "50% Math (focusing on statistical claims, circle equations, and nonlinear systems) / 50% Reading & Writing (focusing on Level 4 quantitative evidence and complex inferences).",
+  "sectionBreakdown": [
+    {
+      "section": "Reading and Writing",
+      "accuracySummary": "5/5 correct (100%)",
+      "pacingSummary": "34s average against a 84s authored target",
+      "findings": [
+        {
+          "claim": "Flawless interpretation of quantitative data tables and scientific text inferences across all 5 questions.",
+          "confidence": "strong",
+          "evidenceIds": [
+            "dfaa25a3-5d7b-4848-9039-542965296441",
+            "4f9f2320-cc89-445f-a318-e95673ee8d30",
+            "facc4853-8c8a-4096-af1e-a447ed9a8db6",
+            "4ef81cf4-8670-4385-a0f1-ded4ea24d59d",
+            "562b7e22-d511-4e99-8363-80f2841a0e94"
+          ]
+        }
+      ],
+      "recommendedFocus": "Escalate to Level 4 Reading and Writing items featuring dual-text arguments and dense humanities passages."
+    },
+    {
+      "section": "Math",
+      "accuracySummary": "4/5 correct (80%)",
+      "pacingSummary": "39s average against a 112s authored target",
+      "findings": [
+        {
+          "claim": "Strong execution on standard algebraic systems, 3D volume, and circle geometry, but misapplied statistical inference rules under rapid pacing on study design questions.",
+          "confidence": "strong",
+          "evidenceIds": [
+            "e5ec6239-70b3-44e8-bebb-c024cecd27a1",
+            "47dd0e96-a421-425c-9c62-541c36fc3884",
+            "693eb75a-d219-4f83-b05b-71915a0c984b",
+            "0fe11d54-544c-4598-b031-12a8cf4834c6",
+            "80465dd8-0832-4358-9ddd-3a945762e26d"
+          ]
+        }
+      ],
+      "recommendedFocus": "Review study design concepts (random sampling vs. random assignment) and test Level 4 data analysis items."
+    }
+  ],
+  "sevenDayPlan": [
+    {
+      "day": "Day 1",
+      "minutes": 15,
+      "successCheck": "Correctly classify causal vs. generalizable claims on 4/4 practice questions.",
+      "work": "Review Study Design Matrix (Random Selection vs. Random Assignment) with 4 targeted practice items."
+    },
+    {
+      "day": "Day 2",
+      "minutes": 20,
+      "successCheck": "Maintain >80% accuracy with average speed under 60 seconds per item.",
+      "work": "Level 4 Math Mixed Problem Set (Circles, Systems of Equations, Area/Volume)."
+    },
+    {
+      "day": "Day 3",
+      "minutes": 15,
+      "successCheck": "Achieve 100% accuracy across 5 dense data/text items.",
+      "work": "Level 4 Reading and Writing Quantitative Evidence & Inferences drill."
+    },
+    {
+      "day": "Day 4",
+      "minutes": 10,
+      "successCheck": "Zero misclassifications of sampling vs. assignment.",
+      "work": "Spaced recall quiz on statistical claims and experimental setup traps."
+    },
+    {
+      "day": "Day 5",
+      "minutes": 20,
+      "successCheck": "Complete set within target time budgets with >85% accuracy.",
+      "work": "Full timed Math Module set focusing on Problem Solving and Data Analysis."
+    },
+    {
+      "day": "Day 6",
+      "minutes": 15,
+      "successCheck": "Maintain fast pacing (under 45s/item) with high accuracy.",
+      "work": "Mixed Reading & Writing hard module practice focusing on dual-texts and inferences."
+    },
+    {
+      "day": "Day 7",
+      "minutes": 25,
+      "successCheck": "Achieve 90%+ overall accuracy across both sections.",
+      "work": "Comprehensive 15-item adaptive check set covering Level 4 Math and RW skills."
+    }
+  ],
+  "skillBreakdown": [
+    {
+      "skillId": "area-volume",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 86,
+      "diagnosis": "Accurately calculated missing rectangular prism height from volume equation.",
+      "nextDifficulty": 3,
+      "action": "Practice 3D geometry problems involving cylinder, cone, and sphere volume ratios to build multi-shape fluency.",
+      "evidenceIds": [
+        "e5ec6239-70b3-44e8-bebb-c024cecd27a1"
+      ],
+      "confidence": "strong"
+    },
+    {
+      "skillId": "command-evidence-quantitative",
+      "correct": 3,
+      "total": 3,
+      "averageSeconds": 33,
+      "diagnosis": "Extremely swift and precise matching of numeric data table trends to text claims.",
+      "nextDifficulty": 4,
+      "action": "Advance to Level 4 quantitative evidence items with complex multi-variable tables and graphic transformations.",
+      "evidenceIds": [
+        "dfaa25a3-5d7b-4848-9039-542965296441",
+        "facc4853-8c8a-4096-af1e-a447ed9a8db6",
+        "562b7e22-d511-4e99-8363-80f2841a0e94"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "systems-linear-equations",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 26,
+      "diagnosis": "Efficient setup and solution of two-variable word problem.",
+      "nextDifficulty": 4,
+      "action": "Solve linear system word problems with infinite or no solution parameters.",
+      "evidenceIds": [
+        "47dd0e96-a421-425c-9c62-541c36fc3884"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "inferences",
+      "correct": 2,
+      "total": 2,
+      "averageSeconds": 35,
+      "diagnosis": "Quickly extracted empirical trends to complete logical arguments in paleontology and geochemistry contexts.",
+      "nextDifficulty": 4,
+      "action": "Introduce Level 4 passage completion items requiring subtle counterfactual reasoning.",
+      "evidenceIds": [
+        "4f9f2320-cc89-445f-a318-e95673ee8d30",
+        "4ef81cf4-8670-4385-a0f1-ded4ea24d59d"
+      ],
+      "confidence": "strong"
+    },
+    {
+      "skillId": "circles",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 29,
+      "diagnosis": "Completed the square seamlessly on an expanded circle equation to determine radius.",
+      "nextDifficulty": 4,
+      "action": "Practice circle arc length, sector area, and tangent line intersection problems.",
+      "evidenceIds": [
+        "693eb75a-d219-4f83-b05b-71915a0c984b"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "systems-nonlinear",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 18,
+      "diagnosis": "Instant visual/algebraic determination of parabola-line intersection counts.",
+      "nextDifficulty": 4,
+      "action": "Practice line-quadratic system discriminant analysis for single or zero solution conditions.",
+      "evidenceIds": [
+        "0fe11d54-544c-4598-b031-12a8cf4834c6"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "statistical-claims",
+      "correct": 0,
+      "total": 1,
+      "averageSeconds": 36,
+      "diagnosis": "Setup/model selection error: confused random assignment (supports causation) with random sampling (supports generalization), selecting option C instead of D.",
+      "nextDifficulty": 4,
+      "action": "Review the two-by-two study design matrix: Random Selection -> Generalizability; Random Assignment -> Causal Inference.",
+      "evidenceIds": [
+        "80465dd8-0832-4358-9ddd-3a945762e26d"
+      ],
+      "confidence": "strong"
+    }
+  ],
+  "strengths": [
+    {
+      "claim": "Reading and Writing Quantitative Evidence & Inferences: Perfect 5/5 accuracy across dense scientific passages and data tables with rapid pacing (average 34 seconds).",
+      "confidence": "strong",
+      "evidenceIds": [
+        "dfaa25a3-5d7b-4848-9039-542965296441",
+        "4f9f2320-cc89-445f-a318-e95673ee8d30",
+        "facc4853-8c8a-4096-af1e-a447ed9a8db6",
+        "4ef81cf4-8670-4385-a0f1-ded4ea24d59d",
+        "562b7e22-d511-4e99-8363-80f2841a0e94"
+      ]
+    },
+    {
+      "claim": "Algebra & Geometry Core Execution: Rapid and accurate problem solving on linear systems, nonlinear systems, 3D volume, and standard circle equations (4/4 correct, 18s-86s).",
+      "confidence": "strong",
+      "evidenceIds": [
+        "e5ec6239-70b3-44e8-bebb-c024cecd27a1",
+        "47dd0e96-a421-425c-9c62-541c36fc3884",
+        "693eb75a-d219-4f83-b05b-71915a0c984b",
+        "0fe11d54-544c-4598-b031-12a8cf4834c6"
+      ]
+    }
+  ],
+  "studyPriorities": [
+    {
+      "action": "Master the Study Design Matrix: Random Sampling -> Population Generalizability; Random Assignment -> Causal Inference.",
+      "evidenceIds": [
+        "80465dd8-0832-4358-9ddd-3a945762e26d"
+      ],
+      "reason": "Prevent high-confidence errors on Level 4 statistical validity questions.",
+      "skillId": "statistical-claims"
+    },
+    {
+      "action": "Maintain high speed while advancing to Level 4 complex multi-variable data table questions.",
+      "evidenceIds": [
+        "dfaa25a3-5d7b-4848-9039-542965296441",
+        "facc4853-8c8a-4096-af1e-a447ed9a8db6",
+        "562b7e22-d511-4e99-8363-80f2841a0e94"
+      ],
+      "reason": "Capitalize on 100% accuracy to reach mastery thresholds across varied question formats.",
+      "skillId": "command-evidence-quantitative"
+    },
+    {
+      "action": "Practice equation completion for circles alongside arc length and sector area applications.",
+      "evidenceIds": [
+        "693eb75a-d219-4f83-b05b-71915a0c984b"
+      ],
+      "reason": "Solidify Level 4 circle geometry performance.",
+      "skillId": "circles"
+    }
+  ],
+  "title": "Set review: 9 of 10 correct",
+  "transferAndRetention": [
+    {
+      "claim": "Demonstrated strong cross-domain transfer within quantitative evidence and verbal inferences across different scientific topics (paleontology, botany, urban climate).",
+      "confidence": "moderate",
+      "evidenceIds": [
+        "dfaa25a3-5d7b-4848-9039-542965296441",
+        "4f9f2320-cc89-445f-a318-e95673ee8d30",
+        "facc4853-8c8a-4096-af1e-a447ed9a8db6",
+        "4ef81cf4-8670-4385-a0f1-ded4ea24d59d",
+        "562b7e22-d511-4e99-8363-80f2841a0e94"
+      ]
+    },
+    {
+      "claim": "Retention across sessions remains unverified as all items were answered within a single practice set; multi-session evaluation is needed.",
+      "confidence": "tentative",
+      "evidenceIds": [
+        "e5ec6239-70b3-44e8-bebb-c024cecd27a1",
+        "80465dd8-0832-4358-9ddd-3a945762e26d"
+      ]
+    }
+  ],
+  "weaknesses": [
+    {
+      "claim": "Statistical Study Design Rules: Confounded random sampling (enables generalization) with random assignment (enables causal conclusions) on a Level 4 experimental inference question.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "80465dd8-0832-4358-9ddd-3a945762e26d"
+      ]
+    }
+  ],
+  "whatChanged": [
+    {
+      "claim": "Demonstrated flawless accuracy on Level 3 quantitative evidence and inference questions in Reading and Writing, operating significantly faster than target time budgets.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "dfaa25a3-5d7b-4848-9039-542965296441",
+        "4f9f2320-cc89-445f-a318-e95673ee8d30",
+        "facc4853-8c8a-4096-af1e-a447ed9a8db6",
+        "4ef81cf4-8670-4385-a0f1-ded4ea24d59d",
+        "562b7e22-d511-4e99-8363-80f2841a0e94"
+      ]
+    },
+    {
+      "claim": "Successfully tackled Level 4 circle equations, performing algebraic square completion accurately in 29 seconds.",
+      "confidence": "moderate",
+      "evidenceIds": [
+        "693eb75a-d219-4f83-b05b-71915a0c984b"
+      ]
+    },
+    {
+      "claim": "Identified a vulnerability in differentiating causal inference rules from generalizability in randomized experimental designs.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "80465dd8-0832-4358-9ddd-3a945762e26d"
+      ]
+    }
+  ],
+  "id": "c08a3e50-888d-4514-b5f1-c7164eb122af",
+  "type": "session",
+  "period": "2026-08-07T11:38:50.484Z to 2026-08-07T11:48:03.078Z",
+  "createdAt": "2026-08-07T11:48:46.894Z",
+  "model": "gemini-3.6-flash-high",
+  "answerCount": 10
+}
