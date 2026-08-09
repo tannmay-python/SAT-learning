@@ -1,0 +1,508 @@
+{
+  "confidenceCalibration": [
+    {
+      "claim": "Items marked with 'certain' confidence resulted in 100% accuracy (2/2), demonstrating strong calibration when confident.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "1317bd62-4122-4a80-a209-fc3859365dc1",
+        "f9819776-b77d-42a4-aa56-0432f3ab193c"
+      ]
+    },
+    {
+      "claim": "Items marked with 'guess' confidence yielded 50% accuracy (1/2), appropriately reflecting uncertainty on linear function transformations.",
+      "confidence": "moderate",
+      "evidenceIds": [
+        "fee3ed53-f48b-49d3-bd1a-90041d1e09cb",
+        "fbae274f-a6f7-4166-ba02-c0ba8f6360c1"
+      ]
+    },
+    {
+      "claim": "Six items omitted confidence ratings, so calibration analysis is restricted to the four explicitly rated responses.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "1ed48ddc-0de0-4e19-857f-ac4099f25cb1",
+        "598d0bb4-8b63-4f1a-9a54-43cfdc95b85a",
+        "14a1f5c1-fdf9-4fe3-ae41-1cbbed6e8276",
+        "31b6428a-6ee0-49e3-ae9e-ec22bb89ae37",
+        "c45aea55-ae9d-479c-8451-3f15f33b5807",
+        "0869d724-6ccf-4b8a-ad41-2437248386e6"
+      ]
+    }
+  ],
+  "errorTaxonomy": [
+    {
+      "count": 1,
+      "evidenceIds": [
+        "fbae274f-a6f7-4166-ba02-c0ba8f6360c1"
+      ],
+      "label": "Intermediate Value Trap",
+      "mechanism": "Execution error: selected an intermediate value (y-intercept of base function f(0)=3) rather than completing the full composite evaluation g(0) = f(5) - 5 = 18."
+    }
+  ],
+  "executiveSummary": "You completed a 10-question adaptive set with 90% accuracy (9/10 correct), completing questions in an average of 42 seconds compared to the 107-second target. Reading and Writing performance was flawless at 5/5 (100%, 38s average), while Math reached 4/5 (80%, 46s average). Your target score is 1600. Your current estimated score is 1350 (Reading & Writing 710, Math 640), leaving a 250-point gap with 13 days remaining until test day. Math accounts for 160 points (64%) of this total gap. Because only one full practice test is currently recorded in your history, a weekly trend and simple projection cannot be calculated yet. Your main technical takeaway from this set is that reading comprehension and statistical/algebraic execution are strong, but composite linear function transformations present a procedural risk where intermediate values can be mistaken for final answers.",
+  "learnerModel": {
+    "coachingStyle": "Direct, evidence-bound, and analytical. Focus on step-by-step verification of function transformations, explicit sign-flip checks in inequalities, and precise text tracking in scientific passages.",
+    "hypotheses": [
+      {
+        "claim": "The learner exhibits strong text synthesis on Reading & Writing Central Ideas, but requires validation on complex scientific inferences under timed conditions.",
+        "confidence": "strong",
+        "evidenceIds": [
+          "1ed48ddc-0de0-4e19-857f-ac4099f25cb1",
+          "598d0bb4-8b63-4f1a-9a54-43cfdc95b85a",
+          "14a1f5c1-fdf9-4fe3-ae41-1cbbed6e8276",
+          "c45aea55-ae9d-479c-8451-3f15f33b5807",
+          "0869d724-6ccf-4b8a-ad41-2437248386e6"
+        ]
+      },
+      {
+        "claim": "In Math, the primary barrier to an 800 score is procedural execution on multi-step function shifts g(x) = f(x + h) + k, specifically stopping at intermediate values.",
+        "confidence": "strong",
+        "evidenceIds": [
+          "fee3ed53-f48b-49d3-bd1a-90041d1e09cb",
+          "fbae274f-a6f7-4166-ba02-c0ba8f6360c1"
+        ]
+      }
+    ],
+    "nextSession": "Focus on Math difficulty 5 linear function transformations g(x) = f(x+h)+k with mandatory 2-step evaluation, followed by advanced expression expansion and complex reading inferences.",
+    "priorities": [
+      {
+        "claim": "Master linear function transformation evaluation g(x) = f(x+h) + k without stopping at intermediate values.",
+        "confidence": "strong",
+        "evidenceIds": [
+          "fee3ed53-f48b-49d3-bd1a-90041d1e09cb",
+          "fbae274f-a6f7-4166-ba02-c0ba8f6360c1"
+        ]
+      },
+      {
+        "claim": "Maintain high-speed accuracy on difficulty 5 polynomial expansions and linear inequality systems.",
+        "confidence": "moderate",
+        "evidenceIds": [
+          "1317bd62-4122-4a80-a209-fc3859365dc1",
+          "f9819776-b77d-42a4-aa56-0432f3ab193c"
+        ]
+      }
+    ],
+    "skillDirectives": [
+      {
+        "evidenceIds": [
+          "fee3ed53-f48b-49d3-bd1a-90041d1e09cb",
+          "fbae274f-a6f7-4166-ba02-c0ba8f6360c1"
+        ],
+        "priority": 1,
+        "reason": "Accuracy of 50% (1/2) on linear function transformations indicates a procedural execution risk in evaluating g(0) = f(h) + k.",
+        "skillId": "linear-functions",
+        "targetDifficulty": 5
+      },
+      {
+        "evidenceIds": [
+          "1317bd62-4122-4a80-a209-fc3859365dc1"
+        ],
+        "priority": 0.8,
+        "reason": "100% accuracy (1/1) on equivalent expressions; continue practice at difficulty 5.",
+        "skillId": "equivalent-expressions",
+        "targetDifficulty": 5
+      },
+      {
+        "evidenceIds": [
+          "f9819776-b77d-42a4-aa56-0432f3ab193c"
+        ],
+        "priority": 0.8,
+        "reason": "100% accuracy (1/1) on linear inequalities; maintain execution at difficulty 5.",
+        "skillId": "linear-inequalities",
+        "targetDifficulty": 5
+      },
+      {
+        "evidenceIds": [
+          "31b6428a-6ee0-49e3-ae9e-ec22bb89ae37"
+        ],
+        "priority": 0.7,
+        "reason": "100% accuracy (1/1) on statistical claims; expand to complex study designs at difficulty 5.",
+        "skillId": "statistical-claims",
+        "targetDifficulty": 5
+      },
+      {
+        "evidenceIds": [
+          "1ed48ddc-0de0-4e19-857f-ac4099f25cb1",
+          "598d0bb4-8b63-4f1a-9a54-43cfdc95b85a",
+          "14a1f5c1-fdf9-4fe3-ae41-1cbbed6e8276",
+          "c45aea55-ae9d-479c-8451-3f15f33b5807",
+          "0869d724-6ccf-4b8a-ad41-2437248386e6"
+        ],
+        "priority": 0.6,
+        "reason": "100% accuracy (5/5) on central ideas; transition to complex inferences and craft/structure.",
+        "skillId": "central-ideas-details",
+        "targetDifficulty": 5
+      }
+    ],
+    "strengths": [
+      {
+        "claim": "Flawless execution on Reading & Writing Central Ideas and Details (5/5) across multiple text domains.",
+        "confidence": "strong",
+        "evidenceIds": [
+          "1ed48ddc-0de0-4e19-857f-ac4099f25cb1",
+          "598d0bb4-8b63-4f1a-9a54-43cfdc95b85a",
+          "14a1f5c1-fdf9-4fe3-ae41-1cbbed6e8276",
+          "c45aea55-ae9d-479c-8451-3f15f33b5807",
+          "0869d724-6ccf-4b8a-ad41-2437248386e6"
+        ]
+      },
+      {
+        "claim": "Fast, accurate solution of polynomial equivalent expressions and linear inequality systems.",
+        "confidence": "moderate",
+        "evidenceIds": [
+          "1317bd62-4122-4a80-a209-fc3859365dc1",
+          "f9819776-b77d-42a4-aa56-0432f3ab193c"
+        ]
+      }
+    ],
+    "summary": "Learner model updated following completion of adaptive set. Overall score estimate of 1350 (RW 710, Math 640) vs 1600 target reflects strong RW comprehension and solid math baseline, with a specific procedural vulnerability on transformed linear functions.",
+    "updatedAt": "2026-08-09T11:42:01.463Z"
+  },
+  "limitations": [
+    "The dataset consists of 10 items from a single adaptive session, limiting cross-session retention analysis.",
+    "Confidence ratings were omitted on 6 out of 10 items, restricting confidence calibration analysis to 4 items.",
+    "Only 2 items evaluated linear functions, so the intermediate value stopping error is treated as a tentative execution habit rather than a proven systemic pattern.",
+    "Because only one full practice test is recorded in history, a weekly score trend and projection cannot be calculated."
+  ],
+  "misconceptionPatterns": [
+    {
+      "claim": "Premature stopping at intermediate values during multi-step function evaluation. When evaluating g(0) for g(x) = f(x + 5) - 5, you identified f(0) = 3 and selected 3, skipping the calculation of f(5) - 5. This is currently evidenced on a single item so it is treated tentatively as a procedural execution error rather than a conceptual void.",
+      "confidence": "tentative",
+      "evidenceIds": [
+        "fbae274f-a6f7-4166-ba02-c0ba8f6360c1"
+      ]
+    }
+  ],
+  "pacingAndDecisions": [
+    {
+      "claim": "Pacing was overall very fast across all domains, averaging 42s per question compared to a 107s average target.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "fee3ed53-f48b-49d3-bd1a-90041d1e09cb",
+        "1ed48ddc-0de0-4e19-857f-ac4099f25cb1",
+        "1317bd62-4122-4a80-a209-fc3859365dc1",
+        "598d0bb4-8b63-4f1a-9a54-43cfdc95b85a",
+        "f9819776-b77d-42a4-aa56-0432f3ab193c",
+        "14a1f5c1-fdf9-4fe3-ae41-1cbbed6e8276",
+        "31b6428a-6ee0-49e3-ae9e-ec22bb89ae37",
+        "c45aea55-ae9d-479c-8451-3f15f33b5807",
+        "fbae274f-a6f7-4166-ba02-c0ba8f6360c1",
+        "0869d724-6ccf-4b8a-ad41-2437248386e6"
+      ]
+    },
+    {
+      "claim": "In Reading & Writing, rapid pacing (38s average vs 86s target) did not compromise accuracy, demonstrating fluent passage scanning.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "1ed48ddc-0de0-4e19-857f-ac4099f25cb1",
+        "598d0bb4-8b63-4f1a-9a54-43cfdc95b85a",
+        "14a1f5c1-fdf9-4fe3-ae41-1cbbed6e8276",
+        "c45aea55-ae9d-479c-8451-3f15f33b5807",
+        "0869d724-6ccf-4b8a-ad41-2437248386e6"
+      ]
+    },
+    {
+      "claim": "In Math, high speed (46s average vs 128s target) contributed to a premature answer selection on transformed linear functions when 88s was spent without verifying the final output step.",
+      "confidence": "moderate",
+      "evidenceIds": [
+        "fbae274f-a6f7-4166-ba02-c0ba8f6360c1"
+      ]
+    }
+  ],
+  "recommendedMix": "65% Math / 35% Reading and Writing (weighted heavily toward Math to close the 160-point Math gap toward your 1600 target score).",
+  "sectionBreakdown": [
+    {
+      "section": "Reading and Writing",
+      "accuracySummary": "5/5 correct (100%)",
+      "pacingSummary": "38s average against a 86s authored target",
+      "findings": [
+        {
+          "claim": "Achieved 100% accuracy on Central Ideas and Details across diverse passage themes.",
+          "confidence": "strong",
+          "evidenceIds": [
+            "1ed48ddc-0de0-4e19-857f-ac4099f25cb1",
+            "598d0bb4-8b63-4f1a-9a54-43cfdc95b85a",
+            "14a1f5c1-fdf9-4fe3-ae41-1cbbed6e8276",
+            "c45aea55-ae9d-479c-8451-3f15f33b5807",
+            "0869d724-6ccf-4b8a-ad41-2437248386e6"
+          ]
+        }
+      ],
+      "recommendedFocus": "Maintain speed and accuracy while applying main idea synthesis skills to harder paired passages and quantitative evidence items."
+    },
+    {
+      "section": "Math",
+      "accuracySummary": "4/5 correct (80%)",
+      "pacingSummary": "46s average against a 128s authored target",
+      "findings": [
+        {
+          "claim": "Strong performance on polynomial equivalent expressions, linear inequalities, and statistical study design.",
+          "confidence": "moderate",
+          "evidenceIds": [
+            "1317bd62-4122-4a80-a209-fc3859365dc1",
+            "f9819776-b77d-42a4-aa56-0432f3ab193c",
+            "31b6428a-6ee0-49e3-ae9e-ec22bb89ae37"
+          ]
+        },
+        {
+          "claim": "Procedural slip on linear function transformations due to intermediate value selection.",
+          "confidence": "strong",
+          "evidenceIds": [
+            "fee3ed53-f48b-49d3-bd1a-90041d1e09cb",
+            "fbae274f-a6f7-4166-ba02-c0ba8f6360c1"
+          ]
+        }
+      ],
+      "recommendedFocus": "Implement a mandatory 2-step verification for function transformation evaluations to ensure the final prompt target is calculated."
+    }
+  ],
+  "sevenDayPlan": [
+    {
+      "day": "Day 1",
+      "minutes": 30,
+      "successCheck": "100% accuracy with zero intermediate-value stopping errors.",
+      "work": "Linear Function Transformation Drill: Practice 8 items on g(x) = f(x+h)+k and write out two-step substitutions."
+    },
+    {
+      "day": "Day 2",
+      "minutes": 30,
+      "successCheck": "90%+ accuracy averaging under 60 seconds per item.",
+      "work": "Advanced Math Expressions & Inequalities: Solve 10 difficulty 5 polynomial expansions and system inequality problems."
+    },
+    {
+      "day": "Day 3",
+      "minutes": 25,
+      "successCheck": "Maintain 85%+ accuracy while keeping pacing under 60 seconds per item.",
+      "work": "Reading & Writing Complex Inferences & Evidence: Complete 6 hard scientific and historical passages."
+    },
+    {
+      "day": "Day 4",
+      "minutes": 35,
+      "successCheck": "Identify and eliminate intermediate answer traps before submitting.",
+      "work": "Mixed Math Practice: Complete 12 difficulty 5 items spanning linear functions, quadratics, and statistical claims."
+    },
+    {
+      "day": "Day 5",
+      "minutes": 25,
+      "successCheck": "Correctly articulate why intermediate choices are incorrect.",
+      "work": "Spaced Recall & Math Error Audit: Re-solve previously flagged linear function transformation questions."
+    },
+    {
+      "day": "Day 6",
+      "minutes": 40,
+      "successCheck": "Math accuracy >= 85%, RW accuracy >= 90%.",
+      "work": "Timed Section Practice: 15 Math questions and 10 RW questions under realistic timed conditions."
+    },
+    {
+      "day": "Day 7",
+      "minutes": 30,
+      "successCheck": "Zero unverified function transformation errors.",
+      "work": "Review and Strategy Refinement: Analyze timed section results and confirm step-by-step verification habits."
+    }
+  ],
+  "skillBreakdown": [
+    {
+      "skillId": "linear-functions",
+      "correct": 1,
+      "total": 2,
+      "averageSeconds": 65,
+      "diagnosis": "Procedural execution mistake on transformed functions g(x) = f(x + h) + k; selected intermediate value f(0)=3 instead of g(0) = f(5) - 5 = 18.",
+      "nextDifficulty": 5,
+      "action": "Write out full two-step substitution g(0) = f(h) + k before picking an answer choice.",
+      "evidenceIds": [
+        "fee3ed53-f48b-49d3-bd1a-90041d1e09cb",
+        "fbae274f-a6f7-4166-ba02-c0ba8f6360c1"
+      ],
+      "confidence": "moderate"
+    },
+    {
+      "skillId": "central-ideas-details",
+      "correct": 5,
+      "total": 5,
+      "averageSeconds": 38,
+      "diagnosis": "Accurate synthesis of main ideas across architectural, historical, culinary, and literary texts.",
+      "nextDifficulty": 5,
+      "action": "Maintain current active-reading elimination strategies while continuing difficulty 5 practice.",
+      "evidenceIds": [
+        "1ed48ddc-0de0-4e19-857f-ac4099f25cb1",
+        "598d0bb4-8b63-4f1a-9a54-43cfdc95b85a",
+        "14a1f5c1-fdf9-4fe3-ae41-1cbbed6e8276",
+        "c45aea55-ae9d-479c-8451-3f15f33b5807",
+        "0869d724-6ccf-4b8a-ad41-2437248386e6"
+      ],
+      "confidence": "strong"
+    },
+    {
+      "skillId": "equivalent-expressions",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 31,
+      "diagnosis": "Rapid and accurate polynomial distribution and linear term consolidation.",
+      "nextDifficulty": 5,
+      "action": "Continue timed practice on multi-term polynomial expansions at difficulty 5.",
+      "evidenceIds": [
+        "1317bd62-4122-4a80-a209-fc3859365dc1"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "linear-inequalities",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 28,
+      "diagnosis": "Efficient point substitution for two-variable linear inequality systems.",
+      "nextDifficulty": 5,
+      "action": "Practice system boundary line graphing and constraint word problems at difficulty 5.",
+      "evidenceIds": [
+        "f9819776-b77d-42a4-aa56-0432f3ab193c"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "statistical-claims",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 41,
+      "diagnosis": "Correctly identified differential attrition as a threat to causal inference in randomized trials.",
+      "nextDifficulty": 5,
+      "action": "Practice evaluating sample representativeness and margin of error claims at difficulty 5.",
+      "evidenceIds": [
+        "31b6428a-6ee0-49e3-ae9e-ec22bb89ae37"
+      ],
+      "confidence": "tentative"
+    }
+  ],
+  "strengths": [
+    {
+      "claim": "Demonstrated strong proficiency on Reading & Writing Central Ideas and Details, correctly identifying main ideas across 5 distinct literary, scientific, and historical contexts.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "1ed48ddc-0de0-4e19-857f-ac4099f25cb1",
+        "598d0bb4-8b63-4f1a-9a54-43cfdc95b85a",
+        "14a1f5c1-fdf9-4fe3-ae41-1cbbed6e8276",
+        "c45aea55-ae9d-479c-8451-3f15f33b5807",
+        "0869d724-6ccf-4b8a-ad41-2437248386e6"
+      ]
+    },
+    {
+      "claim": "Executed algebraic polynomial expansion and system inequality point evaluation accurately and rapidly under 32 seconds per question.",
+      "confidence": "moderate",
+      "evidenceIds": [
+        "1317bd62-4122-4a80-a209-fc3859365dc1",
+        "f9819776-b77d-42a4-aa56-0432f3ab193c"
+      ]
+    },
+    {
+      "claim": "Correctly evaluated study design limitations regarding differential attrition bias in randomized clinical trials.",
+      "confidence": "tentative",
+      "evidenceIds": [
+        "31b6428a-6ee0-49e3-ae9e-ec22bb89ae37"
+      ]
+    }
+  ],
+  "studyPriorities": [
+    {
+      "action": "Practice hard difficulty 5 composite function transformations g(x) = f(x+h) + k with explicit written evaluations.",
+      "evidenceIds": [
+        "fee3ed53-f48b-49d3-bd1a-90041d1e09cb",
+        "fbae274f-a6f7-4166-ba02-c0ba8f6360c1"
+      ],
+      "reason": "Math accounts for 160 points of your 250-point gap to 1600, and function transformation execution is your primary Math accuracy leak.",
+      "skillId": "linear-functions"
+    },
+    {
+      "action": "Complete multi-step polynomial expansion and factoring drills at difficulty 5.",
+      "evidenceIds": [
+        "1317bd62-4122-4a80-a209-fc3859365dc1"
+      ],
+      "reason": "Securing advanced math skills builds precision needed to close the 160-point Math gap toward your 800 Math target.",
+      "skillId": "equivalent-expressions"
+    },
+    {
+      "action": "Maintain reading speed while transitioning practice to complex scientific inferences and quantitative reading passages.",
+      "evidenceIds": [
+        "1ed48ddc-0de0-4e19-857f-ac4099f25cb1",
+        "598d0bb4-8b63-4f1a-9a54-43cfdc95b85a",
+        "14a1f5c1-fdf9-4fe3-ae41-1cbbed6e8276",
+        "c45aea55-ae9d-479c-8451-3f15f33b5807",
+        "0869d724-6ccf-4b8a-ad41-2437248386e6"
+      ],
+      "reason": "Reading & Writing accounts for 90 points of the gap to 1600; expanding beyond basic main ideas ensures reach toward 800 RW.",
+      "skillId": "central-ideas-details"
+    }
+  ],
+  "title": "Set review: 9 of 10 correct",
+  "transferAndRetention": [
+    {
+      "claim": "Within-session transfer for Central Ideas and Details was high, successfully applying main idea extraction techniques across 5 distinct passage topics.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "1ed48ddc-0de0-4e19-857f-ac4099f25cb1",
+        "598d0bb4-8b63-4f1a-9a54-43cfdc95b85a",
+        "14a1f5c1-fdf9-4fe3-ae41-1cbbed6e8276",
+        "c45aea55-ae9d-479c-8451-3f15f33b5807",
+        "0869d724-6ccf-4b8a-ad41-2437248386e6"
+      ]
+    },
+    {
+      "claim": "Cross-session retention cannot be evaluated because all evidence in this set comes from a single practice session.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "fee3ed53-f48b-49d3-bd1a-90041d1e09cb",
+        "1ed48ddc-0de0-4e19-857f-ac4099f25cb1",
+        "1317bd62-4122-4a80-a209-fc3859365dc1",
+        "598d0bb4-8b63-4f1a-9a54-43cfdc95b85a",
+        "f9819776-b77d-42a4-aa56-0432f3ab193c",
+        "14a1f5c1-fdf9-4fe3-ae41-1cbbed6e8276",
+        "31b6428a-6ee0-49e3-ae9e-ec22bb89ae37",
+        "c45aea55-ae9d-479c-8451-3f15f33b5807",
+        "fbae274f-a6f7-4166-ba02-c0ba8f6360c1",
+        "0869d724-6ccf-4b8a-ad41-2437248386e6"
+      ]
+    }
+  ],
+  "weaknesses": [
+    {
+      "claim": "Vulnerability on composite linear function evaluation g(x) = f(x + h) + k, specifically selecting an intermediate value (base function y-intercept f(0)=3) instead of completing the full evaluation g(0) = f(5) - 5 = 18.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "fbae274f-a6f7-4166-ba02-c0ba8f6360c1"
+      ]
+    }
+  ],
+  "whatChanged": [
+    {
+      "claim": "Reading & Writing central ideas accuracy reached 100% (5/5) in this set, showing improved text synthesis compared to prior observations of misreading text directional claims.",
+      "confidence": "moderate",
+      "evidenceIds": [
+        "1ed48ddc-0de0-4e19-857f-ac4099f25cb1",
+        "598d0bb4-8b63-4f1a-9a54-43cfdc95b85a",
+        "14a1f5c1-fdf9-4fe3-ae41-1cbbed6e8276",
+        "c45aea55-ae9d-479c-8451-3f15f33b5807",
+        "0869d724-6ccf-4b8a-ad41-2437248386e6"
+      ]
+    },
+    {
+      "claim": "Math performance confirmed an execution vulnerability on linear function transformations g(x) = f(x + h) + k, where stopping at an intermediate value led to the set's only incorrect answer.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "fee3ed53-f48b-49d3-bd1a-90041d1e09cb",
+        "fbae274f-a6f7-4166-ba02-c0ba8f6360c1"
+      ]
+    },
+    {
+      "claim": "Linear inequalities and polynomial equivalent expressions were solved accurately and quickly, demonstrating high efficiency on standard difficulty 5 algebraic manipulations.",
+      "confidence": "moderate",
+      "evidenceIds": [
+        "1317bd62-4122-4a80-a209-fc3859365dc1",
+        "f9819776-b77d-42a4-aa56-0432f3ab193c"
+      ]
+    }
+  ],
+  "id": "55466041-106c-4930-87fe-f5158f06a421",
+  "type": "session",
+  "period": "2026-08-09T11:31:16.709Z to 2026-08-09T11:42:01.463Z",
+  "createdAt": "2026-08-09T11:42:45.994Z",
+  "model": "gemini-3.6-flash-high",
+  "answerCount": 10
+}

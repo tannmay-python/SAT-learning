@@ -31,34 +31,34 @@ const words = (text = '') => text.trim().split(/\s+/).filter(Boolean).length
 // without changing the sentence containing the tested blank or the data display.
 const densityExtensions: Record<string, string[]> = {
   'words-in-context': [
-    'The distinction matters because the researchers must describe what the evidence actually establishes, not merely repeat a familiar feature of the setting. The surrounding details make the writer’s evaluation precise.',
-    'That qualification is important to the study’s interpretation: readers must separate a change in the evidence from a change in the object itself. The final word therefore describes the claim’s exact scope.',
+    'The surviving records include observations from several locations and dates, although they do not cover every instance of the phenomenon.',
+    'The researchers compared the observations with records collected under similar conditions during the same period.',
   ],
   'text-structure-purpose': [
-    'The order of the sentences is consequential. The first establishes a claim, assumption, or observation, while the next sentence supplies the evidence or qualification that tells readers how to interpret it.',
-    'Taken together, the sentences show how the writer moves from a starting point to a more precise account. The later information does not stand alone; it changes the significance of what came before.',
+    'The account draws on records from several years and identifies both the initial observation and the later result.',
+    'The later measurements were collected under conditions comparable to those used in the first part of the study.',
   ],
   'cross-text-connections': [
-    'Both authors are concerned with how evidence should be interpreted rather than with the topic in the abstract.',
-    'One text supplies the initial explanation, while the other tests its scope by pointing to a condition the first account leaves less visible.',
-    'The disagreement is therefore about the strength and limits of the conclusion, not necessarily about every observation in the first text.',
-    'The second author can accept the evidence while offering a different explanation for its size, cause, or meaning.',
+    'The studies were conducted in different settings and relied on different types of evidence.',
+    'The second investigation included observations gathered after the first study had been completed.',
+    'The researchers used the available records to compare the same broad phenomenon under different conditions.',
+    'The later report included measurements from sites that the earlier investigation had not examined.',
   ],
   'central-ideas-details': [
-    'The example is useful because it connects the specific observation to the broader conclusion. It also preserves the uncertainty in the evidence, so the passage distinguishes a supported possibility from a claim that would be too broad.',
-    'This finding matters beyond the individual case because it changes how researchers describe the process. The passage presents the result as evidence for a qualified interpretation, not as proof that every case behaves identically.',
+    'The surviving records list the gatherings by date and topic, but they do not record the attendance at every meeting.',
+    'Because the records cover only selected meetings, the pattern describes the society’s public activity without establishing what every individual member believed.',
   ],
   'command-evidence-textual': [
-    'The relevant evidence is the detail that most directly supports the stated interpretation. Other details may be true, but they do not establish the precise relationship the question asks the reader to identify.',
-    'A careful reader must distinguish evidence that illustrates the claim from evidence that merely shares its subject. The strongest choice connects the quoted or described detail to the conclusion without adding an unsupported assumption.',
+    'The team recorded observations at regular intervals and compared them with a second set of measurements from the same period.',
+    'The report includes several details from the investigation, including observations that differed across the sites examined.',
   ],
   'command-evidence-quantitative': [
-    'The researchers compared the observations under the same general conditions and treated the displayed values as measurements rather than as predictions. The pattern matters because it supports a limited conclusion about the relationship shown in the data.',
-    'The display is one part of a larger investigation: the numbers make the comparison visible, while the surrounding description identifies what was measured and what the researchers are entitled to conclude from the pattern.',
+    'The field teams collected the measurements during the same season and recorded each observation in a common unit.',
+    'The study combined the displayed measurements with observations made at several locations during the project.',
   ],
   inferences: [
-    'The comparison is informative because the researchers held the main alternatives as constant as possible. The result therefore supports a cautious inference about the factor that changed, while leaving broader explanations open for later study.',
-    'Nothing in the passage establishes an absolute rule. Instead, the observations make one explanation more plausible than the alternatives described, which is why the conclusion must stay within the limits of the evidence.',
+    'The observations came from repeated comparisons rather than a single trial, although the study did not examine every possible condition.',
+    'The researchers continued the measurements across several dates and recorded a similar pattern in most of the observed cases.',
   ],
   boundaries: [
     'The field team recorded the warning after several storms had loosened material above the route, and the notice remained in place until the slope could be inspected again.',
@@ -67,16 +67,16 @@ const densityExtensions: Record<string, string[]> = {
     'The comparison was repeated under similar conditions, giving the researchers a consistent record of the two results rather than a single unusual observation.',
   ],
   'form-structure-sense': [
-    'The surrounding wording makes the intended comparison or reference clear. The correct form must preserve that meaning while also matching the number, tense, modifier, or parallel structure required by the sentence.',
-    'A tempting alternative may sound familiar in isolation, but it changes the relationship among the sentence’s parts. The best choice is the one that keeps the construction precise when the full sentence is read aloud.',
+    'The report was revised after editors compared its wording with the original records and correspondence.',
+    'The final version retained several terms that had appeared in earlier drafts of the document.',
   ],
   transitions: [
-    'The transition is determined by the relationship between the two ideas, not by a repeated keyword. Readers should ask whether the second sentence contrasts, qualifies, illustrates, adds to, or follows from the first.',
-    'The final sentence extends the local reasoning by showing what the relationship means for the broader discussion. A transition that merely sounds smooth but signals the wrong relationship would distort that movement.',
+    'The later measurements came from a second set of observations collected after the initial survey.',
+    'The research team then compared the new results with the estimates made before the fieldwork began.',
   ],
   'rhetorical-synthesis': [
-    'The notes include both background and evidence, but the student’s goal determines which details belong in the final sentence. A successful choice selects the relevant facts and preserves the level of certainty supported by the notes.',
-    'The strongest sentence is concise without becoming vague: it gives readers the relationship or result the goal calls for and leaves out details that would distract from that emphasis or overstate what the research shows.',
+    'The notes were drawn from a report that compared several sites and summarized the results of the fieldwork.',
+    'The report also lists the dates of the observations and the conditions under which the measurements were made.',
   ],
 }
 

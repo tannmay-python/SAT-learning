@@ -199,6 +199,48 @@ export function planReadingBlueprint(
   return result
 }
 
+/**
+ * Build a fresh Math request from the broad local skill pool. The local pool
+ * supplies the requested skill, domain, and calibration level; Gemini then
+ * supplies the actual wording and representation. Penalizing repeated skills
+ * here prevents Practice from asking for a row of the same template before
+ * the model has a chance to vary the surface form.
+ */
+export function planMathBlueprint(
+  questions: Question[],
+  count: number,
+  states: Map<string, SkillState>,
+  seenQuestionIds: Set<string>,
+  directives: SkillDirective[],
+  sectionTarget: Difficulty,
+): QuestionBlueprint[] {
+  const math = questions.filter((question) => question.section === 'math')
+  const chosenIds = new Set<string>()
+  const skillUses = new Map<string, number>()
+  const result: QuestionBlueprint[] = []
+  for (let index = 0; index < count; index += 1) {
+    const candidates = math.filter((question) => !chosenIds.has(question.id))
+    const next = [...candidates].sort((a, b) => {
+      const score = (question: Question) => selectionPriority(question, states, seenQuestionIds, new Date(), directives, sectionTarget) - (skillUses.get(question.skillId) ?? 0) * 0.2
+      return score(b) - score(a)
+    })[0]
+    if (!next) break
+    const directive = directives.find((item) => item.skillId === next.skillId)
+    result.push({
+      section: 'math',
+      domain: next.domain,
+      skillId: next.skillId,
+      difficulty: recommendedDifficulty(states.get(next.skillId), directive, sectionTarget),
+      // Match the broad SAT response-format mix: mostly multiple choice with
+      // regular student-produced-response slots.
+      format: index % 4 === 3 ? 'student-produced' : 'multiple-choice',
+    })
+    chosenIds.add(next.id)
+    skillUses.set(next.skillId, (skillUses.get(next.skillId) ?? 0) + 1)
+  }
+  return result
+}
+
 export function practiceScoreEstimate(rwTheta: number, mathTheta: number) {
   const section = (theta: number) => Math.round((200 + 600 / (1 + Math.exp(-1.12 * theta))) / 10) * 10
   const rw = Math.max(200, Math.min(800, section(rwTheta)))

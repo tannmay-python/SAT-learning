@@ -2,7 +2,7 @@ import { useId, useState } from 'react'
 import { ArrowRight, Brain, CheckCircle, Lightbulb, X, XCircle } from '@phosphor-icons/react'
 import { Link } from 'wouter'
 import type { AttemptAnalysis, Confidence, DataPlot, Question } from '../types'
-import { displayAnswer, isCorrectResponse } from '../engine/questions'
+import { displayAnswer, isCorrectResponse, sanitizeQuestion } from '../engine/questions'
 import { domainById, skillById } from '../data/curriculum'
 import { DifficultyStars } from './DifficultyStars'
 
@@ -51,6 +51,7 @@ function markedStimulus(text: string, underlinedText?: string) {
 
 export function QuestionCard({ question, response, onResponse, confidence, onConfidence, submitted, analysis, aiAvailable = false, onAnalyzeRequest, compact = false, showConfidence = true, showMeta = true }: Props) {
   const inputId = useId()
+  const displayQuestion = sanitizeQuestion(question)
   const correct = submitted && isCorrectResponse(question, response)
   const selectedTrap = question.whyWrong?.[response]
   const [analysisOpen, setAnalysisOpen] = useState(false)
@@ -88,12 +89,12 @@ export function QuestionCard({ question, response, onResponse, confidence, onCon
       </header>}
 
       <div className="question-content">
-        {question.stimulus && <div className="stimulus">{question.stimulus.split('\n').map((line, index) => <p key={index}>{markedStimulus(line, question.underlinedText)}</p>)}</div>}
-        {question.secondaryStimulus && <div className="stimulus secondary"><strong>Text 2</strong>{markedStimulus(question.secondaryStimulus.replace(/^Text 2:\s*/, ''), question.underlinedText)}</div>}
-        {question.table && (
-          <div className="table-wrap"><table><caption>{question.table.caption}</caption><thead><tr>{question.table.headers.map((header) => <th key={header}>{header}</th>)}</tr></thead><tbody>{question.table.rows.map((row, rowIndex) => <tr key={rowIndex}>{row.map((cell, cellIndex) => <td key={cellIndex}>{cell}</td>)}</tr>)}</tbody></table></div>
+        {displayQuestion.stimulus && <div className="stimulus">{displayQuestion.stimulus.split('\n').map((line, index) => <p key={index}>{markedStimulus(line, displayQuestion.underlinedText)}</p>)}</div>}
+        {displayQuestion.secondaryStimulus && <div className="stimulus secondary"><strong>Text 2</strong>{markedStimulus(displayQuestion.secondaryStimulus.replace(/^Text 2:\s*/, ''), displayQuestion.underlinedText)}</div>}
+        {displayQuestion.table && (
+          <div className="table-wrap"><table><caption>{displayQuestion.table.caption}</caption><thead><tr>{displayQuestion.table.headers.map((header) => <th key={header}>{header}</th>)}</tr></thead><tbody>{displayQuestion.table.rows.map((row, rowIndex) => <tr key={rowIndex}>{row.map((cell, cellIndex) => <td key={cellIndex}>{cell}</td>)}</tr>)}</tbody></table></div>
         )}
-        {question.plot && <QuestionPlot plot={question.plot} />}
+        {displayQuestion.plot && <QuestionPlot plot={displayQuestion.plot} />}
         <h2 className="question-prompt">{question.prompt}</h2>
       </div>
 

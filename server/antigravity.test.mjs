@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { applyGenerationReviews, hasSuspiciousReadingOverlap, intervalFacts, normalizeReport, blankConventionFault, computeGoalFacts, normalizeMockAssessment, plainProse, rebalanceAnswerPositions, remapChoiceReferences, validateGeneratedReadingQuestion } from './antigravity.mjs'
+import { applyGenerationReviews, generatedStimulusFault, hasSuspiciousReadingOverlap, intervalFacts, normalizeReport, blankConventionFault, computeGoalFacts, normalizeMockAssessment, plainProse, rebalanceAnswerPositions, remapChoiceReferences, validateGeneratedReadingQuestion } from './antigravity.mjs'
 
 describe('mock assessment guardrails', () => {
   it('keeps expected total internally consistent and clamps model output', () => {
@@ -88,6 +88,12 @@ describe('fresh Reading and Writing validation', () => {
   it('rejects short or blueprint-mismatched items before they reach practice', () => {
     expect(validateGeneratedReadingQuestion({ ...valid, stimulus: 'Too short.' }, blueprint)).toBeNull()
     expect(validateGeneratedReadingQuestion({ ...valid, skillId: 'inferences' }, blueprint)).toBeNull()
+  })
+
+  it('rejects Gemini teaching commentary inside a stimulus', () => {
+    const contaminated = { ...valid, stimulus: `${valid.stimulus} The example is useful because it connects the specific observation to the broader conclusion.` }
+    expect(generatedStimulusFault(contaminated)).toMatch(/instructional commentary/)
+    expect(validateGeneratedReadingQuestion(contaminated, blueprint)).toBeNull()
   })
 
   it('rejects near-duplicate passages and answer keys the reviewer cannot reproduce', () => {

@@ -5,8 +5,8 @@ import { curriculum, domains, skillById } from '../data/curriculum'
 import { readingQuestionBank } from '../data/readingBank'
 import { readingExpansionQuestionBank } from '../data/readingExpansion'
 import { generateMathQuestion, mathSkillIds } from '../engine/mathGenerators'
-import { mixedSectionPlan, planReadingBlueprint, sectionTargetDifficulty, selectNextQuestion, weakerSection } from '../engine/adaptive'
-import { isCorrectResponse } from '../engine/questions'
+import { mixedSectionPlan, planMathBlueprint, planReadingBlueprint, sectionTargetDifficulty, selectNextQuestion, weakerSection } from '../engine/adaptive'
+import { isCorrectResponse, sanitizeQuestion } from '../engine/questions'
 import { DifficultyScalePicker, DifficultyStars, difficultyLabel } from '../components/DifficultyStars'
 import { QuestionCard } from '../components/QuestionCard'
 import { MathTools } from '../components/MathTools'
@@ -35,6 +35,7 @@ export function PracticePage() {
   const topicSkill = topicSkillId ? skillById.get(topicSkillId) : undefined
   const [preparing, setPreparing] = useState(false)
   const [preparationNotice, setPreparationNotice] = useState('')
+  const [preparationProgress, setPreparationProgress] = useState({ ready: 0, total: 0, generated: 0, fallback: 0, batch: 0, batches: 0 })
   const [sessionQuestions, setSessionQuestions] = useState<GeneratedQuestionRecord[]>([])
   const [current, setCurrent] = useState<Question | null>(null)
   const [response, setResponse] = useState('')
@@ -56,7 +57,7 @@ export function PracticePage() {
     const math = mathSkillIds.flatMap((skillId, skillIndex) => ([1, 2, 3, 4, 5] as const).flatMap((difficulty) => [0, 1].map((variant) => generateMathQuestion(skillId, difficulty, 10_000 + skillIndex * 100 + difficulty * 10 + variant))))
     // Real released items outrank anything written for this app, so they sit
     // first in the pool and win ties during selection.
-    return [...officialQuestions, ...authoredReadingPool, ...math, ...generatedQuestions]
+    return [...officialQuestions, ...authoredReadingPool, ...math, ...generatedQuestions].map(sanitizeQuestion)
   }, [generatedQuestions, officialQuestions])
 
   const calibratedTargets = useMemo(() => ({
@@ -80,7 +81,7 @@ export function PracticePage() {
     math: previewPlan.filter((section) => section === 'math').length,
   }), [previewPlan])
 
-  const chooseNext = (forcedSkill?: string, seenIds = seen, plan = sectionPlan, bank = [...sessionQuestions, ...questionBank]) => {
+  const chooseNext = (forcedSkill?: string, seenIds = seen, plan = sectionPlan, bank = [...sessionQuestions, ...questionBank], fresh = sessionQuestions) => {
     const slot = seenIds.length
     const nextPlan = [...plan]
     const forcedSection = forcedSkill ? bank.find((question) => question.skillId === forcedSkill)?.section : undefined
@@ -101,9 +102,12 @@ export function PracticePage() {
       if (exact.length) pool = exact
     }
     const available = pool.filter((question) => !seenIds.includes(question.id))
+    const freshAvailable = fresh.filter((question) => question.section === preferredSection && !seenIds.includes(question.id))
+    const freshMatchesForcedSkill = forcedSkill ? freshAvailable.some((question) => question.skillId === forcedSkill) : freshAvailable.length > 0
+    const candidatePool = freshMatchesForcedSkill ? freshAvailable : (available.length ? available : pool)
     const historicalSeen = new Set([...attempts.map((attempt) => attempt.questionId), ...seenIds])
     const next = selectNextQuestion(
-      available.length ? available : pool,
+      candidatePool,
       stateMap,
       historicalSeen,
       forcedSection === preferredSection ? forcedSkill : undefined,
@@ -118,23 +122,38 @@ export function PracticePage() {
     const plan = [...previewPlan]
     let prepared: GeneratedQuestionRecord[] = []
     setPreparationNotice('')
-    if (questionSource === 'fresh' && aiStatus.available && previewCounts.rw > 0) {
+    if (questionSource === 'fresh' && aiStatus.available) {
       setPreparing(true)
-      // A topic drill on an R&W skill skips the diverse skill-mix planner and
-      // asks for that one skill directly; otherwise every slot varies by design.
-      const blueprint: QuestionBlueprint[] = topicSkill && topicSkill.section === 'rw'
+      const seenQuestionIds = new Set(attempts.map((attempt) => attempt.questionId))
+      const mathPool = questionBank.filter((question) => question.section === 'math')
+      // A topic drill on one skill skips the diverse planner. Otherwise both
+      // sections receive a deliberately varied blueprint before Gemini writes
+      // the actual items.
+      const readingBlueprint: QuestionBlueprint[] = topicSkill?.section === 'rw'
         ? Array.from({ length: previewCounts.rw }, () => ({ section: 'rw', domain: topicSkill.domain, skillId: topicSkill.id, difficulty: sectionTargets.rw }))
-        : planReadingBlueprint(authoredReadingPool, previewCounts.rw, stateMap, new Set(attempts.map((attempt) => attempt.questionId)), learnerModel.skillDirectives, sectionTargets.rw)
-          // Same exactness fix applied to freshly generated items: pin the
-          // requested difficulty directly rather than the blended recommendation.
-          .map((entry) => difficultyOverride === 'adaptive' ? entry : { ...entry, difficulty: difficultyOverride })
+        : previewCounts.rw ? planReadingBlueprint(authoredReadingPool, previewCounts.rw, stateMap, seenQuestionIds, learnerModel.skillDirectives, sectionTargets.rw) : []
+      const mathBlueprint: QuestionBlueprint[] = topicSkill?.section === 'math'
+        ? Array.from({ length: previewCounts.math }, (_, index) => ({ section: 'math', domain: topicSkill.domain, skillId: topicSkill.id, difficulty: sectionTargets.math, format: index % 4 === 3 ? 'student-produced' : 'multiple-choice' }))
+        : previewCounts.math ? planMathBlueprint(mathPool, previewCounts.math, stateMap, seenQuestionIds, learnerModel.skillDirectives, sectionTargets.math) : []
+      const blueprint = [...readingBlueprint, ...mathBlueprint].map((entry) => difficultyOverride === 'adaptive' ? entry : { ...entry, difficulty: difficultyOverride })
+      const batches = Array.from({ length: Math.ceil(blueprint.length / 10) }, (_, index) => blueprint.slice(index * 10, (index + 1) * 10))
+      setPreparationProgress({ ready: 0, total: blueprint.length, generated: 0, fallback: 0, batch: 0, batches: batches.length })
       try {
-        prepared = await prepareFreshQuestions(blueprint)
-        // Generation now keeps whatever passes rather than discarding a whole
-        // batch over one bad item, so a short batch is a normal outcome to
-        // report rather than a failure to hide.
-        if (prepared.length < previewCounts.rw) {
-          setPreparationNotice(`${prepared.length} of ${previewCounts.rw} Reading and Writing questions were written fresh for you. The rest come from the authored bank.`)
+        for (const [index, batch] of batches.entries()) {
+          try {
+            const generated = await prepareFreshQuestions(batch)
+            prepared = [...prepared, ...generated]
+          } catch {
+            // A failed batch is intentionally allowed to fall back slot by
+            // slot; the rest of the set should not be blocked by one Gemini
+            // timeout or a reviewer rejection.
+          }
+          const processed = Math.min(blueprint.length, (index + 1) * 10)
+          setPreparationProgress({ ready: processed, total: blueprint.length, generated: prepared.length, fallback: processed - prepared.length, batch: index + 1, batches: batches.length })
+        }
+        if (prepared.length < blueprint.length) {
+          const sectionLabel = previewCounts.rw && previewCounts.math ? 'Reading and Writing and Math' : previewCounts.rw ? 'Reading and Writing' : 'Math'
+          setPreparationNotice(`${prepared.length} of ${blueprint.length} ${sectionLabel} questions were written fresh. The remaining slots use the independently checkable fallback bank.`)
         }
       } catch (error) {
         setPreparationNotice(error instanceof Error ? `${error.message} The authored bank is being used for this set.` : 'Fresh questions were unavailable, so the authored bank is being used.')
@@ -145,7 +164,7 @@ export function PracticePage() {
     setSessionQuestions(prepared)
     setSectionPlan(plan)
     setStarted(true)
-    chooseNext(topicSkillId, [], plan, [...prepared, ...questionBank])
+    chooseNext(topicSkillId, [], plan, [...prepared, ...questionBank], prepared)
   }
 
   useEffect(() => {
@@ -198,7 +217,11 @@ export function PracticePage() {
     setSeen([]); setAnswers({}); setCorrectCount(0); setComplete(false); setCurrent(null); setStarted(false); setSectionPlan([]); setSessionQuestions([]); setPreparationNotice(''); setRetrySkill(undefined); setCurrentAttemptId(undefined)
   }
 
-  if (preparing) return <section className="set-preparing" role="status" aria-live="polite"><div className="preparing-mark"><Sparkle size={19} weight="fill" /></div><p className="eyebrow">Preparing your set</p><h1>Writing fresh questions.</h1><p>Gemini is using your skill history and current difficulty targets to create {previewCounts.rw} original Reading and Writing question{previewCounts.rw === 1 ? '' : 's'}. Math remains deterministic and independently checkable.</p><div className="preparing-lines"><span /><span /><span /></div></section>
+  if (preparing) {
+    const percent = preparationProgress.total ? Math.round(preparationProgress.ready / preparationProgress.total * 100) : 0
+    const sectionCopy = previewCounts.rw && previewCounts.math ? `${previewCounts.rw} Reading and Writing and ${previewCounts.math} Math` : previewCounts.rw ? `${previewCounts.rw} Reading and Writing` : `${previewCounts.math} Math`
+    return <section className="set-preparing" role="status" aria-live="polite"><div className="preparing-mark"><Sparkle size={19} weight="fill" /></div><p className="eyebrow">Preparing your set</p><h1>Writing fresh questions.</h1><p>Gemini is using your skill history and current difficulty targets to create {sectionCopy} questions. Each batch is checked before it reaches the set; only failed slots use the fallback bank.</p><div className="preparing-progress" aria-label={`${percent}% of the fresh set is ready`}><div className="preparing-progress-heading"><strong>{percent}% ready</strong><span>{preparationProgress.ready} of {preparationProgress.total} slots resolved</span></div><div className="preparing-progress-track"><i style={{ width: `${percent}%` }} /></div><div className="preparing-progress-meta"><span>{preparationProgress.batches ? `Batch ${preparationProgress.batch} of ${preparationProgress.batches}` : 'Starting Gemini'}</span><span>{preparationProgress.generated} Gemini · {preparationProgress.fallback} fallback</span></div></div><div className="preparing-lines"><span /><span /><span /></div></section>
+  }
 
   if (!started) return (
     <div className="practice-setup">
@@ -211,7 +234,7 @@ export function PracticePage() {
         </select></div>
         <div className="setup-row"><span>Length</span><div className="segmented">{[5, 10, 15, 20].map((value) => <button key={value} className={length === value ? 'active' : ''} onClick={() => setLength(value)}>{value}</button>)}</div></div>
         <div className="setup-row"><span>Difficulty</span><DifficultyScalePicker value={difficultyOverride} onChange={setDifficultyOverride} /></div>
-        {(topicSkill ? topicSkill.section === 'rw' : mode !== 'math') && <div className="setup-row"><span>R&amp;W source</span><div className="segmented"><button className={questionSource === 'fresh' ? 'active' : ''} disabled={!aiStatus.available} onClick={() => setQuestionSource('fresh')}>Fresh + adaptive</button><button className={questionSource === 'authored' || !aiStatus.available ? 'active' : ''} onClick={() => setQuestionSource('authored')}>Authored + instant</button></div></div>}
+        <div className="setup-row"><span>Question source</span><div className="segmented"><button className={questionSource === 'fresh' ? 'active' : ''} disabled={!aiStatus.available} onClick={() => setQuestionSource('fresh')}>Fresh + adaptive</button><button className={questionSource === 'authored' || !aiStatus.available ? 'active' : ''} onClick={() => setQuestionSource('authored')}>Authored + instant</button></div></div>
         <div className="setup-intelligence"><Brain size={20} /><div><strong>{topicSkill ? `${length} ${topicSkill.title} questions` : mode === 'mixed' ? `${previewCounts.rw} Reading and Writing + ${previewCounts.math} Math` : `${length} ${mode === 'rw' ? 'Reading and Writing' : 'Math'} questions`}</strong><p>{topicSkill
           ? <>Every question in this set drills {topicSkill.title} only, at {difficultyOverride === 'adaptive' ? `your current ${difficultyLabel(sectionTargets[topicSkill.section])} target for this skill` : difficultyLabel(difficultyOverride)}. Focus and the section mix are set aside for the drill.</>
           : difficultyOverride === 'adaptive'

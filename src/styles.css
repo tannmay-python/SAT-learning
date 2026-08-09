@@ -623,3 +623,11 @@ input, select, textarea, .primary-button, .secondary-button, .ghost-button, .dan
   letter-spacing: normal;
   text-transform: none;
 }
+
+.goal-evidence {
+  margin: 10px 0 0;
+  max-width: 860px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.55;
+}

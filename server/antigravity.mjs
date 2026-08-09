@@ -259,8 +259,10 @@ const blankSkills = new Set(['boundaries', 'form-structure-sense', 'transitions'
 
 // These phrases describe how to solve an item rather than belonging to the
 // item itself. They entered the bank when density padding was mistaken for
-// context, so keep a hard stop here as well as removing the old padding.
-const stimulusMetaLeak = /the (?:sentence|question) is part of|the punctuation decision depends on|the surrounding information clarifies|readers can test the choice|the clause relationship remains clear|recheck the exact claim/i
+// context, so keep a hard stop here as well as removing the old padding. The
+// specific "example is useful" family is deliberately covered because it is
+// the characteristic Gemini explanation leak seen in Practice.
+const stimulusMetaLeak = /the (?:sentence|question) is part of|the punctuation decision depends on|the surrounding information clarifies|readers can test the choice|the clause relationship remains clear|recheck the exact claim|the example is useful because|the (?:example|finding|observation) (?:is|helps|serves as) useful because|it also preserves the uncertainty in the evidence|the passage distinguishes a supported possibility from a claim|this finding matters beyond the individual case because|the passage (?:connects|links) the specific observation to the broader conclusion|the distinction matters because|the order of the sentences is consequential|taken together, the sentences show|the relevant evidence is the detail|a careful reader must distinguish evidence|the comparison is informative because|nothing in the passage establishes an absolute rule|the transition is determined by the relationship|the final sentence extends the local reasoning|the notes include both background and evidence|the strongest sentence is concise/i
 
 export function generatedStimulusFault(raw) {
   const text = `${raw?.stimulus || ''} ${raw?.secondaryStimulus || ''}`
@@ -507,8 +509,7 @@ For multiple-choice items, solvedAnswer must be A, B, C, or D. For student-produ
   })
 }
 
-export function queueAdaptiveQuestionGeneration(blueprint) {
-  if (blueprint.some((item) => item?.section === 'math')) return queueAdaptiveMathQuestionGeneration(blueprint)
+function queueAdaptiveReadingQuestionGeneration(blueprint) {
   const cleanBlueprint = blueprint.filter((item) => item?.section === 'rw' && readingSkills.has(item.skillId)).slice(0, 12)
   if (!cleanBlueprint.length) return Promise.reject(new Error('No valid Reading and Writing question blueprint was supplied.'))
   return enqueue(`preparing ${cleanBlueprint.length} fresh question${cleanBlueprint.length === 1 ? '' : 's'}`, async () => {
@@ -557,6 +558,7 @@ ${JSON.stringify(evidence.analyses.slice(-10).map((analysis) => {
 
 Fidelity and originality requirements:
 - These must be new questions, not reconstructions, paraphrases, or continuations of released College Board items. Do not mention SATLAS, Gemini, the learner, or this prompt inside an item.
+- The stimulus is the passage a student would read before seeing the question. Never include solution commentary, item-writing notes, or a sentence explaining why an example, finding, or passage is useful. Do not write phrases such as "The example is useful because...", "This finding matters because...", or "The passage distinguishes..." in stimulus or secondaryStimulus. Put all reasoning about the answer only in explanation, concept, whyWrong, or misconceptionByChoice.
 - Match the digital SAT's self-contained one-question-per-passage format, restrained academic tone, four plausible choices, and exact skill named in each blueprint.
 - Use varied humanities, literature, history, social-science, and natural-science contexts. Do not reuse a context or named researcher across this set.
 - Hit each item's targetWords from the blueprint above. If a Command of Evidence or Inferences item comes up short, the fix is almost always that it is a one-sentence claim followed by four findings; the real form is a full paragraph that establishes a researcher, a question, a method, and a result, and only then poses the claim to be supported or completed. Write that paragraph rather than padding with adjectives.
@@ -709,6 +711,29 @@ ${JSON.stringify(rewritten.map((item, index) => ({ index, section: item.question
     }))
     await saveGeneratedQuestions(records)
     return records
+  })
+}
+
+/**
+ * Practice can ask for a mixed set. Generate each section through its own
+ * schema and reviewer because a Math request must never make the R&W items
+ * disappear (and vice versa). A partial result is useful: the caller can use
+ * the independently checked local bank only for failed slots.
+ */
+export function queueAdaptiveQuestionGeneration(blueprint) {
+  const readingBlueprint = blueprint.filter((item) => item?.section === 'rw')
+  const mathBlueprint = blueprint.filter((item) => item?.section === 'math')
+  const tasks = []
+  if (readingBlueprint.length) tasks.push(queueAdaptiveReadingQuestionGeneration(readingBlueprint))
+  if (mathBlueprint.length) tasks.push(queueAdaptiveMathQuestionGeneration(mathBlueprint))
+  if (!tasks.length) return Promise.reject(new Error('No valid fresh-question blueprint was supplied.'))
+  return Promise.allSettled(tasks).then((results) => {
+    const questions = results.flatMap((result) => result.status === 'fulfilled' ? result.value : [])
+    if (!questions.length) {
+      const failure = results.find((result) => result.status === 'rejected')
+      throw failure?.reason instanceof Error ? failure.reason : new Error('Fresh-question generation failed for every requested section.')
+    }
+    return questions
   })
 }
 
@@ -866,9 +891,33 @@ const mathSkillIds = new Set([
  * bundle and this Node server are separate runtimes with no existing shared
  * module boundary; keep the two in sync if the constants ever change.
  */
-export function computeGoalFacts(settings, skillStates, sessions) {
+export function computeGoalFacts(settings, skillStates, sessions, attempts = []) {
+  const pretestQuestionIds = new Set(sessions.flatMap((session) => session.pretestQuestionIds || []))
+  const scoredAttempts = attempts.filter((attempt) => !pretestQuestionIds.has(attempt.questionId))
+  const estimateStates = attempts.length
+    ? [...scoredAttempts].sort((a, b) => a.createdAt.localeCompare(b.createdAt)).reduce((states, attempt) => {
+      const previous = states.find((state) => state.skillId === attempt.skillId)
+      const state = previous || { skillId: attempt.skillId, theta: 0, alpha: 1, beta: 1, attempts: 0, correct: 0, streak: 0, lapses: 0, avgTimeMs: 0, intervalDays: 0, ease: 2.3 }
+      const confidenceWeight = { guess: 0.82, low: 0.91, medium: 1, high: 1.07, certain: 1.13 }
+      const evidenceWeight = (attempt.confidence ? confidenceWeight[attempt.confidence] || 1 : 1) * (attempt.usedHint ? 0.72 : 1)
+      const expected = 1 / (1 + Math.exp(-((state.theta - (attempt.difficulty - 3) * 0.72))))
+      const outcome = attempt.correct ? 1 : 0
+      const learningRate = Math.max(0.12, 0.46 / Math.sqrt(1 + state.attempts / 4))
+      const next = {
+        ...state,
+        theta: Math.max(-3, Math.min(3, state.theta + learningRate * evidenceWeight * (outcome - expected))),
+        alpha: state.alpha + (attempt.correct ? evidenceWeight : 0),
+        beta: state.beta + (attempt.correct ? 0 : evidenceWeight),
+        attempts: state.attempts + 1,
+        correct: state.correct + (attempt.correct ? 1 : 0),
+      }
+      if (previous) states[states.indexOf(previous)] = next
+      else states.push(next)
+      return states
+    }, [])
+    : skillStates
   const sectionTheta = (skillIds) => {
-    const selected = skillStates.filter((state) => skillIds.has(state.skillId) && state.attempts > 0)
+    const selected = estimateStates.filter((state) => skillIds.has(state.skillId) && state.attempts > 0)
     if (!selected.length) return 0
     const totalWeight = selected.reduce((sum, state) => sum + Math.sqrt(state.attempts), 0)
     return selected.reduce((sum, state) => sum + state.theta * Math.sqrt(state.attempts), 0) / totalWeight
@@ -890,6 +939,22 @@ export function computeGoalFacts(settings, skillStates, sessions) {
   const math = blendWithCheckpoint(liveMath, latestMock?.math)
   const currentEstimate = { rw, math, total: rw + math }
 
+  const mockSessionIds = new Set(sessions.filter((session) => session.type === 'mock').map((session) => session.id))
+  const mockAttempts = scoredAttempts.filter((attempt) => mockSessionIds.has(attempt.sessionId))
+  const practiceAttempts = scoredAttempts.filter((attempt) => !mockSessionIds.has(attempt.sessionId))
+  const evidence = {
+    totalAttempts: scoredAttempts.length,
+    rwAttempts: scoredAttempts.filter((attempt) => attempt.section === 'rw').length,
+    mathAttempts: scoredAttempts.filter((attempt) => attempt.section === 'math').length,
+    practiceAttempts: practiceAttempts.length,
+    mockAttempts: mockAttempts.length,
+    practiceSessions: sessions.filter((session) => session.type !== 'mock' && session.completedAt && session.questionIds?.length).length,
+    fullMocks: mockHistory.length,
+  }
+  const estimateJustification = evidence.totalAttempts
+    ? `Based on ${evidence.totalAttempts} scored responses across ${evidence.practiceSessions} completed practice set${evidence.practiceSessions === 1 ? '' : 's'} and ${evidence.fullMocks} full mock${evidence.fullMocks === 1 ? '' : 's'}. Practice answers are included in the live calibration; completed mocks provide a modest full-test checkpoint.`
+    : 'No answered responses are available yet; the estimate is only a starting baseline.'
+
   let weeklyTrend = null
   if (mockHistory.length >= 2) {
     const firstDate = new Date(mockHistory[0].date).getTime()
@@ -907,6 +972,8 @@ export function computeGoalFacts(settings, skillStates, sessions) {
     testDate: settings.testDate || null,
     daysRemaining,
     currentEstimate,
+    estimateJustification,
+    evidence,
     gapToGoal: settings.targetScore ? settings.targetScore - currentEstimate.total : null,
     mockHistory,
     weeklyTrend,
@@ -991,7 +1058,7 @@ async function createReport({ id, type, period, attempts, sessions, model, effor
   const revision = resetRevision
   const evidence = await getEvidence()
   const facts = intervalFacts(attempts)
-  const goal = computeGoalFacts(evidence.settings, evidence.skillStates, evidence.sessions)
+  const goal = computeGoalFacts(evidence.settings, evidence.skillStates, evidence.sessions, evidence.attempts)
   const prompt = `Write an evidence-bound ${type === 'comprehensive' ? 'complete learning-history' : 'completed-set'} SAT learning report and update the learner model.
 
 PERIOD: ${period}

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { defaultSkillState, expectedSuccess, masteryPercent, mixedSectionPlan, planReadingBlueprint, recommendedDifficulty, sectionTargetDifficulty, selectNextQuestion, targetDifficulty, updateSkillState, weakerSection } from './adaptive'
+import { defaultSkillState, expectedSuccess, masteryPercent, mixedSectionPlan, planMathBlueprint, planReadingBlueprint, recommendedDifficulty, sectionTargetDifficulty, selectNextQuestion, targetDifficulty, updateSkillState, weakerSection } from './adaptive'
 import type { Attempt } from '../types'
 
 const attempt = (correct: boolean, difficulty = 3): Attempt => ({
@@ -91,6 +91,17 @@ describe('adaptive learner model', () => {
     expect(blueprint).toHaveLength(4)
     expect(new Set(blueprint.map((item) => item.skillId)).size).toBe(4)
     expect(blueprint.every((item) => item.section === 'rw' && item.difficulty === 3)).toBe(true)
+  })
+
+  it('plans fresh Math across skills with a real response-format mix', () => {
+    const questions = Array.from({ length: 6 }, (_, index) => ({
+      id: `math-${index}`, section: 'math', domain: index < 3 ? 'algebra' : 'problem-solving-data', skillId: ['linear-functions', 'systems-linear-equations', 'nonlinear-functions', 'probability', 'two-variable-data', 'area-volume'][index], difficulty: 3,
+    })) as never[]
+    const blueprint = planMathBlueprint(questions, 4, new Map(), new Set(), [], 3)
+    expect(blueprint).toHaveLength(4)
+    expect(new Set(blueprint.map((item) => item.skillId)).size).toBe(4)
+    expect(blueprint.filter((item) => item.format === 'student-produced')).toHaveLength(1)
+    expect(blueprint.every((item) => item.section === 'math' && item.difficulty === 3)).toBe(true)
   })
 
   it('can plan an exact mock quota so every generated slot maps to a form slot', () => {

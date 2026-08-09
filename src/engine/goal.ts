@@ -1,6 +1,6 @@
 import { skillById } from '../data/curriculum'
-import { practiceScoreEstimate, sectionTheta } from './adaptive'
-import type { LearnerSettings, SessionRecord, SkillState } from '../types'
+import { defaultSkillState, practiceScoreEstimate, sectionTheta, updateSkillState } from './adaptive'
+import type { Attempt, LearnerSettings, SessionRecord, SkillState } from '../types'
 
 const DAY_MS = 24 * 60 * 60 * 1000
 
@@ -16,12 +16,25 @@ export interface PredictionPoint extends ScorePoint {
   kind: 'mock' | 'current' | 'projection' | 'target'
 }
 
+export interface GoalEvidenceSummary {
+  totalAttempts: number
+  rwAttempts: number
+  mathAttempts: number
+  practiceAttempts: number
+  mockAttempts: number
+  practiceSessions: number
+  fullMocks: number
+}
+
 export interface GoalProgress {
   targetScore?: number
   testDate?: string
   daysRemaining?: number
   /** Live estimate from current skill calibration, not just the last mock. */
   currentEstimate: { rw: number; math: number; total: number; confidenceRadius: number }
+  /** Human-readable basis shown next to the estimate, with no hidden score source. */
+  estimateJustification: string
+  evidence: GoalEvidenceSummary
   gapToGoal?: number
   /** Completed full mocks in order, each a real checkpoint rather than a rolling estimate. */
   mockHistory: ScorePoint[]
@@ -51,17 +64,49 @@ export function computeGoalProgress(
   settings: LearnerSettings,
   skillStates: SkillState[],
   sessions: SessionRecord[],
-  now: Date = new Date(),
+  attemptsOrNow: Attempt[] | Date = [],
+  maybeNow: Date = new Date(),
 ): GoalProgress {
+  const attempts = attemptsOrNow instanceof Date ? [] : attemptsOrNow
+  const now = attemptsOrNow instanceof Date ? attemptsOrNow : maybeNow
   const rwSkills = [...skillById.values()].filter((skill) => skill.section === 'rw').map((skill) => skill.id)
   const mathSkills = [...skillById.values()].filter((skill) => skill.section === 'math').map((skill) => skill.id)
-  const liveEstimate = practiceScoreEstimate(sectionTheta(skillStates, rwSkills), sectionTheta(skillStates, mathSkills))
 
   const mockHistory: ScorePoint[] = sessions
     .filter((session): session is SessionRecord & { completedAt: string; estimatedScore: number } =>
       session.type === 'mock' && Boolean(session.completedAt) && typeof session.estimatedScore === 'number')
     .sort((a, b) => a.completedAt.localeCompare(b.completedAt))
     .map((session) => ({ date: session.completedAt, total: session.estimatedScore, rw: session.rwScore, math: session.mathScore }))
+
+  // Mock pretest items are useful for learning, but they are not scored by the
+  // SAT and should not move the score estimate. Rebuild the calibration view
+  // from the complete answer history when it is available, leaving the stored
+  // skill states untouched for spaced-repetition selection.
+  const pretestQuestionIds = new Set(sessions.flatMap((session) => session.pretestQuestionIds ?? []))
+  const scoredAttempts = attempts.filter((attempt) => !pretestQuestionIds.has(attempt.questionId))
+  const estimateStates = scoredAttempts.length
+    ? [...scoredAttempts].sort((a, b) => a.createdAt.localeCompare(b.createdAt)).reduce<SkillState[]>((states, attempt) => {
+      const index = states.findIndex((state) => state.skillId === attempt.skillId)
+      const next = updateSkillState(index >= 0 ? states[index] : defaultSkillState(attempt.skillId), attempt)
+      if (index >= 0) states[index] = next
+      else states.push(next)
+      return states
+    }, [])
+    : skillStates
+  const liveEstimate = practiceScoreEstimate(sectionTheta(estimateStates, rwSkills), sectionTheta(estimateStates, mathSkills))
+
+  const mockSessionIds = new Set(sessions.filter((session) => session.type === 'mock').map((session) => session.id))
+  const mockAttempts = scoredAttempts.filter((attempt) => mockSessionIds.has(attempt.sessionId))
+  const practiceAttempts = scoredAttempts.filter((attempt) => !mockSessionIds.has(attempt.sessionId))
+  const evidence: GoalEvidenceSummary = {
+    totalAttempts: scoredAttempts.length,
+    rwAttempts: scoredAttempts.filter((attempt) => attempt.section === 'rw').length,
+    mathAttempts: scoredAttempts.filter((attempt) => attempt.section === 'math').length,
+    practiceAttempts: practiceAttempts.length,
+    mockAttempts: mockAttempts.length,
+    practiceSessions: sessions.filter((session) => session.type !== 'mock' && Boolean(session.completedAt) && session.questionIds.length > 0).length,
+    fullMocks: mockHistory.length,
+  }
 
   const nearestTen = (value: number) => Math.round(value / 10) * 10
   const latestMock = mockHistory[mockHistory.length - 1]
@@ -82,6 +127,11 @@ export function computeGoalProgress(
     return Math.max(42, Math.min(120, Math.round(128 - Math.sqrt(attemptsObserved) * 6 - coverage * 24 - checkpointConfidence)))
   }
   currentEstimate.confidenceRadius = Math.round((evidenceRadius(rwSkills) + evidenceRadius(mathSkills)) / 2)
+
+  const responseLabel = (count: number) => `${count} answered response${count === 1 ? '' : 's'}`
+  const estimateJustification = evidence.totalAttempts
+    ? `Based on ${responseLabel(evidence.totalAttempts)} across ${evidence.practiceSessions} completed practice set${evidence.practiceSessions === 1 ? '' : 's'} and ${evidence.fullMocks} full mock${evidence.fullMocks === 1 ? '' : 's'}. Reading and Writing uses ${evidence.rwAttempts} response${evidence.rwAttempts === 1 ? '' : 's'}; Math uses ${evidence.mathAttempts} response${evidence.mathAttempts === 1 ? '' : 's'}. Practice is included in the live calibration, while completed mocks provide a modest full-test checkpoint. The ±${currentEstimate.confidenceRadius} range reflects evidence volume and skill coverage.`
+    : 'No answered questions are available yet. Complete practice in both sections to establish a score estimate; the range will narrow as the evidence grows.'
 
   let weeklyTrend: number | null = null
   if (mockHistory.length >= 2) {
@@ -117,5 +167,5 @@ export function computeGoalProgress(
     ? { date: settings.testDate ? new Date(settings.testDate).toISOString() : now.toISOString(), total: settings.targetScore, kind: 'target' as const }
     : null
 
-  return { targetScore: settings.targetScore, testDate: settings.testDate, daysRemaining, currentEstimate, gapToGoal, mockHistory, weeklyTrend, projectedScore, onTrackMargin, predictionTrack: { actual, current: currentPoint, projection, target } }
+  return { targetScore: settings.targetScore, testDate: settings.testDate, daysRemaining, currentEstimate, estimateJustification, evidence, gapToGoal, mockHistory, weeklyTrend, projectedScore, onTrackMargin, predictionTrack: { actual, current: currentPoint, projection, target } }
 }

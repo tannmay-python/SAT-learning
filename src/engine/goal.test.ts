@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { computeGoalProgress } from './goal'
-import type { LearnerSettings, SessionRecord, SkillState } from '../types'
+import type { Attempt, LearnerSettings, SessionRecord, SkillState } from '../types'
 
 const settings: LearnerSettings = {
   id: 'learner', name: '', targetScore: 1600, dailyMinutes: 30, theme: 'light', aiModel: 'gemini-3.6-flash-high',
@@ -67,5 +67,16 @@ describe('goal progress', () => {
     ]
     const progress = computeGoalProgress(settings, states, [])
     expect(progress.currentEstimate.rw).toBeGreaterThan(progress.currentEstimate.math)
+  })
+
+  it('explains that the live estimate includes practice and mock evidence', () => {
+    const attempts: Attempt[] = [
+      { id: 'p1', sessionId: 'practice-1', questionId: 'q1', section: 'rw', domain: 'information-ideas', skillId: 'words-in-context', difficulty: 3, response: 'A', correct: true, elapsedMs: 45_000, usedHint: false, createdAt: '2026-08-01T00:00:00Z' },
+      { id: 'p2', sessionId: 'practice-1', questionId: 'q2', section: 'math', domain: 'algebra', skillId: 'linear-functions', difficulty: 3, response: 'A', correct: false, elapsedMs: 55_000, usedHint: false, createdAt: '2026-08-01T00:01:00Z' },
+    ]
+    const sessions: SessionRecord[] = [{ id: 'practice-1', type: 'adaptive', startedAt: '2026-08-01T00:00:00Z', completedAt: '2026-08-01T00:02:00Z', questionIds: ['q1', 'q2'], answers: { q1: 'A', q2: 'A' }, flags: [] }]
+    const progress = computeGoalProgress(settings, [], sessions, attempts)
+    expect(progress.evidence).toMatchObject({ totalAttempts: 2, rwAttempts: 1, mathAttempts: 1, practiceAttempts: 2, mockAttempts: 0, practiceSessions: 1, fullMocks: 0 })
+    expect(progress.estimateJustification).toMatch(/includes|Based on 2 answered responses/)
   })
 })

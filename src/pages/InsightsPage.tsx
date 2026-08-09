@@ -31,9 +31,10 @@ function GoalPanel({ progress }: { progress: GoalProgress }) {
     </div>
     <div className="goal-track"><i className="goal-track-fill" style={{ width: `${scale(progress.currentEstimate.total)}%` }} /><b className="goal-track-mark" style={{ left: `${scale(progress.targetScore)}%` }} title={`Target: ${progress.targetScore}`} /></div>
     {progress.weeklyTrend !== null ? <p className="goal-trend">{progress.weeklyTrend >= 0 ? 'Trending up' : 'Trending down'} about {Math.abs(progress.weeklyTrend)} point{Math.abs(progress.weeklyTrend) === 1 ? '' : 's'} a week across {progress.mockHistory.length} full mocks. {progress.projectedScore !== null && progress.testDate && progress.daysRemaining! >= 0 && <>At this rate, test-day estimate is near <strong>{progress.projectedScore}</strong>{progress.onTrackMargin !== null && (progress.onTrackMargin >= 0 ? `, ${progress.onTrackMargin} above target.` : `, ${Math.abs(progress.onTrackMargin)} short. Increase weekly volume or focus on the section with the bigger gap.`)}</>}</p>
-      : <p className="muted-copy">Complete a second full mock to see a trend and a projected test-day score. One mock is a snapshot; two show direction.</p>}
+      : <p className="muted-copy">Your current estimate already includes every recorded practice response. Complete another full mock to add a checkpoint trend and a projected test-day score.</p>}
+    <p className="goal-evidence">{progress.estimateJustification}</p>
     <PredictionChart progress={progress} />
-    <details className="estimate-method"><summary>How this estimate is calculated</summary><p>The current estimate starts with skill-level calibration, then uses completed full mocks as a small checkpoint anchor. The uncertainty range shrinks as more skills, answers, and mock checkpoints are recorded. The test-day line uses every completed mock checkpoint, not just the most recent two.</p></details>
+    <details className="estimate-method"><summary>How this estimate is calculated</summary><p>The live section estimates come from all scored answer evidence on SATLAS, including practice sets and completed mocks, weighted by skill and difficulty. SAT pretest items are excluded from the score estimate when their mock metadata identifies them, although they can still inform learning selection. Completed mocks act as a modest checkpoint anchor; the uncertainty range shrinks as more skills and responses are covered. The test-day line uses every completed mock checkpoint, not just the most recent two.</p></details>
     {progress.mockHistory.length > 0 && <div className="goal-mock-history">{progress.mockHistory.map((point) => <div key={point.date}><span>{new Date(point.date).toLocaleDateString(undefined, { day: 'numeric', month: 'short' })}</span><strong>{point.total}</strong>{point.rw !== undefined && point.math !== undefined && <small>R&amp;W {point.rw} / Math {point.math}</small>}</div>)}</div>}
   </section>
 }
@@ -57,7 +58,7 @@ function PredictionChart({ progress }: { progress: GoalProgress }) {
   const forecastPoints = track.projection ? `${x(forecastStart.date)},${y(forecastStart.total)} ${x(track.projection.date)},${y(track.projection.total)}` : ''
   const dateLabel = (date: string) => new Date(date).toLocaleDateString(undefined, { day: 'numeric', month: 'short' })
   return <div className="prediction-chart-wrap">
-    <div className="prediction-chart-heading"><div><strong>Predicted score tracking</strong><small>{track.projection ? 'Checkpoint history plus a test-day projection' : 'Current estimate and target; complete another mock to establish direction'}</small></div><TrendUp size={18} /></div>
+    <div className="prediction-chart-heading"><div><strong>Predicted score tracking</strong><small>{track.projection ? 'Checkpoint history plus a test-day projection' : 'All practice evidence informs the current estimate; another mock establishes direction'}</small></div><TrendUp size={18} /></div>
     <svg className="prediction-chart" viewBox="0 0 420 210" role="img" aria-label="Predicted SAT score tracking chart">
       <g className="prediction-grid" aria-hidden="true">{yTicks.map((tick) => <line key={tick} x1="48" y1={y(tick)} x2="398" y2={y(tick)} />)}</g>
       <g className="prediction-axis" aria-hidden="true"><line x1="48" y1="166" x2="398" y2="166" /><line x1="48" y1="166" x2="48" y2="40" /></g>
@@ -131,7 +132,7 @@ export function InsightsPage() {
   const [selectedReportId, setSelectedReportId] = useState<string | undefined>(latestReport?.id)
   const selectedReport = reports.find((report) => report.id === selectedReportId) ?? latestReport
   const insights = useMemo(() => buildLearningInsights(attempts, sessions), [attempts, sessions])
-  const goalProgress = useMemo(() => computeGoalProgress(settings, skillStates, sessions), [settings, skillStates, sessions])
+  const goalProgress = useMemo(() => computeGoalProgress(settings, skillStates, sessions, attempts), [settings, skillStates, sessions, attempts])
 
   const generate = async () => {
     setGenerating(true); setMessage('')
