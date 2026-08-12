@@ -6,7 +6,7 @@ import { displayAnswer, isCorrectResponse, sanitizeQuestion } from '../engine/qu
 import { domainById, skillById } from '../data/curriculum'
 import { DifficultyStars } from './DifficultyStars'
 import { MathContent } from './MathContent'
-import { MathText } from './MathText'
+import { isLikelyMathExpression, MathText } from './MathText'
 
 interface Props {
   question: Question
@@ -26,19 +26,22 @@ interface Props {
 function QuestionPlot({ plot }: { plot: DataPlot }) {
   const xs = plot.points.map((point) => point.x)
   const ys = plot.points.map((point) => point.y)
-  const minX = Math.min(...xs); const maxX = Math.max(...xs)
+  // A plot in the xy-plane must keep the y-axis at x = 0. Mapping the
+  // smallest observed x-value to the y-axis made every positive-x dataset
+  // look as though its first point lay on the y-axis.
+  const minX = Math.min(0, ...xs); const maxX = Math.max(0, ...xs)
   const minY = Math.min(0, ...ys); const maxY = Math.max(...ys)
   const x = (value: number) => 48 + (value - minX) / Math.max(1, maxX - minX) * 330
   const y = (value: number) => 172 - (value - minY) / Math.max(1, maxY - minY) * 138
   const linePoints = [...plot.points].sort((a, b) => a.x - b.x).map((point) => `${x(point.x)},${y(point.y)}`).join(' ')
-  const xTicks = [...new Set(xs)].sort((a, b) => a - b)
+  const xTicks = [...new Set([0, ...xs])].sort((a, b) => a - b)
   const yTicks = Array.from({ length: 4 }, (_, index) => minY + ((maxY - minY) * index) / 3)
   return <figure className="question-plot"><figcaption>{plot.caption}</figcaption><svg viewBox="0 0 420 210" role="img" aria-label={plot.caption}>
-    <g className="plot-axis" aria-hidden="true"><line x1="48" y1="172" x2="390" y2="172" /><line x1="48" y1="172" x2="48" y2="18" /></g>
-    {yTicks.map((tick) => <g className="plot-y-tick" key={`y-${tick}`}><line x1="43" y1={y(tick)} x2="48" y2={y(tick)} /><text x="39" y={y(tick) + 3} textAnchor="end">{Number.isInteger(tick) ? tick : tick.toFixed(1)}</text></g>)}
+    <g className="plot-axis" aria-hidden="true"><line x1={x(minX)} y1={y(0)} x2={x(maxX)} y2={y(0)} /><line x1={x(0)} y1={y(0)} x2={x(0)} y2="18" /></g>
+    {yTicks.map((tick) => <g className="plot-y-tick" key={`y-${tick}`}><line x1={x(0) - 5} y1={y(tick)} x2={x(0)} y2={y(tick)} /><text x={x(0) - 9} y={y(tick) + 3} textAnchor="end">{Number.isInteger(tick) ? tick : tick.toFixed(1)}</text></g>)}
     {plot.kind === 'line' && <polyline points={linePoints} />}
     {plot.points.map((point, index) => <circle key={`${point.x}-${point.y}-${index}`} cx={x(point.x)} cy={y(point.y)} r="4" />)}
-    {xTicks.length <= 8 && xTicks.map((tick) => <g key={`x-${tick}`}><line x1={x(tick)} y1="172" x2={x(tick)} y2="177" /><text x={x(tick)} y="191" textAnchor="middle">{tick}</text></g>)}
+    {xTicks.length <= 8 && xTicks.map((tick) => <g key={`x-${tick}`}><line x1={x(tick)} y1={y(0)} x2={x(tick)} y2={y(0) + 5} /><text x={x(tick)} y="191" textAnchor="middle">{tick}</text></g>)}
     {plot.xLabel && <text className="plot-axis-label" x="220" y="207" textAnchor="middle">{plot.xLabel}</text>}
     {plot.yLabel && <text className="plot-axis-label" x="13" y="95" textAnchor="middle" transform="rotate(-90 13 95)">{plot.yLabel}</text>}
   </svg></figure>
@@ -112,7 +115,7 @@ export function QuestionCard({ question, response, onResponse, confidence, onCon
             const isWrong = submitted && selected && choice.id !== question.answer
             const eliminated = eliminatedChoices.has(choice.id)
             const choiceText = choice.text.trim() ? choice.text : 'No punctuation'
-            return <div className="choice-row" key={choice.id}><button type="button" role="radio" aria-checked={selected} disabled={submitted || eliminated} className={`choice ${selected ? 'selected' : ''} ${isAnswer ? 'correct' : ''} ${isWrong ? 'wrong' : ''} ${eliminated ? 'eliminated' : ''}`} onClick={() => onResponse(choice.id)}><span>{choice.id}</span><p className={choice.text.trim() ? undefined : 'choice-no-punctuation'}>{isMathQuestion && choice.text.trim() ? <MathText text={choiceText} mathOnly /> : choiceText}</p>{isAnswer && <CheckCircle size={20} weight="fill" />}{isWrong && <XCircle size={20} weight="fill" />}{eliminated && <X size={18} weight="bold" />}</button>{!submitted && poeOpen && <button type="button" className={`choice-poe ${eliminated ? 'active' : ''}`} aria-label={`${eliminated ? 'Restore' : 'Eliminate'} choice ${choice.id}`} aria-pressed={eliminated} onClick={() => toggleEliminated(choice.id)}><X size={14} weight="bold" /><span>{eliminated ? 'Restore' : 'Eliminate'}</span></button>}</div>
+            return <div className="choice-row" key={choice.id}><button type="button" role="radio" aria-checked={selected} disabled={submitted || eliminated} className={`choice ${selected ? 'selected' : ''} ${isAnswer ? 'correct' : ''} ${isWrong ? 'wrong' : ''} ${eliminated ? 'eliminated' : ''}`} onClick={() => onResponse(choice.id)}><span>{choice.id}</span><p className={choice.text.trim() ? undefined : 'choice-no-punctuation'}>{isMathQuestion && choice.text.trim() ? <MathText text={choiceText} mathOnly={isLikelyMathExpression(choiceText)} /> : choiceText}</p>{isAnswer && <CheckCircle size={20} weight="fill" />}{isWrong && <XCircle size={20} weight="fill" />}{eliminated && <X size={18} weight="bold" />}</button>{!submitted && poeOpen && <button type="button" className={`choice-poe ${eliminated ? 'active' : ''}`} aria-label={`${eliminated ? 'Restore' : 'Eliminate'} choice ${choice.id}`} aria-pressed={eliminated} onClick={() => toggleEliminated(choice.id)}><X size={14} weight="bold" /><span>{eliminated ? 'Restore' : 'Eliminate'}</span></button>}</div>
           })}
           </div>
         </div>

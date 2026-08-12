@@ -456,6 +456,17 @@ export function validateGeneratedMathQuestion(raw, blueprint) {
   }
 }
 
+async function reviewMathCandidates(candidates) {
+  const reviewPrompt = `Act as an adversarial digital SAT Math reviewer. Independently solve every candidate below without trusting its answer key. Check the exact requested skill, arithmetic, units, table or graph interpretation, format, difficulty, and whether exactly one choice is defensible. Reject any item with an arithmetic error, an ambiguous answer, a missing condition, a decorative display, an unprovided diagram, or a distractor that is not plausible.
+
+CANDIDATES WITHOUT ANSWER KEYS
+${JSON.stringify(candidates.map((item, index) => ({ index, section: item.question.section, domain: item.question.domain, skillId: item.question.skillId, difficulty: item.question.difficulty, format: item.question.format, stimulus: item.question.stimulus, table: item.question.table, plot: item.question.plot, prompt: item.question.prompt, choices: item.question.choices })), null, 2)}
+
+For multiple-choice items, solvedAnswer must be A, B, C, or D. For student-produced items, solvedAnswer must be the independently calculated numeric answer. Return one review for every candidate index.`
+  const reviewed = await runStructured({ prompt: reviewPrompt, schema: 'generated-math-review.json', model: observerModel, effort: 'high', timeout: '3m' })
+  return candidates.map((item, index) => ({ ...item, review: (reviewed.reviews || []).find((candidate) => candidate.index === index) }))
+}
+
 export function queueAdaptiveMathQuestionGeneration(blueprint) {
   const cleanBlueprint = blueprint.filter((item) => item?.section === 'math' && mathSkills.has(item.skillId) && mathDomains.has(item.domain)).slice(0, 10)
   if (!cleanBlueprint.length) return Promise.reject(new Error('No valid Math question blueprint was supplied.'))
@@ -480,32 +491,59 @@ QUALITY CONTRACT
 - Every question must be solvable from the text and any included table or plot. Do not require an unprovided diagram or outside fact.
 - Match the exact skill, domain, difficulty, and format in the blueprint. Student-produced response answers must be a plain integer, decimal, or fraction.
 - For multiple-choice items, use exactly four plausible choices and exactly one correct answer. Each distractor must come from a distinct, realistic error such as sign reversal, wrong quantity, wrong scale, or an invalid inference.
-- Use clean mathematical notation in plain text. Include units where the question needs them, and do not accidentally change units mid-solution.
+- Use clean LaTeX mathematical notation: wrap every inline expression in \\( ... \\), use \\frac{...}{...} for division, ^{...} for powers, and _{...} for subscripts. Use units where the question needs them, and do not accidentally change units mid-solution.
 - Vary the surface form: equations, functions, tables, scatterplots, geometry descriptions, proportional situations, probability, and study designs should not all look alike. Context is useful only when it contributes to the mathematical task.
 - Solve each item independently after writing it. The explanation must show enough arithmetic or algebra for an adversarial reviewer to reproduce the answer.
 - Do not mention SATLAS, Gemini, the learner, this prompt, or the generation process inside a question.
 
 Return only the structured questions.`
     const generated = await runStructured({ prompt, schema: 'generated-math-set.json', model: generationModel, effort: 'high', timeout: '3m' })
-    const candidates = cleanBlueprint.map((entry, index) => ({ entry, question: validateGeneratedMathQuestion(generated.questions?.[index], entry) })).filter((item) => item.question)
-    if (!candidates.length) throw new Error('No Math question in this batch passed the structural fidelity checks.')
-    const reviewPrompt = `Act as an adversarial digital SAT Math reviewer. Independently solve every candidate below without trusting its answer key. Check the exact requested skill, arithmetic, units, table or graph interpretation, format, difficulty, and whether exactly one choice is defensible. Reject any item with an arithmetic error, an ambiguous answer, a missing condition, a decorative display, an unprovided diagram, or a distractor that is not plausible.
+    const slots = cleanBlueprint.map((entry, index) => ({ entry, raw: generated.questions?.[index], question: validateGeneratedMathQuestion(generated.questions?.[index], entry), fault: mathValidationFault(generated.questions?.[index], entry) }))
+    const candidates = slots.filter((item) => item.question)
+    const structurallyRejected = slots.filter((item) => !item.question)
+    if (structurallyRejected.length) console.warn(`Antigravity Math generation: ${structurallyRejected.length} item(s) failed structural validation — ${structurallyRejected.map((item) => `${item.entry.skillId}: ${item.fault}`).join('; ')}`)
 
-BLUEPRINT
-${JSON.stringify(cleanBlueprint, null, 2)}
+    let reviewedCandidates = candidates.length ? await reviewMathCandidates(candidates) : []
+    const passesReview = (item) => item.review?.verdict === 'accept' && item.review.uniqueAnswer === true && mathAnswersMatch(item.review.solvedAnswer, item.question.answer)
+    let survivors = reviewedCandidates.filter(passesReview)
+    const reviewerRejected = reviewedCandidates.filter((item) => !passesReview(item))
+    if (reviewerRejected.length) console.warn(`Antigravity Math generation: reviewer rejected ${reviewerRejected.length} item(s) — ${reviewerRejected.map((item) => `${item.entry.skillId}: ${item.review?.reason || 'no unique independently solved answer'}`).join('; ')}`)
 
-CANDIDATES WITHOUT ANSWER KEYS
-${JSON.stringify(candidates.map((item, index) => ({ index, section: item.question.section, domain: item.question.domain, skillId: item.question.skillId, difficulty: item.question.difficulty, format: item.question.format, stimulus: item.question.stimulus, table: item.question.table, plot: item.question.plot, prompt: item.question.prompt, choices: item.question.choices })), null, 2)}
+    const repairSlots = [
+      ...structurallyRejected.map((item) => ({ entry: item.entry, reason: item.fault, original: item.raw })),
+      ...reviewerRejected.map((item) => ({ entry: item.entry, reason: item.review?.reason || 'the independent solve did not confirm a unique correct answer', original: item.question })),
+    ]
+    if (repairSlots.length) {
+      const repairPrompt = `Rewrite exactly ${repairSlots.length} Math questions below. Return them in the same order, with one question for each blueprint entry.
 
-For multiple-choice items, solvedAnswer must be A, B, C, or D. For student-produced items, solvedAnswer must be the independently calculated numeric answer. Return one review for every candidate index.`
-    const reviewed = await runStructured({ prompt: reviewPrompt, schema: 'generated-math-review.json', model: observerModel, effort: 'high', timeout: '3m' })
-    const survivors = candidates.filter((item, index) => {
-      const review = (reviewed.reviews || []).find((candidate) => candidate.index === index)
-      return review?.verdict === 'accept' && review.uniqueAnswer === true && mathAnswersMatch(review.solvedAnswer, item.question.answer)
-    }).map((item) => ({ ...item.question, generation: { model: generationModel, promptVersion: `${promptVersion}-math`, blueprint: item.entry, reviewerModel: observerModel, reviewerVerdict: 'Accepted after independent Math solve.', reviewedAt: new Date().toISOString() } }))
+REPAIR CONTRACT
+- Keep the exact section, domain, skill, difficulty, and response format requested by each blueprint.
+- Fix the stated failure. Re-solve the item yourself before returning it.
+- For multiple-choice items, use exactly four plausible choices and exactly one correct answer.
+- Use explicit mathematical notation for every expression: wrap inline formulas in \\( ... \\), use \\[ ... \\] for a displayed system, and use a structured table or plot when the item needs one. Do not leave slash fractions, caret powers, or underscore subscripts as ambiguous prose.
+- Do not include solution commentary in the student-facing stimulus or prompt.
+
+ITEMS TO REPAIR
+${JSON.stringify(repairSlots.map((item) => ({ blueprint: item.entry, failure: item.reason, previous: item.original })), null, 2)}
+
+Return only the structured questions.`
+      try {
+        const repaired = await runStructured({ prompt: repairPrompt, schema: 'generated-math-set.json', model: generationModel, effort: 'high', timeout: '3m' })
+        const repairedCandidates = repairSlots.map((item, index) => ({ entry: item.entry, question: validateGeneratedMathQuestion(repaired.questions?.[index], item.entry) })).filter((item) => item.question)
+        if (repairedCandidates.length) {
+          const rechecked = await reviewMathCandidates(repairedCandidates)
+          survivors = [...survivors, ...rechecked.filter(passesReview)]
+        }
+      } catch (error) {
+        console.warn('Antigravity Math generation: targeted repair/review failed; only first-pass survivors will be kept.', error)
+      }
+    }
+
     if (!survivors.length) throw new Error('The independent Math answer-key review rejected every question in this batch.')
-    await saveGeneratedQuestions(survivors)
-    return survivors
+    const reviewedAt = new Date().toISOString()
+    const records = survivors.map((item) => ({ ...item.question, generation: { model: generationModel, promptVersion: `${promptVersion}-math`, blueprint: item.entry, reviewerModel: observerModel, reviewerVerdict: item.review?.reason || 'Accepted after independent Math solve.', reviewedAt } }))
+    await saveGeneratedQuestions(records)
+    return records
   })
 }
 

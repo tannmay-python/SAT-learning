@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { normalizeMathSource, splitMathText } from './MathText'
+import { isLikelyMathExpression, normalizeMathSource, splitMathText } from './MathText'
 import { parsePipeTable, splitEquationLines } from './MathContent'
 
 describe('splitMathText', () => {
@@ -34,7 +34,13 @@ describe('splitMathText', () => {
   })
 
   it('normalizes bare powers and unicode superscripts for KaTeX', () => {
-    expect(normalizeMathSource('x^2 y^(5/2) 3x²y⁴')).toBe('x^{2} y^{5/2} 3x^{2}y^{4}')
+    expect(normalizeMathSource('x^2 y^(5/2) 3x²y⁴ P₀')).toBe('x^{2} y^{\\frac{5}{2}} 3x^{2}y^{4} P_{0}')
+    expect(normalizeMathSource('x/(x + 1) + 4/(x - 2)')).toBe('\\frac{x}{(x + 1)} + \\frac{4}{(x - 2)}')
+  })
+
+  it('does not send prose answer choices through the math renderer', () => {
+    expect(isLikelyMathExpression('All registered voters in the city')).toBe(false)
+    expect(isLikelyMathExpression('x/(x + 1) + 4/(x - 2)')).toBe(true)
   })
 
   it('recovers pipe-delimited tables and keeps surrounding question text', () => {
