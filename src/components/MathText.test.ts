@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { splitMathText } from './MathText'
+import { normalizeMathSource, splitMathText } from './MathText'
+import { parsePipeTable, splitEquationLines } from './MathContent'
 
 describe('splitMathText', () => {
   it('separates inline and display LaTeX from surrounding prose', () => {
@@ -29,6 +30,27 @@ describe('splitMathText', () => {
     expect(splitMathText('Solve: $$m = \\frac{y_2-y_1}{x_2-x_1}$$')).toEqual([
       { kind: 'text', value: 'Solve: ' },
       { kind: 'formula', value: 'm = \\frac{y_2-y_1}{x_2-x_1}', display: true },
+    ])
+  })
+
+  it('normalizes bare powers and unicode superscripts for KaTeX', () => {
+    expect(normalizeMathSource('x^2 y^(5/2) 3x²y⁴')).toBe('x^{2} y^{5/2} 3x^{2}y^{4}')
+  })
+
+  it('recovers pipe-delimited tables and keeps surrounding question text', () => {
+    const parsed = parsePipeTable('The table below shows scores: Score | Frequency\n6 | 3\n7 | 5 What is the median score?')
+    expect(parsed?.before).toBe('The table below shows scores:')
+    expect(parsed?.table.headers).toEqual(['Score', 'Frequency'])
+    expect(parsed?.table.rows).toEqual([['6', '3'], ['7', '5']])
+    expect(parsed?.after).toBe('What is the median score?')
+  })
+
+  it('puts a system of equations on separate lines before the question', () => {
+    expect(splitEquationLines('Consider the system of equations below:\n3x + 2y = 19\nx - 2y = 5 What is the value of x + y?')).toEqual([
+      'Consider the system of equations below:',
+      '3x + 2y = 19',
+      'x - 2y = 5',
+      'What is the value of x + y?',
     ])
   })
 })

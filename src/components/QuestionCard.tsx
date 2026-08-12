@@ -5,6 +5,7 @@ import type { AttemptAnalysis, Confidence, DataPlot, Question } from '../types'
 import { displayAnswer, isCorrectResponse, sanitizeQuestion } from '../engine/questions'
 import { domainById, skillById } from '../data/curriculum'
 import { DifficultyStars } from './DifficultyStars'
+import { MathContent } from './MathContent'
 import { MathText } from './MathText'
 
 interface Props {
@@ -92,13 +93,13 @@ export function QuestionCard({ question, response, onResponse, confidence, onCon
       </header>}
 
       <div className="question-content">
-        {displayQuestion.stimulus && <div className="stimulus">{displayQuestion.stimulus.split('\n').map((line, index) => <p key={index}>{isMathQuestion ? <MathText text={line} /> : markedStimulus(line, displayQuestion.underlinedText)}</p>)}</div>}
-        {displayQuestion.secondaryStimulus && <div className="stimulus secondary"><strong>Text 2</strong>{isMathQuestion ? <MathText text={displayQuestion.secondaryStimulus.replace(/^Text 2:\s*/, '')} /> : markedStimulus(displayQuestion.secondaryStimulus.replace(/^Text 2:\s*/, ''), displayQuestion.underlinedText)}</div>}
+        {displayQuestion.stimulus && <div className="stimulus">{isMathQuestion ? <MathContent text={displayQuestion.stimulus} /> : displayQuestion.stimulus.split('\n').map((line, index) => <p key={index}>{markedStimulus(line, displayQuestion.underlinedText)}</p>)}</div>}
+        {displayQuestion.secondaryStimulus && <div className="stimulus secondary"><strong>Text 2</strong>{isMathQuestion ? <MathContent text={displayQuestion.secondaryStimulus.replace(/^Text 2:\s*/, '')} /> : markedStimulus(displayQuestion.secondaryStimulus.replace(/^Text 2:\s*/, ''), displayQuestion.underlinedText)}</div>}
         {displayQuestion.table && (
-          <div className="table-wrap"><table><caption>{isMathQuestion ? <MathText text={displayQuestion.table.caption} /> : displayQuestion.table.caption}</caption><thead><tr>{displayQuestion.table.headers.map((header) => <th key={header}>{isMathQuestion ? <MathText text={header} /> : header}</th>)}</tr></thead><tbody>{displayQuestion.table.rows.map((row, rowIndex) => <tr key={rowIndex}>{row.map((cell, cellIndex) => <td key={cellIndex}>{isMathQuestion ? <MathText text={cell} /> : cell}</td>)}</tr>)}</tbody></table></div>
+          <div className="table-wrap"><table><caption>{isMathQuestion ? <MathText text={displayQuestion.table.caption ?? 'Table'} /> : displayQuestion.table.caption ?? 'Table'}</caption><thead><tr>{(displayQuestion.table.headers ?? []).map((header) => <th key={header}>{isMathQuestion ? <MathText text={header} /> : header}</th>)}</tr></thead><tbody>{(displayQuestion.table.rows ?? []).map((row, rowIndex) => <tr key={rowIndex}>{row.map((cell, cellIndex) => <td key={cellIndex}>{isMathQuestion ? <MathText text={cell} /> : cell}</td>)}</tr>)}</tbody></table></div>
         )}
         {displayQuestion.plot && <QuestionPlot plot={displayQuestion.plot} />}
-        <h2 className="question-prompt">{renderQuestionText(question.prompt)}</h2>
+        {isMathQuestion ? <div className="question-prompt"><MathContent text={question.prompt} /></div> : <h2 className="question-prompt">{renderQuestionText(question.prompt)}</h2>}
       </div>
 
       {question.format === 'multiple-choice' ? (
@@ -111,7 +112,7 @@ export function QuestionCard({ question, response, onResponse, confidence, onCon
             const isWrong = submitted && selected && choice.id !== question.answer
             const eliminated = eliminatedChoices.has(choice.id)
             const choiceText = choice.text.trim() ? choice.text : 'No punctuation'
-            return <div className="choice-row" key={choice.id}><button type="button" role="radio" aria-checked={selected} disabled={submitted || eliminated} className={`choice ${selected ? 'selected' : ''} ${isAnswer ? 'correct' : ''} ${isWrong ? 'wrong' : ''} ${eliminated ? 'eliminated' : ''}`} onClick={() => onResponse(choice.id)}><span>{choice.id}</span><p className={choice.text.trim() ? undefined : 'choice-no-punctuation'}>{isMathQuestion && choice.text.trim() ? <MathText text={choiceText} /> : choiceText}</p>{isAnswer && <CheckCircle size={20} weight="fill" />}{isWrong && <XCircle size={20} weight="fill" />}{eliminated && <X size={18} weight="bold" />}</button>{!submitted && poeOpen && <button type="button" className={`choice-poe ${eliminated ? 'active' : ''}`} aria-label={`${eliminated ? 'Restore' : 'Eliminate'} choice ${choice.id}`} aria-pressed={eliminated} onClick={() => toggleEliminated(choice.id)}><X size={14} weight="bold" /><span>{eliminated ? 'Restore' : 'Eliminate'}</span></button>}</div>
+            return <div className="choice-row" key={choice.id}><button type="button" role="radio" aria-checked={selected} disabled={submitted || eliminated} className={`choice ${selected ? 'selected' : ''} ${isAnswer ? 'correct' : ''} ${isWrong ? 'wrong' : ''} ${eliminated ? 'eliminated' : ''}`} onClick={() => onResponse(choice.id)}><span>{choice.id}</span><p className={choice.text.trim() ? undefined : 'choice-no-punctuation'}>{isMathQuestion && choice.text.trim() ? <MathText text={choiceText} mathOnly /> : choiceText}</p>{isAnswer && <CheckCircle size={20} weight="fill" />}{isWrong && <XCircle size={20} weight="fill" />}{eliminated && <X size={18} weight="bold" />}</button>{!submitted && poeOpen && <button type="button" className={`choice-poe ${eliminated ? 'active' : ''}`} aria-label={`${eliminated ? 'Restore' : 'Eliminate'} choice ${choice.id}`} aria-pressed={eliminated} onClick={() => toggleEliminated(choice.id)}><X size={14} weight="bold" /><span>{eliminated ? 'Restore' : 'Eliminate'}</span></button>}</div>
           })}
           </div>
         </div>

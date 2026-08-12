@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { useLocation } from 'wouter'
 import { ArrowLeft, ArrowRight, CheckCircle, Clock, Flag, ListNumbers, Sparkle, X } from '@phosphor-icons/react'
 import { QuestionCard } from '../components/QuestionCard'
+import { QuestionCardBoundary } from '../components/QuestionCardBoundary'
 import { MathTools } from '../components/MathTools'
 import { readingQuestionBank } from '../data/readingBank'
 import { readingExpansionQuestionBank } from '../data/readingExpansion'
@@ -393,7 +394,7 @@ export function MockRunner() {
       <div className="mock-progress"><i style={{ width: `${(mock.questionIndex + 1) / module.questions.length * 100}%` }} /></div>
       <main className="mock-question-wrap">
         <div className="mock-question-heading"><span>Question {mock.questionIndex + 1} of {module.questions.length}</span><button className={mock.flags.includes(question.id) ? 'active' : ''} onClick={toggleFlag}><Flag size={17} weight={mock.flags.includes(question.id) ? 'fill' : 'regular'} />Mark for review</button></div>
-        <QuestionCard key={question.id} question={question} response={response} onResponse={setResponse} confidence={undefined} onConfidence={() => undefined} submitted={false} showConfidence={false} showMeta={false} compact />
+        <QuestionCardBoundary key={question.id} onSkip={() => goQuestion(Math.min(mock.questionIndex + 1, module.questions.length - 1))}><QuestionCard question={question} response={response} onResponse={setResponse} confidence={undefined} onConfidence={() => undefined} submitted={false} showConfidence={false} showMeta={false} compact /></QuestionCardBoundary>
       </main>
       <footer className="mock-footer"><button className="ghost-button" disabled={mock.questionIndex === 0} onClick={() => goQuestion(mock.questionIndex - 1)}><ArrowLeft size={18} />Back</button><button className="question-number-button" onClick={openReview}>{answeredCount}/{module.questions.length} answered</button>{mock.questionIndex === module.questions.length - 1 ? <button className="primary-button" onClick={openReview}>Review module <ArrowRight size={18} /></button> : <button className="primary-button" onClick={() => goQuestion(mock.questionIndex + 1)}>Next <ArrowRight size={18} /></button>}</footer>
     </div>
