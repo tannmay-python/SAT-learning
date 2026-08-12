@@ -19,4 +19,16 @@ describe('splitMathText', () => {
       { kind: 'text', value: 'The ticket costs $5 and the fee is $8.' },
     ])
   })
+
+  it('supports Gemini single-dollar inline and display math', () => {
+    expect(splitMathText('The function $f(x)=mx+b$ is linear.')).toEqual([
+      { kind: 'text', value: 'The function ' },
+      { kind: 'formula', value: 'f(x)=mx+b', display: false },
+      { kind: 'text', value: ' is linear.' },
+    ])
+    expect(splitMathText('Solve: $$m = \\frac{y_2-y_1}{x_2-x_1}$$')).toEqual([
+      { kind: 'text', value: 'Solve: ' },
+      { kind: 'formula', value: 'm = \\frac{y_2-y_1}{x_2-x_1}', display: true },
+    ])
+  })
 })
