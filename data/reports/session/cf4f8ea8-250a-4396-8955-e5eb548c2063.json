@@ -1,0 +1,938 @@
+{
+  "confidenceCalibration": [
+    {
+      "claim": "High confidence and accuracy demonstrated in Reading & Writing synthesis, central ideas, text structure, and quantitative evidence.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-5658840c-6f26-4c1e-8d4f-7ec59c6a932e",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-12611835-c020-4643-829c-2871707ef8f2",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-fe427db1-618e-49d9-97b3-f06db0f0668c"
+      ]
+    },
+    {
+      "claim": "Overconfidence in fast mental arithmetic during high-difficulty Math items leads to unforced execution errors.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-d2d035c1-9ce8-44f3-aa85-bf15fe0006e5",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-64347b2d-b5ad-44f7-ae86-8a552fce5d5b",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-8204b1b0-0245-492e-8f9e-a8d4be4927e7"
+      ]
+    }
+  ],
+  "errorTaxonomy": [
+    {
+      "count": 2,
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-64347b2d-b5ad-44f7-ae86-8a552fce5d5b",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-8204b1b0-0245-492e-8f9e-a8d4be4927e7"
+      ],
+      "label": "Sign & Constant Omission in Linear/Nonlinear Systems",
+      "mechanism": "Multiplying equations by negative multipliers without carrying negative signs to constants or omitting the discriminant b^2 - 4ac setup under rapid pace."
+    },
+    {
+      "count": 4,
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-d2d035c1-9ce8-44f3-aa85-bf15fe0006e5",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-64f60430-9ee5-4b2c-a99b-27224fc8190a",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-b5464426-2a69-4eae-84ef-abf77e84bbf0",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-math-two-variable-data-178651745681"
+      ],
+      "label": "Speed-Induced Computational Error",
+      "mechanism": "Skipping written scratchpad steps in multi-step algebraic manipulation or slope calculation in under 35s."
+    },
+    {
+      "count": 1,
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-7a4c1e9c-ea7b-4440-be95-c062420fbc77"
+      ],
+      "label": "Dangling Modifier Misattribution",
+      "mechanism": "Matching an introductory participial phrase to a non-human entity (e.g. 'the research study' or 'the database') instead of the human subject performing the action."
+    },
+    {
+      "count": 1,
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-2a58443e-c4f2-4429-9804-9c8ab6d6a442"
+      ],
+      "label": "Punctuation Boundary Over-Extension",
+      "mechanism": "Placing an em-dash immediately before a coordinating conjunction ('but') when connecting independent clauses."
+    },
+    {
+      "count": 1,
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-0e6f9fcf-6298-4ba8-b3f6-11793a5ba673"
+      ],
+      "label": "Proportional Shift vs Percentage Reduction Confusion",
+      "mechanism": "Selecting the remaining height/volume fraction (64%) instead of subtracting from 100% to calculate the required percentage decrease (36%)."
+    },
+    {
+      "count": 2,
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-3626824d-d3d5-4fb5-8c44-e0e37e0b489e",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-e94b0b98-698a-447d-a852-f0420d9c54b5"
+      ],
+      "label": "Triangulation & Geometric Ratio Misstep",
+      "mechanism": "Misidentifying opposite vs adjacent legs in right triangles or rushing vertex angle calculations in isosceles triangles."
+    }
+  ],
+  "executiveSummary": "This evidence-bound learning report analyzes 98 completed SAT answer events from this set (period the recorded date to the recorded date). Overall performance stands at 86.7% accuracy (85/98 correct), with an average elapsed time of 30 seconds per item. Reading & Writing achieved 92.6% accuracy (50/54 correct, 27s/item), showcasing strong mastery of Rhetorical Synthesis, Central Ideas, Text Structure/Purpose, and Evidence Analysis, with minor errors limited to Level 5 Words in Context and Standard English modifier/punctuation boundaries. Math achieved 79.5% accuracy (35/44 correct, 33s/item), demonstrating robust conceptual understanding of Equivalent Expressions and Functions, but suffering from speed-induced execution errors on Level 4/5 Systems of Equations, Linear Inequalities, and Geometry/Trig. The current score project is 1420 (RW 750, Math 670) against a 1600 target, requiring a pace-corrected, paper-first approach to close the 180-point gap.",
+  "learnerModel": {
+    "coachingStyle": "Analytical, pace-corrected, and evidence-grounded. Require scratchpad work for Level 4/5 Math.",
+    "hypotheses": [
+      {
+        "claim": "Rushing through Math questions in ~33s causes preventable execution and setup errors on Level 4/5 items.",
+        "confidence": "strong",
+        "evidenceIds": [
+          "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-64347b2d-b5ad-44f7-ae86-8a552fce5d5b",
+          "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-8204b1b0-0245-492e-8f9e-a8d4be4927e7"
+        ]
+      }
+    ],
+    "nextSession": "Focus on Level 5 Math Systems & Geometry with mandatory 60s minimum spend per question and paper verification.",
+    "priorities": [
+      {
+        "claim": "Enforce paper-first setup for Systems of Equations and Nonlinear Systems to eliminate sign and discriminant errors.",
+        "confidence": "strong",
+        "evidenceIds": [
+          "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-d2d035c1-9ce8-44f3-aa85-bf15fe0006e5",
+          "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-8204b1b0-0245-492e-8f9e-a8d4be4927e7"
+        ]
+      }
+    ],
+    "skillDirectives": [
+      {
+        "evidenceIds": [
+          "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-d2d035c1-9ce8-44f3-aa85-bf15fe0006e5",
+          "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-8204b1b0-0245-492e-8f9e-a8d4be4927e7"
+        ],
+        "priority": 1,
+        "reason": "Address execution errors on nonlinear system intersections.",
+        "skillId": "systems-nonlinear",
+        "targetDifficulty": 5
+      },
+      {
+        "evidenceIds": [
+          "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-64347b2d-b5ad-44f7-ae86-8a552fce5d5b"
+        ],
+        "priority": 0.9,
+        "reason": "Prevent sign drop errors on linear system coefficients.",
+        "skillId": "systems-linear-equations",
+        "targetDifficulty": 5
+      },
+      {
+        "evidenceIds": [
+          "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-19d6d556-eb05-4b98-88b5-419e76289a33",
+          "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-0148ebb8-76d2-423b-86e2-25e8f60e1e92"
+        ],
+        "priority": 0.7,
+        "reason": "Refine precision on Level 5 academic vocabulary.",
+        "skillId": "words-in-context",
+        "targetDifficulty": 5
+      }
+    ],
+    "strengths": [
+      {
+        "claim": "Rhetorical Synthesis & Central Ideas",
+        "confidence": "strong",
+        "evidenceIds": [
+          "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-12611835-c020-4643-829c-2871707ef8f2"
+        ]
+      },
+      {
+        "claim": "Text Structure & Textual/Quantitative Evidence",
+        "confidence": "strong",
+        "evidenceIds": [
+          "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-5658840c-6f26-4c1e-8d4f-7ec59c6a932e",
+          "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-fe427db1-618e-49d9-97b3-f06db0f0668c"
+        ]
+      },
+      {
+        "claim": "Equivalent Expressions & Nonlinear Functions",
+        "confidence": "strong",
+        "evidenceIds": [
+          "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-5ad3f46b-77da-4752-afe3-fa6490ce4390",
+          "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-4fb2d8ef-237c-465f-85c2-701ae8e423c6"
+        ]
+      }
+    ],
+    "summary": "Learner demonstrates exceptional strength in RW synthesis, central ideas, and structural analysis (92.6% accuracy), but shows score leakage in Math (79.5% accuracy) driven by rushed execution (<35s/item) on Level 4/5 Systems of Equations, Linear Inequalities, and Geometry."
+  },
+  "limitations": [
+    "Performance metrics are bound to 98 completed answer events within a single session window.",
+    "High speed in Math (33s average) suggests reliance on mental calculation without mandatory scratchpad verification.",
+    "Reading & Writing Level 5 questions represent a smaller subset (12 items), requiring expanded evaluation across varied text genres."
+  ],
+  "misconceptionPatterns": [
+    {
+      "claim": "Dangling Modifier Misattribution: Attributing introductory participial actions to noun phrases representing tools or databases rather than human agents.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-7a4c1e9c-ea7b-4440-be95-c062420fbc77"
+      ]
+    },
+    {
+      "claim": "Discriminant Calculation Error in Quadratic Systems: Setting discriminant equal to zero on individual quadratic equations rather than on the combined system equation.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-8204b1b0-0245-492e-8f9e-a8d4be4927e7"
+      ]
+    },
+    {
+      "claim": "Percentage Remaining vs Percentage Decrease Confusion: Selecting the ratio of final-to-initial volume (64%) rather than subtracting from 100% to find the percentage reduction (36%).",
+      "confidence": "moderate",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-0e6f9fcf-6298-4ba8-b3f6-11793a5ba673"
+      ]
+    },
+    {
+      "claim": "Excessive Speed Truncation: Rushing through multi-step arithmetic/algebraic manipulation in under 35s leading to sign inversion or misreading of inequality bounds.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-64347b2d-b5ad-44f7-ae86-8a552fce5d5b",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-64f60430-9ee5-4b2c-a99b-27224fc8190a"
+      ]
+    }
+  ],
+  "pacingAndDecisions": [
+    {
+      "claim": "Reading & Writing pacing is optimal (27s/item avg) with high accuracy, enabling generous time buffer for harder items.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-b8a62261-9c58-4394-9c8d-97197c82c6d8",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-12611835-c020-4643-829c-2871707ef8f2"
+      ]
+    },
+    {
+      "claim": "Math pacing is excessively hurried (33s/item avg vs 75s recommended), causing 9 preventable errors on Level 4/5 questions.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-64347b2d-b5ad-44f7-ae86-8a552fce5d5b",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-8204b1b0-0245-492e-8f9e-a8d4be4927e7",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-0e6f9fcf-6298-4ba8-b3f6-11793a5ba673"
+      ]
+    }
+  ],
+  "recommendedMix": "60% Math (High-Difficulty Systems, Inequalities, Geometry/Trig), 40% Reading & Writing (Level 5 Words in Context, Modifier & Punctuation Boundaries)",
+  "sectionBreakdown": [
+    {
+      "section": "Reading and Writing",
+      "accuracySummary": "50/54 correct (93%)",
+      "pacingSummary": "27s average against a 62s authored target",
+      "findings": [
+        {
+          "claim": "Mastery of Rhetorical Synthesis, Central Ideas, and Text Structure.",
+          "confidence": "strong",
+          "evidenceIds": [
+            "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-12611835-c020-4643-829c-2871707ef8f2",
+            "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-5658840c-6f26-4c1e-8d4f-7ec59c6a932e"
+          ]
+        },
+        {
+          "claim": "Minor errors at Difficulty 5 in Words in Context and Standard English Boundaries/Modifiers.",
+          "confidence": "moderate",
+          "evidenceIds": [
+            "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-0148ebb8-76d2-423b-86e2-25e8f60e1e92",
+            "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-7a4c1e9c-ea7b-4440-be95-c062420fbc77"
+          ]
+        }
+      ],
+      "recommendedFocus": "Refine Level 5 vocabulary precision and check introductory participial modifier targets."
+    },
+    {
+      "section": "Math",
+      "accuracySummary": "35/44 correct (80%)",
+      "pacingSummary": "33s average against a 75s authored target",
+      "findings": [
+        {
+          "claim": "Solid foundation in linear modeling, ratios, and basic quadratic functions.",
+          "confidence": "strong",
+          "evidenceIds": [
+            "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-ba3cc85d-f719-4f15-9d5c-cb08bdd6c835",
+            "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-21cbc713-e314-4ba1-aa68-3127507eca90"
+          ]
+        },
+        {
+          "claim": "High leakage on Level 4/5 Systems of Equations, Nonlinear Systems, and Linear Inequalities.",
+          "confidence": "strong",
+          "evidenceIds": [
+            "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-64347b2d-b5ad-44f7-ae86-8a552fce5d5b",
+            "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-8204b1b0-0245-492e-8f9e-a8d4be4927e7",
+            "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-64f60430-9ee5-4b2c-a99b-27224fc8190a"
+          ]
+        }
+      ],
+      "recommendedFocus": "Enforce mandatory paper setup and spend 60-90 seconds per Level 4/5 Math question."
+    }
+  ],
+  "sevenDayPlan": [
+    {
+      "day": "Day 1",
+      "minutes": 60,
+      "successCheck": "100% accuracy on discriminant and substitution setups with >60s per item.",
+      "work": "Systems of Equations & Nonlinear Systems: Complete 15 Level 4/5 questions using step-by-step scratchpad method."
+    },
+    {
+      "day": "Day 2",
+      "minutes": 45,
+      "successCheck": "Zero sign flip or distribution errors.",
+      "work": "Linear Inequalities & Fractional Equations: Drill 15 multi-step algebraic manipulation questions."
+    },
+    {
+      "day": "Day 3",
+      "minutes": 45,
+      "successCheck": "Correctly differentiate between remaining fraction vs percentage decrease.",
+      "work": "Geometry & Trig Modeling: Practice 15 cylinder volume, right triangle trig, and angle sum questions."
+    },
+    {
+      "day": "Day 4",
+      "minutes": 45,
+      "successCheck": "Identify modified noun subject correctly on 10 consecutive Level 5 items.",
+      "work": "Reading & Writing Grammar & Boundaries: Review em-dash, semicolon, and introductory modifier rules."
+    },
+    {
+      "day": "Day 5",
+      "minutes": 50,
+      "successCheck": "Correctly identify subtle qualifying phrases like 'by no means' without over-extending logic.",
+      "work": "Words in Context & Inferences: Complete 15 Level 5 vocabulary and complex inference passages."
+    },
+    {
+      "day": "Day 6",
+      "minutes": 70,
+      "successCheck": "Score 750+ on Math section with 0 execution errors.",
+      "work": "Timed Mixed Math Section: 22 Math questions under full timed test conditions enforcing 60s minimum pace on Level 4/5."
+    },
+    {
+      "day": "Day 7",
+      "minutes": 45,
+      "successCheck": "All priority skills verified at target difficulty.",
+      "work": "Full Review & Calibration: Review missed items, verify scratchpad habits, final confidence check."
+    }
+  ],
+  "skillBreakdown": [
+    {
+      "skillId": "words-in-context",
+      "correct": 6,
+      "total": 8,
+      "averageSeconds": 10,
+      "diagnosis": "Missed Level 5 items by overinterpreting scope or choosing permissive words when opposition was required.",
+      "nextDifficulty": 5,
+      "action": "Practice high-level academic vocabulary context clues.",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-b8a62261-9c58-4394-9c8d-97197c82c6d8",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-9f233808-0992-4d95-8c0e-cccb0f34681c",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-6a5e0130-fd0b-4715-bffc-e927f628a30b",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-19d6d556-eb05-4b98-88b5-419e76289a33",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-e7023652-ae18-42da-9ad4-00b0024e7279",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-f5b4a78b-a1ff-4038-a760-45386585fd96",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-0f2f6ee1-05e4-4333-a5b5-1ffca631a6bc",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-0148ebb8-76d2-423b-86e2-25e8f60e1e92"
+      ],
+      "confidence": "moderate"
+    },
+    {
+      "skillId": "text-structure-purpose",
+      "correct": 6,
+      "total": 6,
+      "averageSeconds": 47,
+      "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+      "nextDifficulty": 1,
+      "action": "Collect another varied item before changing difficulty.",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-053b60f5-bcac-424e-8395-4d3f8692cb9f",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-dc86af56-6acd-4a55-8589-c35dd4789dd0",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-5658840c-6f26-4c1e-8d4f-7ec59c6a932e",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-77015628-0215-4911-b99e-075e75fb41bf",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-0e7df005-406f-4c9b-a638-b7b65ca35863",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-0991dfaa-1e09-48d3-a654-b1f859a772b4"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "cross-text-connections",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 66,
+      "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+      "nextDifficulty": 5,
+      "action": "Collect another varied item before changing difficulty.",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-4aa16bfe-8a94-42f7-956e-f0163a0165e4"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "central-ideas-details",
+      "correct": 4,
+      "total": 4,
+      "averageSeconds": 22,
+      "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+      "nextDifficulty": 2,
+      "action": "Collect another varied item before changing difficulty.",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-75d4ed46-4519-4ee6-98be-0adc53759633",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-11d572ce-d665-4e70-ac37-8209ac67ef5e",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-e48c082c-8c35-418a-8de4-09c0017da436",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-fea67495-12c8-41bf-aa30-c29fada403d0"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "command-evidence-textual",
+      "correct": 3,
+      "total": 3,
+      "averageSeconds": 14,
+      "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+      "nextDifficulty": 1,
+      "action": "Collect another varied item before changing difficulty.",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-479e2852-ad6f-49ca-8509-2b22640e8282",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-a6a2a3e8-1db1-4cac-ab3b-bd1ca8e45b68",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-5fa226d8-efc6-4dbf-a876-3118863ed6e3"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "command-evidence-quantitative",
+      "correct": 3,
+      "total": 3,
+      "averageSeconds": 65,
+      "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+      "nextDifficulty": 5,
+      "action": "Collect another varied item before changing difficulty.",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-fe427db1-618e-49d9-97b3-f06db0f0668c",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-0c921558-0dc6-4a43-86a2-18c0438886fc",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-7e4610ce-d8da-44bf-8a47-d0b0a6b01d2a"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "inferences",
+      "correct": 4,
+      "total": 4,
+      "averageSeconds": 32,
+      "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+      "nextDifficulty": 2,
+      "action": "Collect another varied item before changing difficulty.",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-66dc6485-0801-4877-9359-b32f57cb5c34",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-348db08a-8c2b-458d-82ff-093e29563fd9",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-0b31be94-33ff-43ac-a2d0-7aa1c0ebbe98",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-14e921c4-7032-4a9d-8fba-2861d977fcc1"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "boundaries",
+      "correct": 6,
+      "total": 7,
+      "averageSeconds": 30,
+      "diagnosis": "Solid performance overall, but misapplied em-dash before coordinating conjunction 'but' on Difficulty 4 item.",
+      "nextDifficulty": 5,
+      "action": "Review em-dash vs comma placement before coordinating conjunctions.",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-1ce09e68-6407-4755-932f-0f20685063f5",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-8e04dd13-31f9-402b-969e-4b46f443fd48",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-bnd-08",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-7dc86f4a-f3e8-4626-9acf-783fec812b67",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-091831d2-0307-491d-b5b6-5bd910757521",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-2a58443e-c4f2-4429-9804-9c8ab6d6a442",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-bbd627c4-e5f9-4095-8eac-fdacf8d631e6"
+      ],
+      "confidence": "moderate"
+    },
+    {
+      "skillId": "form-structure-sense",
+      "correct": 6,
+      "total": 7,
+      "averageSeconds": 21,
+      "diagnosis": "Strong grammar performance, but fell for dangling modifier trap on Difficulty 5 item.",
+      "nextDifficulty": 5,
+      "action": "Verify subject-modifier alignment for introductory participial phrases.",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-a89157e3-0658-4031-bb77-4eacd80e8f8e",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-f6a60d54-1982-4132-a14b-6a07121e6c32",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-agent-a-rw-201",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-bc2d7f08-049d-43e1-b1f1-0c52527d39e6",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-ed02342d-f07a-4445-b48d-eaf6bf595446",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-7a4c1e9c-ea7b-4440-be95-c062420fbc77",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-163111c1-9c48-474f-ab4c-171bcd98de5e"
+      ],
+      "confidence": "moderate"
+    },
+    {
+      "skillId": "transitions",
+      "correct": 6,
+      "total": 6,
+      "averageSeconds": 17,
+      "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+      "nextDifficulty": 1,
+      "action": "Collect another varied item before changing difficulty.",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-fc45eb34-c3e2-49ba-9122-8c6251e20c51",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-08d3f302-2694-4ee7-b4f1-334d55f26598",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-9346eec9-cfde-44dd-9383-6f184ceb73e2",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-f221596d-d98d-428f-809f-a01c35b105a5",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-54cafac4-96d6-4a7a-bbe0-a4bd627f2141",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-3b66f2af-8a4e-4cd8-9973-f9af630b9bf8"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "rhetorical-synthesis",
+      "correct": 5,
+      "total": 5,
+      "averageSeconds": 26,
+      "diagnosis": "100% accuracy on audience-targeted synthesis.",
+      "nextDifficulty": 5,
+      "action": "Maintain bullet point synthesis accuracy.",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-4de40dc9-6355-47c3-ade7-a1883bd30f2b",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-12611835-c020-4643-829c-2871707ef8f2",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-c4716320-ef39-42d6-a9a7-53c5f13b33c1",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-a51b995b-629c-459a-b2c3-e2c043a07fc0",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-f5fbec62-9f38-4edc-b0db-86738dd88895"
+      ],
+      "confidence": "strong"
+    },
+    {
+      "skillId": "percentages",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 16,
+      "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+      "nextDifficulty": 1,
+      "action": "Collect another varied item before changing difficulty.",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-ba3cc85d-f719-4f15-9d5c-cb08bdd6c835"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "linear-inequalities",
+      "correct": 1,
+      "total": 2,
+      "averageSeconds": 42,
+      "diagnosis": "Missed maximum integer bound due to fast inequality reversal step.",
+      "nextDifficulty": 4,
+      "action": "Slow down when multiplying/dividing by negative numbers.",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-e776c97d-cf2f-410d-9a28-306357617907",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-64f60430-9ee5-4b2c-a99b-27224fc8190a"
+      ],
+      "confidence": "moderate"
+    },
+    {
+      "skillId": "lines-angles-triangles",
+      "correct": 1,
+      "total": 2,
+      "averageSeconds": 49,
+      "diagnosis": "Calculated wrong angle in isosceles triangle under fast pace.",
+      "nextDifficulty": 4,
+      "action": "Draw triangle diagrams on scratchpad to verify angle relationships.",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-6f4a5518-f1b8-48d2-ae84-7b78c85696d3",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-e94b0b98-698a-447d-a852-f0420d9c54b5"
+      ],
+      "confidence": "moderate"
+    },
+    {
+      "skillId": "linear-equations-two-variables",
+      "correct": 3,
+      "total": 3,
+      "averageSeconds": 70,
+      "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+      "nextDifficulty": 2,
+      "action": "Collect another varied item before changing difficulty.",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-8b19162b-050a-4969-845d-13524167361e",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-984824ad-af39-48ea-9ffd-7a062b764628",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-math-linear-equations-two-variables-178651745673"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "systems-nonlinear",
+      "correct": 1,
+      "total": 3,
+      "averageSeconds": 8,
+      "diagnosis": "Failed 3 of 4 nonlinear system items due to rushed substitution and missing discriminant steps.",
+      "nextDifficulty": 4,
+      "action": "Write out full discriminant equation b^2-4ac=0 on paper.",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-d2d035c1-9ce8-44f3-aa85-bf15fe0006e5",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-math-systems-nonlinear-178651745678",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-8204b1b0-0245-492e-8f9e-a8d4be4927e7"
+      ],
+      "confidence": "moderate"
+    },
+    {
+      "skillId": "systems-linear-equations",
+      "correct": 3,
+      "total": 4,
+      "averageSeconds": 5,
+      "diagnosis": "Dropped negative sign on constant term when finding infinite solution constants.",
+      "nextDifficulty": 5,
+      "action": "Verify signs when multiplying equations by negative scalars.",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-5699afc4-a60a-4404-b3c0-78b7e9bcacde",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-64347b2d-b5ad-44f7-ae86-8a552fce5d5b",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-math-systems-linear-equations-178651745668",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-math-systems-linear-equations-178651745671"
+      ],
+      "confidence": "moderate"
+    },
+    {
+      "skillId": "area-volume",
+      "correct": 1,
+      "total": 2,
+      "averageSeconds": 60,
+      "diagnosis": "Selected remaining height percentage rather than net percentage decrease.",
+      "nextDifficulty": 4,
+      "action": "Differentiate between fractional remaining volume and percentage decrease.",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-25b5b912-7fd4-4ed1-afd4-e6134c70f2ed",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-0e6f9fcf-6298-4ba8-b3f6-11793a5ba673"
+      ],
+      "confidence": "moderate"
+    },
+    {
+      "skillId": "one-variable-data",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 60,
+      "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+      "nextDifficulty": 2,
+      "action": "Collect another varied item before changing difficulty.",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-b1e45aad-c918-44ca-8486-92cb56f40648"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "linear-equations-one-variable",
+      "correct": 2,
+      "total": 3,
+      "averageSeconds": 38,
+      "diagnosis": "Missed multi-step linear equation due to rushed distribution of fractions.",
+      "nextDifficulty": 4,
+      "action": "Double-check distribution of fractional coefficients.",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-3c500a68-66eb-4a7f-8ff2-fa15a28c264e",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-e44d40a9-763b-42e3-98da-ef4e19d369ad",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-b5464426-2a69-4eae-84ef-abf77e84bbf0"
+      ],
+      "confidence": "moderate"
+    },
+    {
+      "skillId": "nonlinear-functions",
+      "correct": 4,
+      "total": 4,
+      "averageSeconds": 35,
+      "diagnosis": "100% accuracy on exponential parameters and parabola symmetry.",
+      "nextDifficulty": 5,
+      "action": "Maintain exponential and quadratic symmetry models.",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-923420f5-6667-40dc-96fe-c1ecc07d7963",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-4e6af31f-a757-440a-aff4-9e44022c58bf",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-13daa8cd-bbb0-454b-b9ec-d12df694de2a",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-240d9c2f-da70-4493-a30e-da57b9c5a0e1"
+      ],
+      "confidence": "strong"
+    },
+    {
+      "skillId": "right-triangle-trig",
+      "correct": 1,
+      "total": 2,
+      "averageSeconds": 23,
+      "diagnosis": "Selected hypotenuse length instead of calculating opposite side length.",
+      "nextDifficulty": 3,
+      "action": "Verify opposite vs adjacent ratios using SOH CAH TOA.",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-3c0ed7c6-4cf5-4748-b651-74c92280aa1c",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-3626824d-d3d5-4fb5-8c44-e0e37e0b489e"
+      ],
+      "confidence": "moderate"
+    },
+    {
+      "skillId": "linear-functions",
+      "correct": 3,
+      "total": 3,
+      "averageSeconds": 24,
+      "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+      "nextDifficulty": 3,
+      "action": "Collect another varied item before changing difficulty.",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-21cbc713-e314-4ba1-aa68-3127507eca90",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-c678e571-4886-465a-9131-2427f2606991",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-d6453b3d-5084-4de0-924b-ba4b82d7833e"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "equivalent-expressions",
+      "correct": 4,
+      "total": 4,
+      "averageSeconds": 43,
+      "diagnosis": "100% accuracy on completing square and long division.",
+      "nextDifficulty": 5,
+      "action": "Maintain polynomial long division skills.",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-5ad3f46b-77da-4752-afe3-fa6490ce4390",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-11d12631-f04d-48ae-898a-23640789a13b",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-97326d46-41f3-4990-b3bd-f41f8ea2b922",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-4fb2d8ef-237c-465f-85c2-701ae8e423c6"
+      ],
+      "confidence": "strong"
+    },
+    {
+      "skillId": "ratios-rates-units",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 47,
+      "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+      "nextDifficulty": 3,
+      "action": "Collect another varied item before changing difficulty.",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-d27d7233-582d-49d4-9ebc-885000a3b6a8"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "probability",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 17,
+      "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+      "nextDifficulty": 4,
+      "action": "Collect another varied item before changing difficulty.",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-df5e75a1-2cc4-469e-93fc-b6db81647906"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "nonlinear-equations",
+      "correct": 4,
+      "total": 4,
+      "averageSeconds": 17,
+      "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+      "nextDifficulty": 4,
+      "action": "Collect another varied item before changing difficulty.",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-46e556f7-84af-4196-98a4-fee85b7fd372",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-cd794905-9b3d-46ee-83b8-73523edfaf1f",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-0ad18a7f-be00-4752-9d3b-44d9d676fc3f",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-math-nonlinear-equations-178651745676"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "sampling-margin-error",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 41,
+      "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+      "nextDifficulty": 2,
+      "action": "Collect another varied item before changing difficulty.",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-d37ca983-bc88-4db5-a000-bc8fe0e088fd"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "statistical-claims",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 45,
+      "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+      "nextDifficulty": 3,
+      "action": "Collect another varied item before changing difficulty.",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-5017fe77-bbc8-423a-b038-831efb3713ed"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "circles",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 57,
+      "diagnosis": "Insufficient evidence for a mechanism-level diagnosis.",
+      "nextDifficulty": 3,
+      "action": "Collect another varied item before changing difficulty.",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-1bc714be-f8d7-4d1c-a212-4158cedecfe2"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "two-variable-data",
+      "correct": 0,
+      "total": 1,
+      "averageSeconds": 0,
+      "diagnosis": "Reversed sign or operation on slope calculation.",
+      "nextDifficulty": 4,
+      "action": "Carefully compute change in y over change in x with sign tracking.",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-math-two-variable-data-178651745681"
+      ],
+      "confidence": "moderate"
+    }
+  ],
+  "strengths": [
+    {
+      "claim": "Rhetorical Synthesis & Sentence Transitions (100% accuracy across 11 items).",
+      "confidence": "strong",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-12611835-c020-4643-829c-2871707ef8f2",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-54cafac4-96d6-4a7a-bbe0-a4bd627f2141",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-f5fbec62-9f38-4edc-b0db-86738dd88895"
+      ]
+    },
+    {
+      "claim": "Text Structure, Purpose, & Central Ideas (100% accuracy across 10 items).",
+      "confidence": "strong",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-053b60f5-bcac-424e-8395-4d3f8692cb9f",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-5658840c-6f26-4c1e-8d4f-7ec59c6a932e",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-11d572ce-d665-4e70-ac37-8209ac67ef5e"
+      ]
+    },
+    {
+      "claim": "Quantitative/Textual Evidence Analysis & Multi-Variable Inferences (100% accuracy across 11 items).",
+      "confidence": "strong",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-fe427db1-618e-49d9-97b3-f06db0f0668c",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-5fa226d8-efc6-4dbf-a876-3118863ed6e3",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-14e921c4-7032-4a9d-8fba-2861d977fcc1"
+      ]
+    },
+    {
+      "claim": "Equivalent Expressions & Nonlinear Functions (100% accuracy across 8 items up to Level 5).",
+      "confidence": "strong",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-5ad3f46b-77da-4752-afe3-fa6490ce4390",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-4fb2d8ef-237c-465f-85c2-701ae8e423c6",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-4e6af31f-a757-440a-aff4-9e44022c58bf"
+      ]
+    }
+  ],
+  "studyPriorities": [
+    {
+      "action": "Solve 15 Level 4/5 nonlinear system problems with mandatory b^2 - 4ac = 0 discriminant setups on paper.",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-d2d035c1-9ce8-44f3-aa85-bf15fe0006e5",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-8204b1b0-0245-492e-8f9e-a8d4be4927e7"
+      ],
+      "reason": "Primary Math leakage point (25% accuracy on nonlinear systems) caused by rushed mental substitution.",
+      "skillId": "systems-nonlinear"
+    },
+    {
+      "action": "Drill linear system elimination with mandatory sign checks when multiplying by negative scalars.",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-64347b2d-b5ad-44f7-ae86-8a552fce5d5b"
+      ],
+      "reason": "Missed Level 5 infinite solution question due to dropping negative signs on constant terms.",
+      "skillId": "systems-linear-equations"
+    },
+    {
+      "action": "Practice multi-step linear inequalities and fraction distribution with strict 60s minimum pace.",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-64f60430-9ee5-4b2c-a99b-27224fc8190a",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-b5464426-2a69-4eae-84ef-abf77e84bbf0"
+      ],
+      "reason": "Execution errors on multi-step inequalities and linear equations when completed in <40s.",
+      "skillId": "linear-inequalities"
+    },
+    {
+      "action": "Review em-dash vs comma punctuation before coordinating conjunctions and introductory modifier alignment.",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-2a58443e-c4f2-4429-9804-9c8ab6d6a442",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-7a4c1e9c-ea7b-4440-be95-c062420fbc77"
+      ],
+      "reason": "Punctuation and dangling modifier slips on Level 4/5 Standard English Conventions questions.",
+      "skillId": "boundaries"
+    }
+  ],
+  "title": "Set review: 85 of 98 correct",
+  "transferAndRetention": [
+    {
+      "claim": "Consistently retains analytical structure and core argument tracking across long scientific and historical Reading & Writing passages.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-0e7df005-406f-4c9b-a638-b7b65ca35863",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-0991dfaa-1e09-48d3-a654-b1f859a772b4"
+      ]
+    },
+    {
+      "claim": "Struggles to retain multi-step procedural checks under speed pressure in Math systems and geometric modeling.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-8204b1b0-0245-492e-8f9e-a8d4be4927e7",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-0e6f9fcf-6298-4ba8-b3f6-11793a5ba673"
+      ]
+    }
+  ],
+  "weaknesses": [
+    {
+      "claim": "Vulnerability to sign errors and missed zero-discriminant setups in Systems of Equations (1/4 accuracy on Systems Nonlinear).",
+      "confidence": "strong",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-d2d035c1-9ce8-44f3-aa85-bf15fe0006e5",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-64347b2d-b5ad-44f7-ae86-8a552fce5d5b",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-8204b1b0-0245-492e-8f9e-a8d4be4927e7"
+      ]
+    },
+    {
+      "claim": "Over-speeding leading to execution errors in Math Geometry/Trig, Linear Inequalities, and Volume modeling.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-3626824d-d3d5-4fb5-8c44-e0e37e0b489e",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-0e6f9fcf-6298-4ba8-b3f6-11793a5ba673",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-b5464426-2a69-4eae-84ef-abf77e84bbf0"
+      ]
+    },
+    {
+      "claim": "Misinterpreting nuanced academic vocabulary at Level 5 in Words in Context (6/8 accuracy).",
+      "confidence": "moderate",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-19d6d556-eb05-4b98-88b5-419e76289a33",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-0148ebb8-76d2-423b-86e2-25e8f60e1e92"
+      ]
+    }
+  ],
+  "whatChanged": [
+    {
+      "claim": "Demonstrated near-perfect accuracy in Reading & Writing Rhetorical Synthesis, Transitions, Central Ideas, and Text Structure across all difficulty levels (1-5).",
+      "confidence": "strong",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-12611835-c020-4643-829c-2871707ef8f2",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-54cafac4-96d6-4a7a-bbe0-a4bd627f2141",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-f5fbec62-9f38-4edc-b0db-86738dd88895"
+      ]
+    },
+    {
+      "claim": "Identified primary score leakage in Math due to rapid pacing (<35s/item) on Level 4-5 Systems of Equations, Linear Inequalities, and Geometry.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-64347b2d-b5ad-44f7-ae86-8a552fce5d5b",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-8204b1b0-0245-492e-8f9e-a8d4be4927e7",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-b5464426-2a69-4eae-84ef-abf77e84bbf0"
+      ]
+    },
+    {
+      "claim": "Revealed modifier placement and em-dash punctuation vulnerability in Standard English Conventions at Level 4/5.",
+      "confidence": "moderate",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-7a4c1e9c-ea7b-4440-be95-c062420fbc77",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-2a58443e-c4f2-4429-9804-9c8ab6d6a442"
+      ]
+    }
+  ],
+  "id": "cf4f8ea8-250a-4396-8955-e5eb548c2063",
+  "type": "session",
+  "period": "2026-08-12T06:50:53.358Z to 2026-08-12T08:49:12.123Z",
+  "createdAt": "2026-08-12T08:50:55.034Z",
+  "model": "gemini-3.6-flash-high",
+  "answerCount": 98
+}

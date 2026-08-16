@@ -1,0 +1,382 @@
+{
+  "confidenceCalibration": [
+    {
+      "claim": "No confidence ratings were submitted during this set, so explicit calibration cannot be evaluated for these attempts.",
+      "confidence": "tentative",
+      "evidenceIds": [
+        "dc93a96d-9234-4d70-8b49-158648e336df",
+        "a820a7f0-41b4-49e3-866d-2b50ed412c13",
+        "fb07bfe1-55e8-4a79-a177-49ce37247b02",
+        "e86ab2b3-944c-4bb2-b163-4d9d9a188a98",
+        "55caf51e-ff2f-451a-bce8-0b73870e5472"
+      ]
+    }
+  ],
+  "errorTaxonomy": [
+    {
+      "count": 1,
+      "evidenceIds": [
+        "55caf51e-ff2f-451a-bce8-0b73870e5472"
+      ],
+      "label": "Rushed multi-step function evaluation",
+      "mechanism": "execution"
+    }
+  ],
+  "executiveSummary": "In this 5-item adaptive practice set, you scored 80% overall (4 of 5 correct). Reading and Writing reached 100% accuracy (2/2) with an average pace of 35 seconds per question against an 83-second benchmark. Math yielded 67% accuracy (2/3) with an ultra-fast average pace of 7 seconds per item against a 128-second benchmark. Your current score estimate is 1360 (Reading & Writing 720, Math 640) against your 1600 target, leaving a 240-point gap with 13 days remaining until test day. Because only one full mock is recorded in history, the weekly trend projection is currently null and cannot be calculated yet. Math accounts for 160 points (66.7%) of your remaining score gap, making procedural precision on transformed linear functions your highest-leverage priority.",
+  "learnerModel": {
+    "coachingStyle": "Direct, evidence-bound, and analytical. Focus on step-by-step verification of function transformations, explicit sign-flip checks in inequalities, and precise text tracking in scientific passages.",
+    "hypotheses": [
+      {
+        "claim": "The learner exhibits strong text synthesis on Reading & Writing Central Ideas across scientific and historical passages.",
+        "confidence": "strong",
+        "evidenceIds": [
+          "1ed48ddc-0de0-4e19-857f-ac4099f25cb1",
+          "598d0bb4-8b63-4f1a-9a54-43cfdc95b85a",
+          "14a1f5c1-fdf9-4fe3-ae41-1cbbed6e8276",
+          "c45aea55-ae9d-479c-8451-3f15f33b5807",
+          "0869d724-6ccf-4b8a-ad41-2437248386e6",
+          "a820a7f0-41b4-49e3-866d-2b50ed412c13",
+          "e86ab2b3-944c-4bb2-b163-4d9d9a188a98"
+        ]
+      },
+      {
+        "claim": "In Math, procedural execution slips on multi-step function shifts g(x) = f(x + h) + k are driven by excessive speed (<10s evaluation), leading to un-isolated intermediate values.",
+        "confidence": "strong",
+        "evidenceIds": [
+          "fee3ed53-f48b-49d3-bd1a-90041d1e09cb",
+          "fbae274f-a6f7-4166-ba02-c0ba8f6360c1",
+          "dc93a96d-9234-4d70-8b49-158648e336df",
+          "55caf51e-ff2f-451a-bce8-0b73870e5472"
+        ]
+      }
+    ],
+    "nextSession": "Focus on Math difficulty 5 linear function transformations g(x) = f(x+h)+k with mandatory 2-step evaluation and pacing floor, followed by statistical claims and advanced reading inferences.",
+    "priorities": [
+      {
+        "claim": "Eliminate procedural execution errors on linear function transformations g(x) = f(x+h) + k through mandatory paper scratchpad verification.",
+        "confidence": "strong",
+        "evidenceIds": [
+          "fee3ed53-f48b-49d3-bd1a-90041d1e09cb",
+          "fbae274f-a6f7-4166-ba02-c0ba8f6360c1",
+          "55caf51e-ff2f-451a-bce8-0b73870e5472"
+        ]
+      },
+      {
+        "claim": "Maintain high-speed accuracy on difficulty 5 polynomial expansions and statistical claim evaluation.",
+        "confidence": "moderate",
+        "evidenceIds": [
+          "1317bd62-4122-4a80-a209-fc3859365dc1",
+          "fb07bfe1-55e8-4a79-a177-49ce37247b02"
+        ]
+      }
+    ],
+    "skillDirectives": [
+      {
+        "evidenceIds": [
+          "fee3ed53-f48b-49d3-bd1a-90041d1e09cb",
+          "fbae274f-a6f7-4166-ba02-c0ba8f6360c1",
+          "dc93a96d-9234-4d70-8b49-158648e336df",
+          "55caf51e-ff2f-451a-bce8-0b73870e5472"
+        ],
+        "priority": 1,
+        "reason": "Accuracy of 50% (1/2) in current set and persistent procedural risk in evaluating g(0) = f(h) + k warrants top focus to close Math score gap.",
+        "skillId": "linear-functions",
+        "targetDifficulty": 5
+      },
+      {
+        "evidenceIds": [
+          "fb07bfe1-55e8-4a79-a177-49ce37247b02"
+        ],
+        "priority": 0.8,
+        "reason": "100% accuracy (1/1) on statistical claims; expand to complex study designs and attrition bias at difficulty 5.",
+        "skillId": "statistical-claims",
+        "targetDifficulty": 5
+      },
+      {
+        "evidenceIds": [
+          "1ed48ddc-0de0-4e19-857f-ac4099f25cb1",
+          "598d0bb4-8b63-4f1a-9a54-43cfdc95b85a",
+          "a820a7f0-41b4-49e3-866d-2b50ed412c13",
+          "e86ab2b3-944c-4bb2-b163-4d9d9a188a98"
+        ],
+        "priority": 0.6,
+        "reason": "100% accuracy (2/2 in set, 7/7 cumulative) on central ideas; transition to complex inferences.",
+        "skillId": "central-ideas-details",
+        "targetDifficulty": 5
+      }
+    ],
+    "strengths": [
+      {
+        "claim": "Consistently flawless performance on Reading & Writing Central Ideas and Details across multiple text domains.",
+        "confidence": "strong",
+        "evidenceIds": [
+          "1ed48ddc-0de0-4e19-857f-ac4099f25cb1",
+          "598d0bb4-8b63-4f1a-9a54-43cfdc95b85a",
+          "a820a7f0-41b4-49e3-866d-2b50ed412c13",
+          "e86ab2b3-944c-4bb2-b163-4d9d9a188a98"
+        ]
+      },
+      {
+        "claim": "Strong intuitive grasp of statistical study design threats and causal inference limitations.",
+        "confidence": "moderate",
+        "evidenceIds": [
+          "fb07bfe1-55e8-4a79-a177-49ce37247b02"
+        ]
+      }
+    ],
+    "summary": "Learner model updated following completion of 5-item adaptive set. Overall score estimate is 1360 (RW 720, Math 640) vs 1600 target. Demonstrates strong verbal main-idea synthesis (100% accuracy) and quick statistical reasoning, but faces a procedural execution vulnerability from excessive speed on multi-step linear function shifts (6s attempt error)."
+  },
+  "limitations": [
+    "This set contained only 5 items, which provides a small sample size for overall skill evaluation.",
+    "No confidence ratings were provided by the learner, preventing confidence calibration assessment.",
+    "Only one full mock is available in history, so a multi-week point trend rate cannot yet be calculated.",
+    "Retention across distinct study sessions cannot be verified within a single practice set."
+  ],
+  "misconceptionPatterns": [
+    {
+      "claim": "Selecting intermediate function output or slope values without completing the final arithmetic offset in composite transformations.",
+      "confidence": "tentative",
+      "evidenceIds": [
+        "55caf51e-ff2f-451a-bce8-0b73870e5472"
+      ]
+    }
+  ],
+  "pacingAndDecisions": [
+    {
+      "claim": "Math items were completed in an average of 7 seconds (vs target 128s), trading safety verification for extreme speed.",
+      "confidence": "strong",
+      "evidenceIds": [
+        "dc93a96d-9234-4d70-8b49-158648e336df",
+        "fb07bfe1-55e8-4a79-a177-49ce37247b02",
+        "55caf51e-ff2f-451a-bce8-0b73870e5472"
+      ]
+    },
+    {
+      "claim": "Reading pace averaged 35 seconds per item (vs target 83s), striking an effective balance between speed and precision.",
+      "confidence": "moderate",
+      "evidenceIds": [
+        "a820a7f0-41b4-49e3-866d-2b50ed412c13",
+        "e86ab2b3-944c-4bb2-b163-4d9d9a188a98"
+      ]
+    }
+  ],
+  "recommendedMix": "65% Math / 35% Reading & Writing. Math is assigned the majority of practice time because it represents 160 points (66.7%) of the remaining 240-point gap to the 1600 goal (current Math 640 vs RW 720).",
+  "sectionBreakdown": [
+    {
+      "section": "Reading and Writing",
+      "accuracySummary": "2/2 correct (100%)",
+      "pacingSummary": "35s average against a 83s authored target",
+      "findings": [
+        {
+          "claim": "High comprehension accuracy on main idea extraction from dual-perspective and historical passage structures.",
+          "confidence": "moderate",
+          "evidenceIds": [
+            "a820a7f0-41b4-49e3-866d-2b50ed412c13",
+            "e86ab2b3-944c-4bb2-b163-4d9d9a188a98"
+          ]
+        }
+      ],
+      "recommendedFocus": "Maintain current synthesis strategy while advancing to complex inference and command of evidence items."
+    },
+    {
+      "section": "Math",
+      "accuracySummary": "2/3 correct (67%)",
+      "pacingSummary": "7s average against a 128s authored target",
+      "findings": [
+        {
+          "claim": "Fast resolution of statistical design questions alongside execution slip on composite function transformation.",
+          "confidence": "moderate",
+          "evidenceIds": [
+            "dc93a96d-9234-4d70-8b49-158648e336df",
+            "fb07bfe1-55e8-4a79-a177-49ce37247b02",
+            "55caf51e-ff2f-451a-bce8-0b73870e5472"
+          ]
+        }
+      ],
+      "recommendedFocus": "Slow down evaluation speed on multi-step function transformations to at least 30 seconds per item to verify two-step arithmetic."
+    }
+  ],
+  "sevenDayPlan": [
+    {
+      "day": "Day 1",
+      "minutes": 30,
+      "successCheck": "100% accuracy with zero rushed execution errors.",
+      "work": "Math Linear Transformations drill (10 difficulty 5 items on g(x) = f(x+h)+k with mandatory paper scratchpad verification)."
+    },
+    {
+      "day": "Day 2",
+      "minutes": 30,
+      "successCheck": "Maintain >=87% accuracy within 45 seconds per passage.",
+      "work": "Reading & Writing Inferences and Central Ideas (8 difficulty 5 passages with scientific and historical texts)."
+    },
+    {
+      "day": "Day 3",
+      "minutes": 35,
+      "successCheck": "Correctly identify causal limitations on all experiment scenarios.",
+      "work": "Math Problem Solving & Data Analysis (Statistical claims, study design, and attrition bias traps)."
+    },
+    {
+      "day": "Day 4",
+      "minutes": 30,
+      "successCheck": "No item answered in under 15 seconds without double-checking.",
+      "work": "Mixed Math Drill: Linear function shifts, inequalities, and system setups under timed conditions (45s/item floor)."
+    },
+    {
+      "day": "Day 5",
+      "minutes": 30,
+      "successCheck": "Accurate mapping of author perspectives and evidence links.",
+      "work": "Reading & Writing Focus: Command of Evidence and Structure in paired/dual texts."
+    },
+    {
+      "day": "Day 6",
+      "minutes": 45,
+      "successCheck": "Math accuracy >=90%, RW accuracy >=90%.",
+      "work": "Timed Mixed Practice Set (15 Math items, 10 RW items focusing on high-difficulty topics)."
+    },
+    {
+      "day": "Day 7",
+      "minutes": 60,
+      "successCheck": "Clear written justification for every mistake made.",
+      "work": "Full-length Section Check & Error Audit (Review all flagged and incorrect items with root-cause writeups)."
+    }
+  ],
+  "skillBreakdown": [
+    {
+      "skillId": "linear-functions",
+      "correct": 1,
+      "total": 2,
+      "averageSeconds": 4,
+      "diagnosis": "Rushed execution in 6 seconds resulted in picking an un-isolated intermediate value on g(0) = f(3) - 3.",
+      "nextDifficulty": 5,
+      "action": "Implement a mandatory 2-step paper trace: 1) write out f(x+h), 2) evaluate and subtract k before selecting the final option.",
+      "evidenceIds": [
+        "dc93a96d-9234-4d70-8b49-158648e336df",
+        "55caf51e-ff2f-451a-bce8-0b73870e5472"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "central-ideas-details",
+      "correct": 2,
+      "total": 2,
+      "averageSeconds": 35,
+      "diagnosis": "Demonstrated accurate text tracking and main point isolation across scientific and narrative history contexts.",
+      "nextDifficulty": 5,
+      "action": "Continue difficulty 5 practice with complex inferences while preserving current reading speed.",
+      "evidenceIds": [
+        "a820a7f0-41b4-49e3-866d-2b50ed412c13",
+        "e86ab2b3-944c-4bb2-b163-4d9d9a188a98"
+      ],
+      "confidence": "tentative"
+    },
+    {
+      "skillId": "statistical-claims",
+      "correct": 1,
+      "total": 1,
+      "averageSeconds": 13,
+      "diagnosis": "Quickly identified unequal dropout rate as a key threat to causal inference in randomized experiments.",
+      "nextDifficulty": 5,
+      "action": "Extend practice to study design subtleties involving generalizability and confounding variables.",
+      "evidenceIds": [
+        "fb07bfe1-55e8-4a79-a177-49ce37247b02"
+      ],
+      "confidence": "tentative"
+    }
+  ],
+  "strengths": [
+    {
+      "claim": "Perfect accuracy on Reading & Writing Central Ideas and Details, navigating subtle distinctions in scientific and historical texts smoothly.",
+      "confidence": "moderate",
+      "evidenceIds": [
+        "a820a7f0-41b4-49e3-866d-2b50ed412c13",
+        "e86ab2b3-944c-4bb2-b163-4d9d9a188a98"
+      ]
+    },
+    {
+      "claim": "Accurate evaluation of experimental validity and causal claims regarding study dropout bias.",
+      "confidence": "tentative",
+      "evidenceIds": [
+        "fb07bfe1-55e8-4a79-a177-49ce37247b02"
+      ]
+    }
+  ],
+  "studyPriorities": [
+    {
+      "action": "Practice difficulty 5 function shifts g(x) = f(x+h)+k using explicit two-step paper substitution and isolation.",
+      "evidenceIds": [
+        "dc93a96d-9234-4d70-8b49-158648e336df",
+        "55caf51e-ff2f-451a-bce8-0b73870e5472"
+      ],
+      "reason": "Math accounts for 160 points (66.7%) of the remaining 240-point gap to 1600. Eliminating procedural execution slips on linear functions provides direct score leverage.",
+      "skillId": "linear-functions"
+    },
+    {
+      "action": "Drill advanced experimental design, causal limits, and sample bias scenarios.",
+      "evidenceIds": [
+        "fb07bfe1-55e8-4a79-a177-49ce37247b02"
+      ],
+      "reason": "Math is the primary growth section (current 640 vs 800 goal). Building consistency across data interpretation secures upper-tier Math performance.",
+      "skillId": "statistical-claims"
+    },
+    {
+      "action": "Advance to complex text inferences while maintaining controlled pacing around 35-45 seconds per passage.",
+      "evidenceIds": [
+        "a820a7f0-41b4-49e3-866d-2b50ed412c13",
+        "e86ab2b3-944c-4bb2-b163-4d9d9a188a98"
+      ],
+      "reason": "Reading & Writing is closer to goal (720 vs 800), requiring target refinement to lock in top-band scores.",
+      "skillId": "central-ideas-details"
+    }
+  ],
+  "title": "Set review: 4 of 5 correct",
+  "transferAndRetention": [
+    {
+      "claim": "Central Ideas accuracy remains strong across two distinct passage types in this set, though multi-session retention remains to be validated in future practice.",
+      "confidence": "tentative",
+      "evidenceIds": [
+        "a820a7f0-41b4-49e3-866d-2b50ed412c13",
+        "e86ab2b3-944c-4bb2-b163-4d9d9a188a98"
+      ]
+    },
+    {
+      "claim": "Linear function transformation performance showed inconsistency across items, requiring further multi-session testing to confirm mastery.",
+      "confidence": "tentative",
+      "evidenceIds": [
+        "dc93a96d-9234-4d70-8b49-158648e336df",
+        "55caf51e-ff2f-451a-bce8-0b73870e5472"
+      ]
+    }
+  ],
+  "weaknesses": [
+    {
+      "claim": "Rushing multi-step linear function evaluations leads to premature answer selection on composite shifts g(x) = f(x+h) + k.",
+      "confidence": "moderate",
+      "evidenceIds": [
+        "55caf51e-ff2f-451a-bce8-0b73870e5472"
+      ]
+    }
+  ],
+  "whatChanged": [
+    {
+      "claim": "Function transformation evaluation showed vulnerability to ultra-fast execution error when evaluating multi-step composite shifts.",
+      "confidence": "moderate",
+      "evidenceIds": [
+        "55caf51e-ff2f-451a-bce8-0b73870e5472"
+      ]
+    },
+    {
+      "claim": "Reading main-idea extraction confirmed strong accuracy across scientific and historical passage structures.",
+      "confidence": "moderate",
+      "evidenceIds": [
+        "a820a7f0-41b4-49e3-866d-2b50ed412c13",
+        "e86ab2b3-944c-4bb2-b163-4d9d9a188a98"
+      ]
+    }
+  ],
+  "id": "7a0d0711-88f5-451d-940c-4865b9be23b3",
+  "type": "session",
+  "period": "2026-08-09T12:26:31.077Z to 2026-08-09T12:28:13.818Z",
+  "createdAt": "2026-08-09T12:28:53.602Z",
+  "model": "gemini-3.6-flash-high",
+  "answerCount": 5
+}

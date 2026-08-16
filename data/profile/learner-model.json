@@ -1,118 +1,82 @@
 {
-  "coachingStyle": "Direct, evidence-bound, and analytical. Focus on step-by-step verification of function transformations, explicit sign-flip checks in inequalities, and precise text tracking in scientific passages.",
+  "coachingStyle": "Analytical, pace-corrected, and evidence-grounded. Require scratchpad work for Level 4/5 Math.",
   "hypotheses": [
     {
-      "claim": "The learner exhibits strong text synthesis on Reading & Writing Central Ideas, but requires validation on complex scientific inferences under timed conditions.",
+      "claim": "Rushing through Math questions in ~33s causes preventable execution and setup errors on Level 4/5 items.",
       "confidence": "strong",
       "evidenceIds": [
-        "1ed48ddc-0de0-4e19-857f-ac4099f25cb1",
-        "598d0bb4-8b63-4f1a-9a54-43cfdc95b85a",
-        "14a1f5c1-fdf9-4fe3-ae41-1cbbed6e8276",
-        "c45aea55-ae9d-479c-8451-3f15f33b5807",
-        "0869d724-6ccf-4b8a-ad41-2437248386e6"
-      ]
-    },
-    {
-      "claim": "In Math, the primary barrier to an 800 score is procedural execution on multi-step function shifts g(x) = f(x + h) + k, specifically stopping at intermediate values.",
-      "confidence": "strong",
-      "evidenceIds": [
-        "fee3ed53-f48b-49d3-bd1a-90041d1e09cb",
-        "fbae274f-a6f7-4166-ba02-c0ba8f6360c1"
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-64347b2d-b5ad-44f7-ae86-8a552fce5d5b",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-8204b1b0-0245-492e-8f9e-a8d4be4927e7"
       ]
     }
   ],
-  "nextSession": "Focus on Math difficulty 5 linear function transformations g(x) = f(x+h)+k with mandatory 2-step evaluation, followed by advanced expression expansion and complex reading inferences.",
+  "nextSession": "Focus on Level 5 Math Systems & Geometry with mandatory 60s minimum spend per question and paper verification.",
   "priorities": [
     {
-      "claim": "Master linear function transformation evaluation g(x) = f(x+h) + k without stopping at intermediate values.",
+      "claim": "Enforce paper-first setup for Systems of Equations and Nonlinear Systems to eliminate sign and discriminant errors.",
       "confidence": "strong",
       "evidenceIds": [
-        "fee3ed53-f48b-49d3-bd1a-90041d1e09cb",
-        "fbae274f-a6f7-4166-ba02-c0ba8f6360c1"
-      ]
-    },
-    {
-      "claim": "Maintain high-speed accuracy on difficulty 5 polynomial expansions and linear inequality systems.",
-      "confidence": "moderate",
-      "evidenceIds": [
-        "1317bd62-4122-4a80-a209-fc3859365dc1",
-        "f9819776-b77d-42a4-aa56-0432f3ab193c"
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-d2d035c1-9ce8-44f3-aa85-bf15fe0006e5",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-8204b1b0-0245-492e-8f9e-a8d4be4927e7"
       ]
     }
   ],
   "skillDirectives": [
     {
       "evidenceIds": [
-        "fee3ed53-f48b-49d3-bd1a-90041d1e09cb",
-        "fbae274f-a6f7-4166-ba02-c0ba8f6360c1"
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-d2d035c1-9ce8-44f3-aa85-bf15fe0006e5",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-8204b1b0-0245-492e-8f9e-a8d4be4927e7"
       ],
       "priority": 1,
-      "reason": "Accuracy of 50% (1/2) on linear function transformations indicates a procedural execution risk in evaluating g(0) = f(h) + k.",
-      "skillId": "linear-functions",
+      "reason": "Address execution errors on nonlinear system intersections.",
+      "skillId": "systems-nonlinear",
       "targetDifficulty": 5
     },
     {
       "evidenceIds": [
-        "1317bd62-4122-4a80-a209-fc3859365dc1"
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-64347b2d-b5ad-44f7-ae86-8a552fce5d5b"
       ],
-      "priority": 0.8,
-      "reason": "100% accuracy (1/1) on equivalent expressions; continue practice at difficulty 5.",
-      "skillId": "equivalent-expressions",
+      "priority": 0.9,
+      "reason": "Prevent sign drop errors on linear system coefficients.",
+      "skillId": "systems-linear-equations",
       "targetDifficulty": 5
     },
     {
       "evidenceIds": [
-        "f9819776-b77d-42a4-aa56-0432f3ab193c"
-      ],
-      "priority": 0.8,
-      "reason": "100% accuracy (1/1) on linear inequalities; maintain execution at difficulty 5.",
-      "skillId": "linear-inequalities",
-      "targetDifficulty": 5
-    },
-    {
-      "evidenceIds": [
-        "31b6428a-6ee0-49e3-ae9e-ec22bb89ae37"
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-19d6d556-eb05-4b98-88b5-419e76289a33",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-0148ebb8-76d2-423b-86e2-25e8f60e1e92"
       ],
       "priority": 0.7,
-      "reason": "100% accuracy (1/1) on statistical claims; expand to complex study designs at difficulty 5.",
-      "skillId": "statistical-claims",
-      "targetDifficulty": 5
-    },
-    {
-      "evidenceIds": [
-        "1ed48ddc-0de0-4e19-857f-ac4099f25cb1",
-        "598d0bb4-8b63-4f1a-9a54-43cfdc95b85a",
-        "14a1f5c1-fdf9-4fe3-ae41-1cbbed6e8276",
-        "c45aea55-ae9d-479c-8451-3f15f33b5807",
-        "0869d724-6ccf-4b8a-ad41-2437248386e6"
-      ],
-      "priority": 0.6,
-      "reason": "100% accuracy (5/5) on central ideas; transition to complex inferences and craft/structure.",
-      "skillId": "central-ideas-details",
+      "reason": "Refine precision on Level 5 academic vocabulary.",
+      "skillId": "words-in-context",
       "targetDifficulty": 5
     }
   ],
   "strengths": [
     {
-      "claim": "Flawless execution on Reading & Writing Central Ideas and Details (5/5) across multiple text domains.",
+      "claim": "Rhetorical Synthesis & Central Ideas",
       "confidence": "strong",
       "evidenceIds": [
-        "1ed48ddc-0de0-4e19-857f-ac4099f25cb1",
-        "598d0bb4-8b63-4f1a-9a54-43cfdc95b85a",
-        "14a1f5c1-fdf9-4fe3-ae41-1cbbed6e8276",
-        "c45aea55-ae9d-479c-8451-3f15f33b5807",
-        "0869d724-6ccf-4b8a-ad41-2437248386e6"
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-12611835-c020-4643-829c-2871707ef8f2"
       ]
     },
     {
-      "claim": "Fast, accurate solution of polynomial equivalent expressions and linear inequality systems.",
-      "confidence": "moderate",
+      "claim": "Text Structure & Textual/Quantitative Evidence",
+      "confidence": "strong",
       "evidenceIds": [
-        "1317bd62-4122-4a80-a209-fc3859365dc1",
-        "f9819776-b77d-42a4-aa56-0432f3ab193c"
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-5658840c-6f26-4c1e-8d4f-7ec59c6a932e",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-rw-fe427db1-618e-49d9-97b3-f06db0f0668c"
+      ]
+    },
+    {
+      "claim": "Equivalent Expressions & Nonlinear Functions",
+      "confidence": "strong",
+      "evidenceIds": [
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-5ad3f46b-77da-4752-afe3-fa6490ce4390",
+        "cf4f8ea8-250a-4396-8955-e5eb548c2063-ai-math-4fb2d8ef-237c-465f-85c2-701ae8e423c6"
       ]
     }
   ],
-  "summary": "Learner model updated following completion of adaptive set. Overall score estimate of 1350 (RW 710, Math 640) vs 1600 target reflects strong RW comprehension and solid math baseline, with a specific procedural vulnerability on transformed linear functions.",
-  "updatedAt": "2026-08-09T11:42:45.994Z"
+  "summary": "Learner demonstrates exceptional strength in RW synthesis, central ideas, and structural analysis (92.6% accuracy), but shows score leakage in Math (79.5% accuracy) driven by rushed execution (<35s/item) on Level 4/5 Systems of Equations, Linear Inequalities, and Geometry.",
+  "updatedAt": "2026-08-12T08:50:55.034Z"
 }
